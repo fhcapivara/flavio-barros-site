@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fhcapivara.github.io/flavio-barros-site/sitemap.xml
