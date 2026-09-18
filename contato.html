@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Fale com Flávio Barros pelo WhatsApp. Atendimento em Ribeirão Preto e região para quem busca patrimônio com propósito." />
+  <title>Contato | Fale com Flávio Barros em Ribeirão Preto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir para o conteúdo</a>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav" aria-label="Principal">
+        <a href="index.html" class="wordmark" aria-label="Flávio Barros, início">
+          <span class="wordmark__name">Flávio Barros</span>
+          <span class="wordmark__slogan">Patrimônio com propósito</span>
+        </a>
+        <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav__links">
+          <a href="index.html">Início</a>
+          <a href="sobre.html">Sobre</a>
+          <a href="atuacao.html">Atuação</a>
+          <a href="destaques.html">Destaques</a>
+          <a href="contato.html" aria-current="page">Contato</a>
+          <a class="nav__cta" href="https://wa.me/5516991166681" target="_blank" rel="noopener noreferrer">Agendar conversa</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero__inner reveal">
+          <p class="eyebrow">Contato</p>
+          <h1>Agendar uma conversa</h1>
+          <p class="lead">Me diga o objetivo. Eu organizo o próximo passo: lugar, projeto, ou os dois.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="contact-grid">
+          <aside class="contact-primary reveal">
+            <p class="eyebrow eyebrow--on-dark">Canal principal</p>
+            <h2>WhatsApp</h2>
+            <p class="lead">Conversa direta. Você conta o objetivo; eu organizo o próximo passo.</p>
+            <a class="btn btn--green" href="https://wa.me/5516991166681" target="_blank" rel="noopener noreferrer">(16) 99116-6681</a>
+            <div class="contact-links">
+              <a href="https://wa.me/5516991166681" target="_blank" rel="noopener noreferrer">
+                <span>WhatsApp</span>
+                <span>(16) 99116-6681</span>
+              </a>
+              <a href="https://instagram.com/barros_flavio" target="_blank" rel="noopener noreferrer">
+                <span>Instagram</span>
+                <span>@barros_flavio</span>
+              </a>
+              <div class="contact-links__item" role="group" aria-label="CRECI">
+                <span>CRECI</span>
+                <span>323468</span>
+              </div>
+              <div class="contact-links__item" role="group" aria-label="Região">
+                <span>Região</span>
+                <span>Ribeirão Preto e região</span>
+              </div>
+            </div>
+          </aside>
+
+          <form class="form reveal" id="contact-form" action="#" method="get">
+            <p class="form__note">Preencha o contexto. Eu abro a conversa no WhatsApp com essas informações.</p>
+
+            <div class="form__group">
+              <label for="objetivo">Objetivo</label>
+              <select id="objetivo" name="objetivo">
+                <option value="">Selecione</option>
+                <option value="Moradia / curadoria">Moradia / curadoria</option>
+                <option value="Investimento ou comercial">Investimento ou comercial</option>
+                <option value="Terreno, casa e projeto">Terreno, casa e projeto</option>
+                <option value="Venda de imóvel">Venda de imóvel</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+
+            <div class="form__row">
+              <div class="form__group">
+                <label for="regiao">Região de interesse</label>
+                <input type="text" id="regiao" name="regiao" placeholder="Ex.: Ribeirão Preto, Jardim..." />
+              </div>
+              <div class="form__group">
+                <label for="faixa">Perfil de interesse</label>
+                <select id="faixa" name="faixa">
+                  <option value="">Selecione</option>
+                  <option value="A definir">A definir</option>
+                  <option value="Moradia">Moradia</option>
+                  <option value="Investimento ou comercial">Investimento ou comercial</option>
+                  <option value="Alto padrão">Alto padrão</option>
+                  <option value="Prefiro conversar">Prefiro conversar</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form__group">
+              <label for="prazo">Prazo</label>
+              <select id="prazo" name="prazo">
+                <option value="">Selecione</option>
+                <option value="Curto (até 3 meses)">Curto (até 3 meses)</option>
+                <option value="Médio (3 a 12 meses)">Médio (3 a 12 meses)</option>
+                <option value="Longo / exploratório">Longo / exploratório</option>
+              </select>
+            </div>
+
+            <div class="form__group">
+              <label for="mensagem">Observação (opcional)</label>
+              <textarea id="mensagem" name="mensagem" placeholder="Contexto breve, se quiser."></textarea>
+            </div>
+
+            <div class="form__actions">
+              <button class="btn btn--primary" type="submit">Agendar no WhatsApp</button>
+              <a class="btn btn--ghost" href="https://wa.me/5516991166681" target="_blank" rel="noopener noreferrer">Ir direto ao WhatsApp</a>
+              <p class="form__hint">Nada é armazenado aqui. O envio abre o WhatsApp com o seu contexto.</p>
+              <p class="form__creci">Flávio Barros · CRECI 323468 · Ribeirão Preto e região</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="wordmark">
+            <span class="wordmark__name">Flávio Barros</span>
+            <span class="wordmark__slogan">Patrimônio com propósito</span>
+          </a>
+          <p>Curadoria imobiliária em Ribeirão Preto e região.</p>
+        </div>
+        <div class="footer__col">
+          <h4>Navegação</h4>
+          <a href="sobre.html">Sobre</a>
+          <a href="atuacao.html">Atuação</a>
+          <a href="destaques.html">Destaques</a>
+          <a href="contato.html">Contato</a>
+        </div>
+        <div class="footer__col">
+          <h4>Contato</h4>
+          <a href="https://wa.me/5516991166681" target="_blank" rel="noopener noreferrer">WhatsApp (16) 99116-6681</a>
+          <a href="https://instagram.com/barros_flavio" target="_blank" rel="noopener noreferrer">Instagram @barros_flavio</a>
+          <p>Ribeirão Preto e região</p>
+          <p>CRECI 323468</p>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>Flávio Barros · CRECI 323468</span>
+        <span>Ribeirão Preto, SP</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="wa-sticky" href="https://wa.me/5516991166681" target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp">
+    <span class="wa-sticky__label">WhatsApp</span>
+  </a>
+  <script src="js/main.js"></script>
+</body>
+</html>
