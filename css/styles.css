@@ -1858,3 +1858,33 @@ em {
   height: 100%;
   border: 0;
 }
+
+/* ----- Capi results must always paint ----- */
+#capi-results .section__header,
+#capi-results .capi-wa-wrap,
+#capi-cards,
+#capi-cards .card,
+#capi-cards .capi-result-card {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+#capi-cards {
+  display: grid !important;
+  gap: var(--space-6);
+  min-height: 12rem;
+}
+#capi-cards .capi-result-card,
+#capi-cards .card {
+  display: flex !important;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.12);
+  color: var(--ink, #0a0a0a);
+}
+#capi-cards .card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

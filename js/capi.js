@@ -245,6 +245,8 @@
 
   function selectThree() {
     let pool = inventory.slice();
+    if (!pool.length) return [];
+
     const types = typeFilter();
     if (types) {
       const tight = pool.filter((p) => types.includes(p.type));
@@ -267,10 +269,20 @@
     const out = [];
     const seen = new Set();
     for (const p of pool) {
-      if (seen.has(p.ref)) continue;
-      seen.add(p.ref);
+      if (!p || seen.has(String(p.ref))) continue;
+      seen.add(String(p.ref));
       out.push(p);
       if (out.length === 3) break;
+    }
+    // Always fill to 3 from full inventory if filters were too tight
+    if (out.length < 3) {
+      const rest = inventory.slice().sort((a, b) => score(b) - score(a));
+      for (const p of rest) {
+        if (!p || seen.has(String(p.ref))) continue;
+        seen.add(String(p.ref));
+        out.push(p);
+        if (out.length === 3) break;
+      }
     }
     return out;
   }
@@ -349,31 +361,66 @@
       return;
     }
 
+    // Re-pick at paint time (inventory may have loaded mid-chat)
+    picked = selectThree();
+    if (picked.length < 3) {
+      resultsLead.textContent =
+        "Não achei 3 encaixes honestos. Ajuste uma resposta ou fale comigo.";
+      if (waBtn) {
+        waBtn.hidden = false;
+        waBtn.textContent = "Falar com o Flávio";
+        waBtn.href = waHref(
+          "Olá, Flávio. Falei com a Capi" +
+            (visitorName ? ". Meu nome é " + visitorName : "") +
+            " e ainda não fechamos três opções. Podemos conversar?"
+        );
+      }
+      return;
+    }
+
     resultsLead.textContent =
       "Escolha o imóvel que prefere visitar. Eu aviso o Flávio com o seu nome e o horário.";
+
     picked.forEach((p) => {
-      const art = document.createElement("article");
-      art.className = "card";
-      const img = p.image
-        ? '<img src="' + escapeHtml(p.image) + '" alt="" loading="lazy" />'
-        : "";
-      const detail = escapeHtml((p.detailUrl && p.detailUrl.indexOf("lanportus") === -1) ? p.detailUrl : ("imovel.html?ref=" + encodeURIComponent(p.ref || "")));
-      art.innerHTML =
-        '<div class="card__media">' +
-        img +
-        '</div><div class="card__body"><h3 class="card__title">' +
-        escapeHtml(p.title || "Imóvel") +
-        '</h3><p class="card__text">' +
-        escapeHtml(criterioLine(p)) +
-        '</p><p class="capi-card-actions">' +
-        '<a class="btn btn--primary capi-card-wa" href="' +
-        escapeHtml(waForProperty(p)) +
-        '" target="_blank" rel="noopener noreferrer">Prefiro visitar este imóvel</a> ' +
-        '<a class="text-link" href="' +
-        detail +
-        '">Ver detalhes</a></p></div>';
-      cards.appendChild(art);
+      try {
+        const art = document.createElement("article");
+        art.className = "card capi-result-card";
+        const img = p.image
+          ? '<img src="' +
+            escapeHtml(p.image) +
+            '" alt="' +
+            escapeHtml(p.title || "") +
+            '" loading="lazy" decoding="async" width="640" height="400" />'
+          : '<div class="selecao-card__placeholder" aria-hidden="true"></div>';
+        const detail =
+          p.detailUrl && String(p.detailUrl).indexOf("lanportus") === -1
+            ? p.detailUrl
+            : "imovel.html?ref=" + encodeURIComponent(String(p.ref || ""));
+        art.innerHTML =
+          '<div class="card__media">' +
+          img +
+          '</div><div class="card__body"><h3 class="card__title">' +
+          escapeHtml(p.title || "Imóvel") +
+          '</h3><p class="card__text">' +
+          escapeHtml(criterioLine(p)) +
+          '</p><p class="capi-card-actions">' +
+          '<a class="btn btn--primary capi-card-wa" href="' +
+          escapeHtml(waForProperty(p)) +
+          '" target="_blank" rel="noopener noreferrer">Prefiro visitar este imóvel</a> ' +
+          '<a class="text-link" href="' +
+          escapeHtml(detail) +
+          '">Ver detalhes</a></p></div>';
+        cards.appendChild(art);
+      } catch (err) {
+        console.error("capi card", err);
+      }
     });
+
+    // Force paint after unhiding section
+    results.removeAttribute("hidden");
+    results.style.display = "";
+    cards.style.opacity = "1";
+    cards.style.visibility = "visible";
   }
 
   function escapeHtml(s) {
