@@ -51,7 +51,9 @@
         '<div class="vip-card__media">' +
         '<img src="' +
         escapeHtml(item.coverImage) +
-        '" alt="" loading="lazy" decoding="async" width="640" height="400" />' +
+        '" alt="' +
+        escapeHtml(item.title || "") +
+        '" loading="lazy" decoding="async" width="640" height="400" />' +
         "</div>";
     } else {
       media =
@@ -59,16 +61,26 @@
     }
 
     var actions = '<div class="vip-card__actions">';
+    if (item.detailUrl) {
+      actions +=
+        '<a class="btn btn--primary" href="' +
+        escapeHtml(item.detailUrl) +
+        '">Ler a história</a>';
+    }
     if (item.videoUrl) {
       actions +=
         '<a class="btn btn--ghost" href="' +
-        escapeHtml(item.videoUrl) +
-        '" target="_blank" rel="noopener noreferrer">Ver vídeo</a>';
+        escapeHtml(item.detailUrl || item.videoUrl) +
+        '">Ver vídeo</a>';
     }
     actions +=
-      '<a class="btn btn--primary" href="' +
+      '<a class="btn btn--ghost" href="' +
       escapeHtml(waUrl(item)) +
-      '" target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a></div>';
+      '" target="_blank" rel="noopener noreferrer">Visitar</a></div>';
+
+    var sub = item.subtitle
+      ? '<p class="vip-card__subtitle">' + escapeHtml(item.subtitle) + "</p>"
+      : "";
 
     return (
       '<article class="vip-card card reveal">' +
@@ -80,6 +92,7 @@
       '<h3 class="card__title">' +
       escapeHtml(item.title || "Imóvel selecionado") +
       "</h3>" +
+      sub +
       (item.criterio
         ? '<p class="card__text">' + escapeHtml(item.criterio) + "</p>"
         : "") +

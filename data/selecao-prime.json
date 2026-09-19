@@ -1,16 +1,42 @@
 {
-  "attribution": "Seleção Prime · Flávio Barros (conteúdo próprio, distinto da Seleção Lanportus e da Curadoria VIP)",
+  "attribution": "Seleção Prime · Flávio Barros (conteúdo próprio, distinto do Acervo Lanportus e da Curadoria VIP)",
   "schema": {
     "item": {
       "id": "string — identificador estável único",
-      "title": "string — título do imóvel / peça",
-      "criterio": "string — por que entrou na seleção (sem preço)",
-      "videoUrl": "string opcional — URL do vídeo (YouTube, Vimeo, arquivo)",
-      "coverImage": "string opcional — URL ou path da capa",
-      "neighborhood": "string — bairro",
-      "city": "string — cidade",
-      "whatsappNote": "string opcional — trecho para pré-preencher a mensagem no WhatsApp"
+      "title": "string — título storytelling (não só nome do empreendimento)",
+      "subtitle": "string opcional — marca / empreendimento",
+      "criterio": "string — por que entrou (1 linha, sem preço)",
+      "situacao": "string — momento de vida / para quem",
+      "historia": "string — história do lugar",
+      "oQueEuVi": "array de 3 strings — critério Flávio na visita",
+      "paraQuemNaoE": "string — filtro elegante",
+      "videoUrl": "string opcional",
+      "coverImage": "string opcional",
+      "neighborhood": "string",
+      "city": "string",
+      "whatsappNote": "string opcional — pré-preenche WhatsApp"
     }
   },
-  "items": []
+  "items": [
+    {
+      "id": "birdie-ascen-vila-do-golf",
+      "title": "Pé no green",
+      "subtitle": "Birdie · Ascen · Vila do Golf",
+      "neighborhood": "Vila do Golf",
+      "city": "Ribeirão Preto",
+      "criterio": "O endereço que une rotina de família e o campo ao lado — sem trocar cidade por condomínio genérico.",
+      "situacao": "Uma família que quer ficar em Ribeirão, perto da escola e da vida que construiu, sem abrir mão de quietude e de um horizonte verde. Casa grande virou manutenção; torre comum virou ruído. Faltava um endereço com escassez e critério.",
+      "historia": "O Birdie, da Ascen, nasce na Vila do Golf: vertical boutique, plantas generosas, quatro suítes, elevador privativo. Do living e da varanda, o campo e a Mata Santa Teresa entram no café da manhã. A vaga do golf cart transforma o clube em extensão da casa — não em passeio de fim de semana.",
+      "oQueEuVi": [
+        "Contraste de endereço: Vila do Golf + Ipê — lifestyle real, não marketing de área verde.",
+        "Programa de família: quatro suítes e escala de apto grande sem a gestão de uma casa.",
+        "Privacidade vertical: poucos por andar e elevador privativo."
+      ],
+      "paraQuemNaoE": "Quem busca torre de volume, investimento só de planilha, ou endereço sem vínculo com a rotina do clube e da Zona Sul.",
+      "coverImage": "images/selecao-prime/birdie-capa-golf.jpg",
+      "videoUrl": "images/selecao-prime/birdie-30s.mp4",
+      "whatsappNote": "Olá Flávio, vi o Birdie na Seleção Prime (Pé no green). Quero organizar uma visita com critério na Vila do Golf.",
+      "detailUrl": "prime-birdie.html"
+    }
+  ]
 }
