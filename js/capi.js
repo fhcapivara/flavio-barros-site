@@ -36,11 +36,13 @@
     },
     {
       id: "chegada",
-      text: "Ao chegar em casa, faz mais sentido ter contato com área externa e jardim, ou a praticidade de um apartamento?",
+      text: "O que faz mais sentido neste momento?",
       options: [
-        { label: "Área externa e jardim", value: "casa" },
-        { label: "Praticidade de apartamento", value: "apto" },
-        { label: "Ainda considero construir", value: "terreno" },
+        { label: "Morar com área externa e jardim", value: "casa" },
+        { label: "Morar com praticidade de apartamento", value: "apto" },
+        { label: "Construir (terreno)", value: "terreno" },
+        { label: "Uso comercial (sala ou ponto)", value: "comercial" },
+        { label: "Lote ou terreno comercial", value: "lote_comercial" },
       ],
     },
     {
@@ -149,8 +151,9 @@
 
   function shouldSkipStep(s) {
     if (!s) return false;
-    if (s.id === "dormitorios" && answers.chegada && answers.chegada.value === "terreno") {
-      return true;
+    if (s.id === "dormitorios") {
+      const c = answers.chegada && answers.chegada.value;
+      if (c && c !== "casa" && c !== "apto") return true;
     }
     return false;
   }
@@ -158,7 +161,7 @@
   function ask() {
     clearChoices();
     while (step < steps.length && shouldSkipStep(steps[step])) {
-      answers[steps[step].id] = { value: "aberto", label: "Em aberto (terreno)" };
+      answers[steps[step].id] = { value: "aberto", label: "Em aberto" };
       step += 1;
     }
     if (step >= steps.length) {
@@ -232,8 +235,9 @@
   function typeFilter() {
     const c = answers.chegada && answers.chegada.value;
     if (c === "apto") return ["APARTMENT"];
-    if (c === "terreno") return ["LAND"];
+    if (c === "terreno" || c === "lote_comercial") return ["LAND"];
     if (c === "casa") return ["HOUSE", "TWO_STORY_HOUSE"];
+    if (c === "comercial") return ["ROOM", "HALL", "BUILDING", "OUTHOUSE"];
     return null;
   }
 
@@ -254,8 +258,18 @@
     return 0;
   }
 
+  function isNonResidential(p) {
+    return (
+      p.type === "LAND" ||
+      p.type === "ROOM" ||
+      p.type === "HALL" ||
+      p.type === "BUILDING" ||
+      p.type === "OUTHOUSE"
+    );
+  }
+
   function bedsMatch(p) {
-    if (p.type === "LAND") return true;
+    if (isNonResidential(p)) return true;
     const beds = Number(p.beds) || 0;
     const pref = bedsPreference();
     if (pref === "aberto") return true;
@@ -279,9 +293,13 @@
       const hay = ((p.neighborhood || "") + " " + (p.city || "") + " " + (p.title || "")).toLowerCase();
       if (hay.includes(q)) s += 4;
     }
-    if (p.type !== "LAND" && bedsMatch(p)) s += 4;
+    if (!isNonResidential(p) && bedsMatch(p)) s += 4;
     const bm = bedsMin();
-    if (p.type !== "LAND" && bm && (p.beds || 0) >= bm) s += 2;
+    if (!isNonResidential(p) && bm && (p.beds || 0) >= bm) s += 2;
+    if (answers.chegada && answers.chegada.value === "lote_comercial") {
+      const hay = ((p.title || "") + " " + (p.neighborhood || "") + " " + (p.tags || []).join(" ")).toLowerCase();
+      if (/comerci|industri|galp|barrac|lote/.test(hay)) s += 3;
+    }
     if (p.featured) s += 1;
     s += Math.min(3, Math.floor((p.sale || 0) / 5000000));
     return s;

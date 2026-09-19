@@ -8,7 +8,12 @@
     APARTMENT: "Apartamento",
     TWO_STORY_HOUSE: "Sobrado",
     LAND: "Terreno",
+    ROOM: "Sala",
+    HALL: "Salão / ponto",
+    BUILDING: "Prédio comercial",
+    OUTHOUSE: "Galpão",
   };
+  var COMMERCIAL = { ROOM: 1, HALL: 1, BUILDING: 1, OUTHOUSE: 1 };;
 
   var params = new URLSearchParams(location.search);
   var ref = (params.get("ref") || "").trim();
@@ -60,7 +65,7 @@
     var loc = [p.neighborhood, p.city].filter(Boolean).join(" · ");
     var tipo = TYPE_LABEL[p.type] || p.type || "Imóvel";
     var bits = [];
-    if (p.type !== "LAND" && p.beds) bits.push(p.beds + " quartos");
+    if (p.type !== "LAND" && !COMMERCIAL[p.type] && p.beds) bits.push(p.beds + " quartos");
     if (p.suites) bits.push(p.suites + " suítes");
     if (p.baths) bits.push(p.baths + " banheiros");
     if (p.garages) bits.push(p.garages + " vagas");

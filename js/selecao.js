@@ -10,9 +10,14 @@
     APARTMENT: "Apartamento",
     TWO_STORY_HOUSE: "Sobrado",
     LAND: "Terreno",
+    ROOM: "Sala",
+    HALL: "Salão / ponto",
+    BUILDING: "Prédio comercial",
+    OUTHOUSE: "Galpão",
   };
 
   var RESIDENTIAL = { HOUSE: 1, APARTMENT: 1, TWO_STORY_HOUSE: 1 };
+  var COMMERCIAL = { ROOM: 1, HALL: 1, BUILDING: 1, OUTHOUSE: 1 };
 
   var state = {
     items: [],
@@ -163,6 +168,8 @@
       if (!RESIDENTIAL[p.type]) return false;
     } else if (state.chip === "terrenos") {
       if (p.type !== "LAND") return false;
+    } else if (state.chip === "comercial") {
+      if (!COMMERCIAL[p.type]) return false;
     } else if (state.chip === "disponiveis") {
       if (!(Number(p.sale) > 0)) return false;
     }
@@ -173,7 +180,7 @@
 
     if (state.quartos) {
       var minBeds = parseInt(state.quartos, 10) || 0;
-      if (p.type === "LAND") return false;
+      if (p.type === "LAND" || COMMERCIAL[p.type]) return false;
       if ((Number(p.beds) || 0) < minBeds) return false;
     }
 
@@ -199,7 +206,7 @@
   function cardHtml(p) {
     var loc = [p.neighborhood, p.city].filter(Boolean).join(" · ");
     var meta = [];
-    if (p.type !== "LAND" && p.beds) meta.push(p.beds + " quartos");
+    if (p.type !== "LAND" && !COMMERCIAL[p.type] && p.beds) meta.push(p.beds + " quartos");
     if (p.area) meta.push(Math.round(p.area) + " m²");
     if (p.garages) meta.push(p.garages + " vagas");
     var img = p.image
@@ -295,8 +302,13 @@
         if (els.tipo) els.tipo.value = "LAND";
         state.quartos = "";
         if (els.quartos) els.quartos.value = "";
+      } else if (name === "comercial") {
+        state.tipo = "";
+        if (els.tipo) els.tipo.value = "";
+        state.quartos = "";
+        if (els.quartos) els.quartos.value = "";
       } else if (name === "alto") {
-        if (state.tipo === "LAND") {
+        if (state.tipo === "LAND" || COMMERCIAL[state.tipo]) {
           state.tipo = "";
           if (els.tipo) els.tipo.value = "";
         }
@@ -354,11 +366,13 @@
   function clientFilter(catalog) {
     var RES_MIN = 3000000;
     var LAND_MIN = 600000;
+    var COMM_MIN = 300000;
     return catalog
       .filter(function (p) {
         var sale = Number(p.sale) || 0;
         if (p.type === "LAND") return sale >= LAND_MIN;
         if (RESIDENTIAL[p.type]) return sale >= RES_MIN;
+        if (COMMERCIAL[p.type]) return sale >= COMM_MIN;
         return false;
       })
       .map(function (p) {

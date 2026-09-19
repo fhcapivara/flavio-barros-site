@@ -1,13 +1,16 @@
 {
-  "generatedAt": "2026-09-19T04:42:18.225Z",
+  "generatedAt": "2026-09-19T11:57:36.986Z",
   "source": "https://lanportus.com.br/catalog-data.js",
   "attribution": "Seleção Lanportus · curadoria Flávio Barros",
-  "count": 112,
+  "count": 120,
   "byType": {
     "LAND": 52,
+    "HALL": 2,
     "APARTMENT": 7,
     "HOUSE": 48,
-    "TWO_STORY_HOUSE": 5
+    "OUTHOUSE": 4,
+    "TWO_STORY_HOUSE": 5,
+    "ROOM": 2
   },
   "items": [
     {
@@ -29,6 +32,26 @@
       "slug": "terreno-comercial-e-industrial-recreio-anhanguera-2269",
       "source": "lanportus",
       "detailUrl": "imovel.html?ref=2269"
+    },
+    {
+      "ref": "3040",
+      "title": "Barracão à venda 3.200m²- Jardim Joquei Clube",
+      "type": "HALL",
+      "neighborhood": "Jardim Jóquei Clube",
+      "condominio": null,
+      "city": "Ribeirão Preto",
+      "sale": 10500000,
+      "area": 4286,
+      "beds": 0,
+      "baths": 4,
+      "garages": 6,
+      "suites": 0,
+      "featured": false,
+      "tags": [],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/9f669b1eef2086881cbe303ddb223d4fe1ccf101-1024x768.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "barracao-a-venda-3-200m-jardim-joquei-clube-3040",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=3040"
     },
     {
       "ref": "3657",
@@ -151,6 +174,26 @@
       "slug": "casa-comercial-jardim-canada-2324",
       "source": "lanportus",
       "detailUrl": "imovel.html?ref=2324"
+    },
+    {
+      "ref": "3934",
+      "title": "Galpão 12 Salas a Venda, 3.199,38m² - Zona Norte - Riberião Preto sp",
+      "type": "OUTHOUSE",
+      "neighborhood": "Jardim Iara",
+      "condominio": null,
+      "city": "Ribeirão Preto",
+      "sale": 6000000,
+      "area": 3199.38,
+      "beds": 0,
+      "baths": 22,
+      "garages": 10,
+      "suites": 0,
+      "featured": false,
+      "tags": [],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/90985f5759e076c3d1a4d22170db19ffbaefca67-1280x960.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "galpao-12-salas-a-venda-3-199-38m-zona-norte-riberiao-preto-sp-3934",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=3934"
     },
     {
       "ref": "3530",
@@ -1393,6 +1436,26 @@
       "detailUrl": "imovel.html?ref=1784"
     },
     {
+      "ref": "3035",
+      "title": "Salão comercial para locação 200m² - Alto da Boa Vista",
+      "type": "ROOM",
+      "neighborhood": "Alto da Boa Vista",
+      "condominio": null,
+      "city": "Ribeirão Preto",
+      "sale": 3000000,
+      "area": 200,
+      "beds": 0,
+      "baths": 2,
+      "garages": 3,
+      "suites": 0,
+      "featured": false,
+      "tags": [],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/6ffb28113f41d422767388439fd70c1223536e03-1024x576.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "salao-comercial-para-locacao-200m-alto-da-boa-vista-3035",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=3035"
+    },
+    {
       "ref": "2326",
       "title": "Terreno - Royal Park",
       "type": "LAND",
@@ -1575,6 +1638,26 @@
       "detailUrl": "imovel.html?ref=3656"
     },
     {
+      "ref": "2581",
+      "title": "Galpão com 595m² pé direito alto Parque Industrial Tanquinho Ribeirão Preto",
+      "type": "OUTHOUSE",
+      "neighborhood": "Parque Industrial Tanquinho",
+      "condominio": null,
+      "city": "Ribeirão Preto",
+      "sale": 1600000,
+      "area": 500,
+      "beds": 0,
+      "baths": 4,
+      "garages": 0,
+      "suites": 0,
+      "featured": false,
+      "tags": [],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/0fc52e6ff86a57a144b5cd86b8d853e223a864bc-1024x768.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "galpao-com-595m-pe-direito-alto-parque-industrial-tanquinho-ribeirao-preto-2581",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=2581"
+    },
+    {
       "ref": "3958",
       "title": "Terreno a venda 515 m² Condomínio Bela Vista – Jardim Olhos D'Água Ribeirão Preto - SP",
       "type": "LAND",
@@ -1733,6 +1816,26 @@
       "slug": "terreno-jardim-canada-ribeirao-preto-3461",
       "source": "lanportus",
       "detailUrl": "imovel.html?ref=3461"
+    },
+    {
+      "ref": "3731",
+      "title": "Galpão - Salão comercial para venda ou locação no Parque das Oliveiras",
+      "type": "OUTHOUSE",
+      "neighborhood": "Parque das Oliveiras",
+      "condominio": null,
+      "city": "Ribeirão Preto",
+      "sale": 1150000,
+      "area": 390,
+      "beds": 0,
+      "baths": 2,
+      "garages": 0,
+      "suites": 0,
+      "featured": false,
+      "tags": [],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/bcb5c0da0fe59cb116a48ffa39627b0b3dc417e3-537x571.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "galpao-salao-comercial-para-venda-ou-locacao-no-parque-das-oliveiras-3731",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=3731"
     },
     {
       "ref": "3579",
@@ -1895,6 +1998,26 @@
       "slug": "lote-terreno-no-royal-park-ribeirao-preto-3410",
       "source": "lanportus",
       "detailUrl": "imovel.html?ref=3410"
+    },
+    {
+      "ref": "3148",
+      "title": "Casa comercial à venda - Jardim América",
+      "type": "HALL",
+      "neighborhood": "Jardim América",
+      "condominio": null,
+      "city": "Ribeirão Preto",
+      "sale": 900000,
+      "area": 374.41,
+      "beds": 5,
+      "baths": 2,
+      "garages": 3,
+      "suites": 2,
+      "featured": false,
+      "tags": [],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/1268784fe4202ab4f65f16cd56c50aac160ace1d-1024x768.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "casa-comercial-a-venda-jardim-america-3148",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=3148"
     },
     {
       "ref": "3462",
@@ -2239,6 +2362,26 @@
       "detailUrl": "imovel.html?ref=3336"
     },
     {
+      "ref": "4033",
+      "title": "Galpão a venda, 264.53 m² - Villas do mirante - Ribeirão Preto sp",
+      "type": "OUTHOUSE",
+      "neighborhood": "Ltm Fazenda Santa",
+      "condominio": null,
+      "city": "Ribeirão Preto",
+      "sale": 630000,
+      "area": 264.53,
+      "beds": 0,
+      "baths": 1,
+      "garages": 3,
+      "suites": 0,
+      "featured": false,
+      "tags": [],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/a0bb0fb0dd3299b5fa7e0b678d3e670f50617bac-1600x900.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "galpao-a-venda-264-53-m-villas-do-mirante-ribeirao-preto-sp-4033",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=4033"
+    },
+    {
       "ref": "2400",
       "title": "Terreno residencial - 442 m² - Quinta dos Ventos",
       "type": "LAND",
@@ -2277,6 +2420,26 @@
       "slug": "terreno-de-esquina-a-venda-no-cond-vila-romana-4028",
       "source": "lanportus",
       "detailUrl": "imovel.html?ref=4028"
+    },
+    {
+      "ref": "3529",
+      "title": "Sala comercial à venda - New Office Ribeirão Preto",
+      "type": "ROOM",
+      "neighborhood": "Nova Ribeirânia",
+      "condominio": "NEW OFFICE",
+      "city": "Ribeirão Preto",
+      "sale": 330000,
+      "area": 37,
+      "beds": 0,
+      "baths": 1,
+      "garages": 1,
+      "suites": 0,
+      "featured": false,
+      "tags": [],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/db4342f5435f9f5092f028c0a19863b1ec43b41e-901x677.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "sala-comercial-a-venda-new-office-ribeirao-preto-3529",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=3529"
     }
   ]
 }

@@ -5,7 +5,7 @@
  *
  * HOUSE / APARTMENT / TWO_STORY_HOUSE: sale >= 3000000
  * LAND: sale >= 600000
- * Commercial types excluded unless LAND.
+ * ROOM / HALL / BUILDING / OUTHOUSE (comercial à venda): sale >= 300000
  */
 import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -17,8 +17,10 @@ const CATALOG_URL = "https://lanportus.com.br/catalog-data.js";
 const OUT = join(ROOT, "data", "selecao.json");
 
 const RESIDENTIAL = new Set(["HOUSE", "APARTMENT", "TWO_STORY_HOUSE"]);
+const COMMERCIAL = new Set(["ROOM", "HALL", "BUILDING", "OUTHOUSE"]);
 const RES_MIN = 3_000_000;
 const LAND_MIN = 600_000;
+const COMM_MIN = 300_000;
 
 function parseCatalog(jsText) {
   const start = jsText.indexOf("window.LANPORTUS_CATALOG");
@@ -63,6 +65,7 @@ function passesInternalFilter(p) {
   const sale = Number(p.sale) || 0;
   if (p.type === "LAND") return sale >= LAND_MIN;
   if (RESIDENTIAL.has(p.type)) return sale >= RES_MIN;
+  if (COMMERCIAL.has(p.type)) return sale >= COMM_MIN;
   return false;
 }
 
