@@ -1672,61 +1672,61 @@ em {
 }
 
 /* ----- Seleção Prime storytelling ----- */
-.prime-story__sub {{
+.prime-story__sub {
   margin-top: -0.5rem;
   font-size: var(--text-sm);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--stone);
-}}
-.prime-story__cover {{
+}
+.prime-story__cover {
   margin: var(--space-7) 0 0;
   overflow: hidden;
   border-radius: 0.25rem;
-}}
-.prime-story__cover img {{
+}
+.prime-story__cover img {
   width: 100%;
   height: auto;
   display: block;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-}}
-.prime-story__grid {{
+}
+.prime-story__grid {
   display: grid;
   gap: var(--space-8);
-}}
-@media (min-width: 800px) {{
-  .prime-story__grid {{
+}
+@media (min-width: 800px) {
+  .prime-story__grid {
     grid-template-columns: 1fr 1fr;
     gap: var(--space-8) var(--space-10);
-  }}
-}}
-.prime-story__col h2 {{
+  }
+}
+.prime-story__col h2 {
   font-size: var(--text-xl);
   margin-bottom: var(--space-4);
-}}
-.prime-story__col p {{
+}
+.prime-story__col p {
   color: var(--stone-dark);
   max-width: 48ch;
-}}
-.prime-story__video video {{
+}
+.prime-story__video video {
   width: 100%;
   max-height: 28rem;
   border-radius: 0.25rem;
   background: #000;
-}}
-.prime-story__seen {{
+}
+.prime-story__seen {
   max-width: 56rem;
-}}
-@media (min-width: 1000px) {{
-  .prime-story__seen.method {{
+}
+@media (min-width: 1000px) {
+  .prime-story__seen.method {
     grid-template-columns: repeat(3, 1fr);
-  }}
-}}
-.vip-card__subtitle {{
+  }
+}
+.vip-card__subtitle {
   font-size: 0.8rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--stone);
   margin: 0.25rem 0 0.75rem;
-}}
+}
