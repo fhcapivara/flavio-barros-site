@@ -17,6 +17,12 @@
       .replace(/"/g, "&quot;");
   }
 
+  function revealNow(root) {
+    (root || document).querySelectorAll(".reveal").forEach(function (el) {
+      el.classList.add("is-visible");
+    });
+  }
+
   function cardHtml(item) {
     var loc = [item.neighborhood, item.city].filter(Boolean).join(" · ");
     var detail = item.detailUrl || "#";
@@ -38,7 +44,7 @@
       : "";
 
     return (
-      '<article class="vip-card card reveal" data-prime-id="' +
+      '<article class="vip-card card" data-prime-id="' +
       escapeHtml(item.id || "") +
       '">' +
       media +
@@ -65,6 +71,7 @@
   function showEmpty() {
     if (els.grid.children.length) {
       if (els.empty) els.empty.hidden = true;
+      revealNow(els.grid);
       return;
     }
     els.grid.hidden = true;
@@ -79,7 +86,12 @@
     els.grid.hidden = false;
     els.grid.innerHTML = items.map(cardHtml).join("");
     if (els.empty) els.empty.hidden = true;
+    revealNow(els.grid);
   }
+
+  // show static cards immediately (fix reveal stuck at opacity 0)
+  revealNow(els.grid);
+  if (els.empty) els.empty.hidden = true;
 
   fetch(DATA_URL, { cache: "no-cache" })
     .then(function (r) {
