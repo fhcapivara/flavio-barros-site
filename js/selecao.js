@@ -67,10 +67,10 @@
   }
 
   function detailUrl(p) {
-    return (
-      p.detailUrl ||
-      "https://lanportus.com.br/imovel.html?ref=" + encodeURIComponent(p.ref)
-    );
+    if (p.detailUrl && p.detailUrl.indexOf("lanportus.com.br") === -1) {
+      return p.detailUrl;
+    }
+    return "imovel.html?ref=" + encodeURIComponent(p.ref);
   }
 
   function waUrl(p) {
@@ -212,7 +212,7 @@
       '<article class="selecao-card">' +
       '<a class="selecao-card__media" href="' +
       escapeHtml(detailUrl(p)) +
-      '" target="_blank" rel="noopener noreferrer">' +
+      '">' +
       img +
       "</a>" +
       '<div class="selecao-card__body">' +
@@ -223,7 +223,7 @@
       '<h3 class="selecao-card__title">' +
       '<a href="' +
       escapeHtml(detailUrl(p)) +
-      '" target="_blank" rel="noopener noreferrer">' +
+      '">' +
       escapeHtml(p.title) +
       "</a></h3>" +
       '<p class="selecao-card__price">' +
@@ -241,7 +241,7 @@
       '<div class="selecao-card__actions">' +
       '<a class="btn btn--ghost" href="' +
       escapeHtml(detailUrl(p)) +
-      '" target="_blank" rel="noopener noreferrer">Ver detalhes</a>' +
+      '">Ver detalhes</a>' +
       '<a class="btn btn--primary" href="' +
       escapeHtml(waUrl(p)) +
       '" target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a>' +
@@ -379,9 +379,7 @@
           tags: Array.isArray(p.tags) ? p.tags : [],
           image: p.image || "",
           slug: p.slug || "",
-          detailUrl:
-            "https://lanportus.com.br/imovel.html?ref=" +
-            encodeURIComponent(String(p.ref)),
+          detailUrl: "imovel.html?ref=" + encodeURIComponent(String(p.ref)),
         };
       });
   }

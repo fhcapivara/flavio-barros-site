@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta id="meta-desc" name="description" content="Imóvel do acervo de Flávio Barros em Ribeirão Preto e região." />
+  <title id="doc-title">Imóvel | Acervo · Flávio Barros</title>
+  <meta id="robots-meta" name="robots" content="index,follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir para o conteúdo</a>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav" aria-label="Principal">
+        <a href="index.html" class="wordmark" aria-label="Flávio Barros, início">
+          <span class="wordmark__name">Flávio Barros</span>
+          <span class="wordmark__slogan">Patrimônio com propósito</span>
+        </a>
+        <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav__links">
+          <a href="index.html">Início</a>
+          <a href="sobre.html">Sobre</a>
+          <a href="atuacao.html">Atuação</a>
+          <a href="curadoria-vip.html">Curadoria VIP</a>
+          <a href="capi.html">Curadoria Capi</a>
+          <a href="selecao-prime.html">Seleção Prime</a>
+          <a href="selecao.html" aria-current="page">Acervo</a>
+          <a href="contato.html">Contato</a>
+          <a class="nav__cta" href="https://wa.me/5516991166681" target="_blank" rel="noopener noreferrer">Agendar conversa</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section" id="imovel-root">
+      <div class="container">
+        <p class="eyebrow"><a href="selecao.html">Acervo</a></p>
+        <div id="imovel-loading" class="reveal is-visible">Carregando imóvel…</div>
+        <div id="imovel-missing" class="vip-empty" hidden>
+          <p>Não encontrei este imóvel no acervo.</p>
+          <a class="btn btn--primary" href="selecao.html">Voltar ao Acervo</a>
+        </div>
+        <article id="imovel-card" class="imovel-detail" hidden></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="wordmark">
+            <span class="wordmark__name">Flávio Barros</span>
+            <span class="wordmark__slogan">Patrimônio com propósito</span>
+          </a>
+          <p>Curadoria imobiliária em Ribeirão Preto e região.</p>
+        </div>
+        <div class="footer__col">
+          <h4>Navegação</h4>
+          <a href="sobre.html">Sobre</a>
+          <a href="atuacao.html">Atuação</a>
+          <a href="curadoria-vip.html">Curadoria VIP</a>
+          <a href="capi.html">Curadoria Capi</a>
+          <a href="selecao-prime.html">Seleção Prime</a>
+          <a href="selecao.html">Acervo</a>
+          <a href="contato.html">Contato</a>
+        </div>
+        <div class="footer__col">
+          <h4>Contato</h4>
+          <a href="https://wa.me/5516991166681" target="_blank" rel="noopener noreferrer">WhatsApp (16) 99116-6681</a>
+          <a href="https://instagram.com/barros_flavio" target="_blank" rel="noopener noreferrer">Instagram @barros_flavio</a>
+          <p>Ribeirão Preto e região</p>
+          <p>CRECI 323468</p>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>Flávio Barros · CRECI 323468</span>
+        <span>Ribeirão Preto, SP</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="wa-sticky" href="https://wa.me/5516991166681" target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp">
+    <span class="wa-sticky__label">WhatsApp</span>
+  </a>
+  <script src="js/main.js"></script>
+  <script src="js/imovel.js"></script>
+</body>
+</html>

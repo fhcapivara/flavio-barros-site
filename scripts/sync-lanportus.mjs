@@ -85,7 +85,7 @@ function slim(p) {
     image: p.image || "",
     slug: p.slug || "",
     source: "lanportus",
-    detailUrl: `https://lanportus.com.br/imovel.html?ref=${encodeURIComponent(String(p.ref))}`,
+    detailUrl: `imovel.html?ref=${encodeURIComponent(String(p.ref))}`,
   };
 }
 

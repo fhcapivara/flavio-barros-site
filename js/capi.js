@@ -303,7 +303,7 @@
     const nome = visitorName || "Visitante";
     const title = p.title || "Imóvel";
     const place = placeLine(p);
-    const url = p.detailUrl || "";
+    const url = (p.detailUrl && p.detailUrl.indexOf("lanportus") === -1) ? p.detailUrl : ("https://fhcapivara.github.io/flavio-barros-site/imovel.html?ref=" + encodeURIComponent(p.ref || ""));
     const text =
       "Olá, Flávio. Falei com a Capi. Meu nome é " +
       nome +
@@ -349,7 +349,7 @@
       const img = p.image
         ? '<img src="' + escapeHtml(p.image) + '" alt="" loading="lazy" />'
         : "";
-      const detail = escapeHtml(p.detailUrl || "selecao.html");
+      const detail = escapeHtml((p.detailUrl && p.detailUrl.indexOf("lanportus") === -1) ? p.detailUrl : ("imovel.html?ref=" + encodeURIComponent(p.ref || "")));
       art.innerHTML =
         '<div class="card__media">' +
         img +
