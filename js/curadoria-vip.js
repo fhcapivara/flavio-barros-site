@@ -28,7 +28,7 @@
         ? "Olá Flávio, vi \"" +
           title +
           "\" na Curadoria VIP e gostaria de mais detalhes."
-        : "Olá Flávio, vi a Curadoria VIP no site e gostaria de conversar sobre o que busco.");
+        : "Olá, Flávio. Quero agendar o encontro presencial da Curadoria VIP.");
     return "https://wa.me/" + WA + "?text=" + encodeURIComponent(msg);
   }
 
@@ -38,7 +38,7 @@
       WA +
       "?text=" +
       encodeURIComponent(
-        "Olá Flávio, vi a Curadoria VIP no site e gostaria de conversar sobre o que busco."
+        "Olá, Flávio. Quero agendar o encontro presencial da Curadoria VIP."
       )
     );
   }

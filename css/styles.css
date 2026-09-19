@@ -679,7 +679,7 @@ em {
 .method__step p {
   font-size: var(--text-sm);
   color: var(--stone-dark);
-  max-width: 32ch;
+  max-width: 42ch;
 }
 
 /* ----- Partner (Com Ana) ----- */
