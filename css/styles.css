@@ -1659,3 +1659,14 @@ em {
   align-items: center;
 }
 .capi-card-actions { margin-top: 0.75rem; }
+
+.capi-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+.capi-card-wa {
+  font-size: 0.9rem;
+  padding: 0.65rem 1rem;
+}
