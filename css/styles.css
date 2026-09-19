@@ -1730,3 +1730,18 @@ em {
   color: var(--stone);
   margin: 0.25rem 0 0.75rem;
 }
+
+.prime-story__prose {
+  max-width: 42rem;
+}
+.prime-story__prose p {
+  color: var(--stone-dark);
+  margin-bottom: var(--space-5);
+  line-height: 1.65;
+}
+.prime-story__prose p:last-child {
+  margin-bottom: 0;
+}
+.page-hero__inner h1 {
+  max-width: 22ch;
+}
