@@ -25,63 +25,63 @@
   const steps = [
     {
       id: "ritmo",
-      text: "No dia a dia, você tá mais pra casa cheia e movimento, ou pra silêncio e recolhimento?",
+      text: "No seu dia a dia, você prefere um ambiente mais recolhido e silencioso, ou com mais movimento e convivência?",
       options: [
-        { label: "Casa cheia e movimento", value: "integracao" },
-        { label: "Silêncio e recolhimento", value: "privacidade" },
-        { label: "Um meio-termo", value: "meio" },
+        { label: "Mais recolhido e silencioso", value: "privacidade" },
+        { label: "Mais movimento e convivência", value: "integracao" },
+        { label: "Um equilíbrio entre os dois", value: "meio" },
       ],
     },
     {
       id: "chegada",
-      text: "Quando você chega do trabalho, prefere pisar no quintal ou jardim, ou subir de elevador e travar a porta?",
+      text: "Ao chegar em casa, faz mais sentido ter contato com área externa e jardim, ou a praticidade de um apartamento?",
       options: [
-        { label: "Quintal ou jardim", value: "casa" },
-        { label: "Elevador e porta", value: "apto" },
-        { label: "Ainda penso em construir", value: "terreno" },
+        { label: "Área externa e jardim", value: "casa" },
+        { label: "Praticidade de apartamento", value: "apto" },
+        { label: "Ainda considero construir", value: "terreno" },
       ],
     },
     {
       id: "objetivo",
-      text: "Isso é mais pra morar de verdade, pra renda, ou ainda misturando as duas ideias?",
+      text: "Neste momento, o foco é morar, investir, ou ainda avaliar as duas possibilidades?",
       options: [
-        { label: "Morar de verdade", value: "morar" },
-        { label: "Renda", value: "investir" },
-        { label: "Misturando as duas", value: "ambos" },
+        { label: "Morar", value: "morar" },
+        { label: "Investir", value: "investir" },
+        { label: "Avaliar as duas possibilidades", value: "ambos" },
       ],
     },
     {
       id: "regiao",
-      text: "Tem algum pedaço de Ribeirão (ou região) que já te puxa, ou tá em branco de propósito?",
-      options: [{ label: "Ainda estou aberto", value: "aberto" }],
+      text: "Há algum bairro ou região em Ribeirão Preto (ou arredores) que já desperta o seu interesse, ou prefere manter as opções em aberto?",
+      options: [{ label: "Prefiro manter as opções em aberto", value: "aberto" }],
       allowFree: true,
     },
     {
       id: "decisores",
-      text: "Quem divide essa decisão com você — alguém em casa, sócio, ou por enquanto é só você?",
+      text: "Além de você, alguém mais participa dessa decisão?",
       options: [
-        { label: "Alguém em casa", value: "casa" },
-        { label: "Sócio", value: "socio" },
-        { label: "Por enquanto só eu", value: "sozinho" },
+        { label: "Sim, alguém da família", value: "casa" },
+        { label: "Sim, um sócio", value: "socio" },
+        { label: "Por enquanto, apenas eu", value: "sozinho" },
       ],
     },
     {
       id: "prazo",
-      text: "Vocês estão com pressa de mudar, ou querem acertar sem correr?",
+      text: "Vocês desejam avançar com mais urgência, ou preferem escolher com calma?",
       options: [
-        { label: "Com pressa", value: "curto" },
-        { label: "Acertar sem correr", value: "medio" },
-        { label: "Ainda explorando", value: "explorando" },
+        { label: "Com mais urgência", value: "curto" },
+        { label: "Escolher com calma", value: "medio" },
+        { label: "Ainda estamos explorando", value: "explorando" },
       ],
     },
     {
       id: "rotina",
-      text: "Espaço pra visitas, home office, pets… o que não pode faltar na rotina?",
+      text: "Há algo indispensável na rotina — espaço para trabalho, visitas, animais — que eu deva considerar?",
       options: [
-        { label: "Visitas e convívio", value: "visitas" },
-        { label: "Home office", value: "office" },
-        { label: "Pets", value: "pets" },
-        { label: "Um pouco de tudo", value: "tudo" },
+        { label: "Espaço para visitas", value: "visitas" },
+        { label: "Espaço para trabalho", value: "office" },
+        { label: "Espaço para animais", value: "pets" },
+        { label: "Um pouco de cada", value: "tudo" },
       ],
     },
   ];
@@ -139,24 +139,24 @@
     clearChoices();
     bubble(
       "capi",
-      "Com o que você me contou, separei 3 opções que fazem sentido. Quer que eu mande no WhatsApp do Flávio?"
+      "Com base no que você compartilhou, separei três opções. Posso enviá-las ao WhatsApp do Flávio?"
     );
     const yes = document.createElement("button");
     yes.type = "button";
     yes.className = "capi-choice";
-    yes.textContent = "Sim, mostrar as 3";
+    yes.textContent = "Sim, mostrar as três";
     yes.addEventListener("click", showResults);
     const no = document.createElement("button");
     no.type = "button";
     no.className = "capi-choice";
-    no.textContent = "Quero ajustar algo";
+    no.textContent = "Prefiro ajustar uma resposta";
     no.addEventListener("click", () => {
       step = 0;
       Object.keys(answers).forEach((k) => delete answers[k]);
       thread.innerHTML = "";
       bubble(
         "capi",
-        "Oi, eu sou a Capi. Imagina o lugar onde você quer viver ou investir — me conta um pouco do seu ritmo que eu te mostro 3 caminhos."
+        "Olá, eu sou a Capi. Em poucas perguntas, consigo entender o ritmo que você busca e apresentar três caminhos alinhados a ele."
       );
       ask();
     });
@@ -246,7 +246,7 @@
   }
 
   function showResults() {
-    bubble("user", "Sim, mostrar as 3");
+    bubble("user", "Sim, mostrar as três");
     clearChoices();
     picked = selectThree();
     chat.hidden = true;
@@ -342,7 +342,7 @@
     thread.innerHTML = "";
     bubble(
       "capi",
-      "Oi, eu sou a Capi. Imagina o lugar onde você quer viver ou investir — me conta um pouco do seu ritmo que eu te mostro 3 caminhos."
+      "Olá, eu sou a Capi. Em poucas perguntas, consigo entender o ritmo que você busca e apresentar três caminhos alinhados a ele."
     );
     ask();
   }
