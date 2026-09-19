@@ -66,13 +66,21 @@
     if (p.garages) bits.push(p.garages + " vagas");
     if (p.area) bits.push(Math.round(p.area) + " m²");
 
-    var pageTitle = (p.title || "Imóvel") + " | Acervo · Flávio Barros";
+    var bairro = p.neighborhood || p.city || "Ribeirão Preto";
+    var pageTitle =
+      (p.title || "Imóvel") +
+      " | " +
+      bairro +
+      " · Acervo · Flávio Barros";
     var meta =
-      (tipo + (loc ? " em " + loc : "")) +
-      ". Curadoria de Flávio Barros em Ribeirão Preto e região.";
+      (tipo ? tipo + " · " : "") +
+      bairro +
+      ", Ribeirão Preto e região. Fale no WhatsApp com Flávio Barros.";
     if (els.title) els.title.textContent = pageTitle;
     if (els.desc) els.desc.setAttribute("content", meta);
     document.title = pageTitle;
+    var robots = document.getElementById("robots-meta");
+    if (robots) robots.setAttribute("content", "noindex,follow");
 
     var img = p.image
       ? '<figure class="imovel-detail__media"><img src="' +
