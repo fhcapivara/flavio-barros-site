@@ -1517,3 +1517,79 @@ em {
 .selecao-empty .btn {
   display: inline-flex;
 }
+
+/* ----- Curadoria VIP ----- */
+.section--vip {
+  padding-block-start: 0;
+}
+
+.vip-grid {
+  min-height: 0;
+}
+
+.vip-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.vip-card__media {
+  aspect-ratio: 16 / 10;
+  min-height: 160px;
+  overflow: hidden;
+  background: var(--off-white);
+}
+
+.vip-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s var(--ease);
+}
+
+.vip-card:hover .vip-card__media img {
+  transform: scale(1.03);
+}
+
+.vip-card__media--placeholder {
+  min-height: 160px;
+}
+
+.vip-card__body {
+  flex: 1;
+}
+
+.vip-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-5);
+}
+
+.vip-card__actions .btn {
+  flex: 1 1 auto;
+  text-align: center;
+  font-size: var(--text-sm);
+  padding: var(--space-3) var(--space-4);
+  min-height: 44px;
+}
+
+.vip-empty {
+  text-align: center;
+  padding: var(--space-10) var(--space-5);
+  border: 1px dashed var(--border-strong);
+  background: var(--surface);
+}
+
+.vip-empty p {
+  margin-inline: auto;
+  margin-bottom: var(--space-6);
+  color: var(--stone-dark);
+  max-width: 40ch;
+  font-size: var(--text-lg);
+}
+
+.vip-empty .btn {
+  display: inline-flex;
+}
