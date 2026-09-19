@@ -16,19 +16,24 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://flaviodebarros.com.br/destaques.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://flaviodebarros.com.br/curadoria-vip.html</loc>
     <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://flaviodebarros.com.br/capi.html</loc>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://flaviodebarros.com.br/selecao-prime.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://flaviodebarros.com.br/selecao.html</loc>
     <changefreq>daily</changefreq>
-    <priority>0.9</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://flaviodebarros.com.br/contato.html</loc>
@@ -36,8 +41,8 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://flaviodebarros.com.br/capi.html</loc>
+    <loc>https://flaviodebarros.com.br/destaques.html</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.4</priority>
   </url>
 </urlset>

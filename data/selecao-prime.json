@@ -1,0 +1,16 @@
+{
+  "attribution": "Seleção Prime · Flávio Barros (conteúdo próprio, distinto da Seleção Lanportus e da Curadoria VIP)",
+  "schema": {
+    "item": {
+      "id": "string — identificador estável único",
+      "title": "string — título do imóvel / peça",
+      "criterio": "string — por que entrou na seleção (sem preço)",
+      "videoUrl": "string opcional — URL do vídeo (YouTube, Vimeo, arquivo)",
+      "coverImage": "string opcional — URL ou path da capa",
+      "neighborhood": "string — bairro",
+      "city": "string — cidade",
+      "whatsappNote": "string opcional — trecho para pré-preencher a mensagem no WhatsApp"
+    }
+  },
+  "items": []
+}
