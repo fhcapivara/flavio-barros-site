@@ -44,6 +44,16 @@
       ],
     },
     {
+      id: "dormitorios",
+      text: "Para o dia a dia da casa, quantos dormitórios fazem sentido neste momento?",
+      options: [
+        { label: "Até 2 dormitórios", value: "2" },
+        { label: "3 dormitórios", value: "3" },
+        { label: "4 ou mais", value: "4" },
+        { label: "Ainda estou em aberto", value: "aberto" },
+      ],
+    },
+    {
       id: "objetivo",
       text: "Neste momento, o foco é morar, investir, ou ainda avaliar as duas possibilidades?",
       options: [
@@ -137,8 +147,20 @@
     ask();
   }
 
+  function shouldSkipStep(s) {
+    if (!s) return false;
+    if (s.id === "dormitorios" && answers.chegada && answers.chegada.value === "terreno") {
+      return true;
+    }
+    return false;
+  }
+
   function ask() {
     clearChoices();
+    while (step < steps.length && shouldSkipStep(steps[step])) {
+      answers[steps[step].id] = { value: "aberto", label: "Em aberto (terreno)" };
+      step += 1;
+    }
     if (step >= steps.length) {
       prepareResultsThenVisit();
       return;
@@ -215,11 +237,32 @@
     return null;
   }
 
+  function bedsPreference() {
+    const d = answers.dormitorios && answers.dormitorios.value;
+    if (d === "2" || d === "3" || d === "4") return d;
+    return "aberto";
+  }
+
   function bedsMin() {
+    const pref = bedsPreference();
+    if (pref === "3") return 3;
+    if (pref === "4") return 4;
+    if (pref === "2") return 0; // "até 2" uses upper bound, not min
     const r = answers.rotina && answers.rotina.value;
     if (r === "visitas" || r === "tudo") return 3;
     if (r === "office" || r === "pets") return 2;
     return 0;
+  }
+
+  function bedsMatch(p) {
+    if (p.type === "LAND") return true;
+    const beds = Number(p.beds) || 0;
+    const pref = bedsPreference();
+    if (pref === "aberto") return true;
+    if (pref === "2") return beds > 0 && beds <= 2;
+    if (pref === "3") return beds >= 3;
+    if (pref === "4") return beds >= 4;
+    return true;
   }
 
   function score(p) {
@@ -236,6 +279,7 @@
       const hay = ((p.neighborhood || "") + " " + (p.city || "") + " " + (p.title || "")).toLowerCase();
       if (hay.includes(q)) s += 4;
     }
+    if (p.type !== "LAND" && bedsMatch(p)) s += 4;
     const bm = bedsMin();
     if (p.type !== "LAND" && bm && (p.beds || 0) >= bm) s += 2;
     if (p.featured) s += 1;
@@ -260,10 +304,17 @@
       );
       if (regional.length >= 3) pool = regional;
     }
-    const bm = bedsMin();
-    if (bm) {
-      const withBeds = pool.filter((p) => p.type === "LAND" || (p.beds || 0) >= bm);
+    const pref = bedsPreference();
+    if (pref !== "aberto") {
+      const withBeds = pool.filter((p) => bedsMatch(p));
       if (withBeds.length >= 3) pool = withBeds;
+      else if (withBeds.length > 0) pool = withBeds.concat(pool.filter((p) => !withBeds.includes(p)));
+    } else {
+      const bm = bedsMin();
+      if (bm) {
+        const withBeds = pool.filter((p) => p.type === "LAND" || (p.beds || 0) >= bm);
+        if (withBeds.length >= 3) pool = withBeds;
+      }
     }
     pool.sort((a, b) => score(b) - score(a));
     const out = [];
