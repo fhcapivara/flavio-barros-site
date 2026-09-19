@@ -16,13 +16,13 @@
   const startBtn = document.getElementById("capi-start");
   const restartBtn = document.getElementById("capi-restart");
   const resultsLead = document.getElementById("capi-results-lead");
-
   const answers = {};
   let inventory = [];
   let step = 0;
   let picked = [];
-  let awaitingName = false;
+  let phase = "name"; // name | questions | visit | results
   let visitorName = "";
+  let visitSlot = null;
 
   const steps = [
     {
@@ -88,6 +88,13 @@
     },
   ];
 
+  const visitOptions = [
+    { label: "Manhã", value: "manhã" },
+    { label: "Tarde", value: "tarde" },
+    { label: "Noite", value: "noite" },
+    { label: "Prefiro combinar pelo WhatsApp", value: "combinar" },
+  ];
+
   function setSessionMode(on) {
     if (robots) robots.content = on ? "noindex,follow" : "index,follow";
     if (on) history.replaceState(null, "", "#conversa");
@@ -109,13 +116,34 @@
     freeInput.placeholder = "Se preferir, descreva em uma frase";
   }
 
+  function askName() {
+    phase = "name";
+    clearChoices();
+    bubble("capi", "Para começarmos com clareza, como posso te chamar?");
+    freeWrap.hidden = false;
+    freeInput.placeholder = "Como posso te chamar?";
+    freeInput.focus();
+  }
+
+  function submitName() {
+    const v = freeInput.value.trim();
+    if (!v) return;
+    visitorName = v;
+    answers.nome = { value: v, label: v };
+    bubble("user", v);
+    clearChoices();
+    phase = "questions";
+    step = 0;
+    ask();
+  }
+
   function ask() {
     clearChoices();
-    awaitingName = false;
     if (step >= steps.length) {
-      finishAsk();
+      prepareResultsThenVisit();
       return;
     }
+    phase = "questions";
     const s = steps[step];
     bubble("capi", s.text);
     s.options.forEach((opt) => {
@@ -139,27 +167,36 @@
     ask();
   }
 
-  function finishAsk() {
+  function prepareResultsThenVisit() {
+    picked = selectThree();
     clearChoices();
+    if (picked.length < 3) {
+      bubble(
+        "capi",
+        "Não achei 3 encaixes honestos. Ajuste uma resposta ou fale comigo."
+      );
+      showResults(false);
+      return;
+    }
     bubble(
       "capi",
-      "Com base no que você compartilhou, separei três opções. Para eu avisar o Flávio com clareza, como posso te chamar?"
+      "Com base no que você compartilhou, separei três opções. Qual o melhor horário para uma visita?"
     );
-    awaitingName = true;
-    freeWrap.hidden = false;
-    freeInput.placeholder = "Como posso te chamar?";
-    freeInput.focus();
-  }
-
-  function submitName() {
-    const v = freeInput.value.trim();
-    if (!v) return;
-    visitorName = v;
-    answers.nome = { value: v, label: v };
-    bubble("user", v);
-    awaitingName = false;
-    clearChoices();
-    showResults();
+    phase = "visit";
+    visitOptions.forEach((opt) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "capi-choice";
+      b.textContent = opt.label;
+      b.addEventListener("click", () => {
+        visitSlot = opt;
+        answers.visita = { value: opt.value, label: opt.label };
+        bubble("user", opt.label);
+        clearChoices();
+        showResults(true);
+      });
+      choicesEl.appendChild(b);
+    });
   }
 
   function typeFilter() {
@@ -256,6 +293,12 @@
     );
   }
 
+  function horarioLabel() {
+    if (!visitSlot) return "combinar";
+    if (visitSlot.value === "combinar") return "combinar";
+    return visitSlot.value;
+  }
+
   function waForProperty(p) {
     const nome = visitorName || "Visitante";
     const title = p.title || "Imóvel";
@@ -264,24 +307,26 @@
     const text =
       "Olá, Flávio. Falei com a Capi. Meu nome é " +
       nome +
-      ". Tenho interesse nesta opção: " +
+      ". Prefiro visitar este imóvel: " +
       title +
       " — " +
       place +
       ". Link: " +
       url +
-      ". Pode me contar mais?";
+      ". Melhor horário: " +
+      horarioLabel() +
+      ".";
     return waHref(text);
   }
 
-  function showResults() {
-    picked = selectThree();
+  function showResults(ok) {
+    phase = "results";
     chat.hidden = true;
     results.hidden = false;
     cards.innerHTML = "";
     if (waBtn) waBtn.hidden = true;
 
-    if (picked.length < 3) {
+    if (!ok || picked.length < 3) {
       resultsLead.textContent =
         "Não achei 3 encaixes honestos. Ajuste uma resposta ou fale comigo.";
       if (waBtn) {
@@ -297,7 +342,7 @@
     }
 
     resultsLead.textContent =
-      "Escolha uma opção. Ao clicar, eu aviso o Flávio com o seu nome e o imóvel.";
+      "Escolha o imóvel que prefere visitar. Eu aviso o Flávio com o seu nome e o horário.";
     picked.forEach((p) => {
       const art = document.createElement("article");
       art.className = "card reveal";
@@ -317,7 +362,7 @@
         '</span></p><p class="capi-card-actions">' +
         '<a class="btn btn--primary capi-card-wa" href="' +
         escapeHtml(waForProperty(p)) +
-        '" target="_blank" rel="noopener noreferrer">Quero saber mais sobre este</a> ' +
+        '" target="_blank" rel="noopener noreferrer">Prefiro visitar este imóvel</a> ' +
         '<a class="text-link" href="' +
         detail +
         '" target="_blank" rel="noopener noreferrer">Ver detalhes</a></p></div>';
@@ -339,23 +384,25 @@
     results.hidden = true;
     setSessionMode(true);
     step = 0;
-    awaitingName = false;
+    phase = "name";
     visitorName = "";
+    visitSlot = null;
+    picked = [];
     Object.keys(answers).forEach((k) => delete answers[k]);
     thread.innerHTML = "";
     if (waBtn) {
       waBtn.hidden = true;
-      waBtn.textContent = "Enviar no WhatsApp";
+      waBtn.textContent = "Falar com o Flávio";
     }
     bubble(
       "capi",
       "Olá, eu sou a Capi. Em poucas perguntas, consigo entender o ritmo que você busca e apresentar três caminhos alinhados a ele."
     );
-    ask();
+    askName();
   }
 
   freeSend.addEventListener("click", () => {
-    if (awaitingName) {
+    if (phase === "name") {
       submitName();
       return;
     }
