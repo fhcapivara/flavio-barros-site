@@ -170,6 +170,14 @@
   function prepareResultsThenVisit() {
     picked = selectThree();
     clearChoices();
+    if (!inventory.length) {
+      bubble(
+        "capi",
+        "Neste momento não consegui carregar o acervo. Podemos falar direto no WhatsApp do Flávio, ou você tenta de novo em instantes."
+      );
+      showResults(false);
+      return;
+    }
     if (picked.length < 3) {
       bubble(
         "capi",
@@ -345,7 +353,7 @@
       "Escolha o imóvel que prefere visitar. Eu aviso o Flávio com o seu nome e o horário.";
     picked.forEach((p) => {
       const art = document.createElement("article");
-      art.className = "card reveal";
+      art.className = "card";
       const img = p.image
         ? '<img src="' + escapeHtml(p.image) + '" alt="" loading="lazy" />'
         : "";
@@ -357,15 +365,13 @@
         escapeHtml(p.title || "Imóvel") +
         '</h3><p class="card__text">' +
         escapeHtml(criterioLine(p)) +
-        '</p><p class="card__meta"><span>' +
-        money(p.sale) +
-        '</span></p><p class="capi-card-actions">' +
+        '</p><p class="capi-card-actions">' +
         '<a class="btn btn--primary capi-card-wa" href="' +
         escapeHtml(waForProperty(p)) +
         '" target="_blank" rel="noopener noreferrer">Prefiro visitar este imóvel</a> ' +
         '<a class="text-link" href="' +
         detail +
-        '" target="_blank" rel="noopener noreferrer">Ver detalhes</a></p></div>';
+        '">Ver detalhes</a></p></div>';
       cards.appendChild(art);
     });
   }
@@ -418,13 +424,19 @@
   startBtn.addEventListener("click", start);
   restartBtn.addEventListener("click", start);
 
-  fetch("data/selecao.json")
-    .then((r) => r.json())
+  let inventoryReady = false;
+  fetch("data/selecao.json", { cache: "no-cache" })
+    .then((r) => {
+      if (!r.ok) throw new Error("selecao " + r.status);
+      return r.json();
+    })
     .then((data) => {
       inventory = data.items || data || [];
+      inventoryReady = true;
     })
     .catch(() => {
       inventory = [];
+      inventoryReady = true;
     });
 
   if (location.hash === "#conversa") start();
