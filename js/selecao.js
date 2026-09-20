@@ -18,6 +18,50 @@
 
   var RESIDENTIAL = { HOUSE: 1, APARTMENT: 1, TWO_STORY_HOUSE: 1 };
   var COMMERCIAL = { ROOM: 1, HALL: 1, BUILDING: 1, OUTHOUSE: 1 };
+  var EXCLUDE_REFS = {};
+
+  function loadExcludeRefs() {
+    return fetch("data/acervo-exclude.json", { cache: "no-store" })
+      .then(function (r) {
+        if (!r.ok) return null;
+        return r.json();
+      })
+      .then(function (data) {
+        EXCLUDE_REFS = {};
+        if (!data || !data.refs) return;
+        (data.refs || []).forEach(function (ref) {
+          EXCLUDE_REFS[String(ref)] = 1;
+        });
+      })
+      .catch(function () {});
+  }
+
+  function isCommercialType(p) {
+    return !!COMMERCIAL[p.type];
+  }
+
+  function isCommercialLand(p) {
+    if (p.type !== "LAND") return false;
+    var hay = ((p.title || "") + " " + (p.neighborhood || "") + " " + (p.tags || []).join(" ")).toLowerCase();
+    return /comerci|industri|galp|barrac|lote comercial|terreno comercial/.test(hay);
+  }
+
+  function isCommercialListing(p) {
+    return isCommercialType(p) || isCommercialLand(p);
+  }
+
+  function wantsCommercial() {
+    if (state.chip === "comercial") return true;
+    if (COMMERCIAL[state.tipo]) return true;
+    if (state.q && /comerci|sala|sal[aã]o|galp|ponto comercial|lote comercial/.test(normalize(state.q))) return true;
+    return false;
+  }
+
+  function isPresentationOk(p) {
+    if (EXCLUDE_REFS[String(p.ref)]) return false;
+    return true;
+  }
+
 
   var state = {
     items: [],
@@ -164,12 +208,18 @@
   function matches(p) {
     if (state.tipo && p.type !== state.tipo) return false;
 
+    // Comerciais fora do grid padrão — só com chip/tipo/busca comercial.
+    if (isCommercialListing(p) && !wantsCommercial()) return false;
+
+    // Capa fraca / inacabada / suja (lista curada).
+    if (!isPresentationOk(p) && !wantsCommercial()) return false;
+
     if (state.chip === "alto") {
       if (!RESIDENTIAL[p.type]) return false;
     } else if (state.chip === "terrenos") {
-      if (p.type !== "LAND") return false;
+      if (p.type !== "LAND" || isCommercialLand(p)) return false;
     } else if (state.chip === "comercial") {
-      if (!COMMERCIAL[p.type]) return false;
+      if (!isCommercialListing(p)) return false;
     } else if (state.chip === "disponiveis") {
       if (!(Number(p.sale) > 0)) return false;
     }
@@ -458,8 +508,9 @@
     render();
   }
 
-  loadLocal()
-    .then(function (data) {
+  Promise.all([loadLocal(), loadExcludeRefs()])
+    .then(function (pair) {
+      var data = pair[0];
       var items = data && data.items ? data.items : [];
       boot(items);
       tryCatalogRefresh()
