@@ -1,0 +1,56 @@
+[
+  {
+    "key": "casa-programa-claro",
+    "ref": "1647",
+    "title": "Casa Sobrado - Condomínio Manacás",
+    "type": "HOUSE",
+    "neighborhood": "Jardim Botânico",
+    "file": "images/destaques/casa-programa-claro.jpg",
+    "alt": "Casa Sobrado - Condomínio Manacás — Jardim Botânico"
+  },
+  {
+    "key": "sala-demanda-estavel",
+    "ref": "3529",
+    "title": "Sala comercial à venda - New Office Ribeirão Preto",
+    "type": "ROOM",
+    "neighborhood": "Nova Ribeirânia",
+    "file": "images/destaques/sala-demanda-estavel.jpg",
+    "alt": "Sala comercial à venda - New Office Ribeirão Preto — Nova Ribeirânia"
+  },
+  {
+    "key": "lugar-vocacao",
+    "ref": "3615",
+    "title": "Terreno em condomínio à venda 1.026m² - Jardim Olhos D´ Água",
+    "type": "LAND",
+    "neighborhood": "Jardim Olhos D'Água II",
+    "file": "images/destaques/lugar-vocacao.jpg",
+    "alt": "Terreno em condomínio à venda 1.026m² - Jardim Olhos D´ Água — Jardim Olhos D'Água II"
+  },
+  {
+    "key": "apto-potencial",
+    "ref": "2916",
+    "title": "Apartamento - Edifício Cidade de Montreal",
+    "type": "APARTMENT",
+    "neighborhood": "Jardim Ilhas do Sul",
+    "file": "images/destaques/apto-potencial.jpg",
+    "alt": "Apartamento - Edifício Cidade de Montreal — Jardim Ilhas do Sul"
+  },
+  {
+    "key": "residencia-quietude",
+    "ref": "3418",
+    "title": "Casa 5 quartos a venda, 715m² - Condominio Chacara Hípica - Ribeirão Preto sp",
+    "type": "HOUSE",
+    "neighborhood": "Parque Sao Sebastiao",
+    "file": "images/destaques/residencia-quietude.jpg",
+    "alt": "Casa 5 quartos a venda, 715m² - Condominio Chacara Hípica - Ribeirão Preto sp — Parque Sao Sebastiao"
+  },
+  {
+    "key": "flexibilidade-ocupacao",
+    "ref": "2324",
+    "title": "Casa Comercial - Jardim Canadá",
+    "type": "HOUSE",
+    "neighborhood": "Jardim Canadá",
+    "file": "images/destaques/flexibilidade-ocupacao.jpg",
+    "alt": "Casa Comercial - Jardim Canadá — Jardim Canadá"
+  }
+]
