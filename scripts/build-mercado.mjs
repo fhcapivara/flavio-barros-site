@@ -33,12 +33,11 @@ const TEMPLATE_PAGE = join(ROOT, "atuacao.html");
 const WHATSAPP = "5516991166681";
 const AUTHOR = "Flávio Barros";
 const INDEX_THRESHOLD = 5;
-const AUTHOR_ROLE = "Consultor imobiliário em Ribeirão Preto, CRECI 323468";
 const AUTHOR_ALT = "Flávio Barros, consultor imobiliário em Ribeirão Preto";
 const AUTHOR_URL = "/sobre.html";
 // Retrato do autor. Nomes novos a cada troca de foto (cache do navegador).
 const PORTRAIT = { src: "/images/mercado/flavio-leitura-2026.webp", width: 473, height: 800 };
-const AVATAR = { src: "/images/mercado/flavio-avatar-2026.webp", width: 200, height: 200 };
+const SIGNATURE = { src: "/images/mercado/flavio-assinatura-2026.webp", width: 440, height: 550 };
 // Enquanto o corpo contiver este marcador, o texto é tratado como rascunho.
 const PLACEHOLDER = "[LEITURA DO FLÁVIO]";
 
@@ -391,7 +390,7 @@ ${list}${back ? `
 }
 
 function postBody(p) {
-  const waText = `Olá, Flávio. Li o seu texto "${p.titulo}" no site e gostaria de conversar.`;
+  const waText = `Olá, Flávio. Li o artigo "${p.titulo}" no seu site e gostaria de conversar.`;
   let fonte = "";
   if (p.fonteNome || p.fonteUrl) {
     const label = esc(p.fonteNome || p.fonteUrl.replace(/^https?:\/\/(www\.)?/i, "").replace(/\/$/, ""));
@@ -404,16 +403,7 @@ function postBody(p) {
             <p class="eyebrow"><a class="mercado-post__crumb" href="/mercado/">Leitura de mercado</a> <span aria-hidden="true">·</span> <a class="mercado-post__crumb" href="/mercado/categoria/${p.catSlug}.html">${esc(p.categoria)}</a></p>
             <h1>${esc(p.titulo)}</h1>
             <p class="lead">${esc(p.resumo)}</p>
-            <div class="mercado-author">
-              <a class="mercado-author__link" href="${AUTHOR_URL}">
-                <img class="mercado-author__avatar" src="${AVATAR.src}" width="56" height="56" alt="${esc(AUTHOR_ALT)}" loading="lazy" decoding="async" />
-                <span class="mercado-author__id">
-                  <span class="mercado-author__name">${AUTHOR}</span>
-                  <span class="mercado-author__role">${AUTHOR_ROLE}</span>
-                </span>
-              </a>
-              <p class="mercado-author__date">Publicado em <time datetime="${p.data}">${formatDate(p.data)}</time></p>
-            </div>
+            <p class="mercado-byline">Por <a class="mercado-byline__author" href="${AUTHOR_URL}">${AUTHOR}</a> <span aria-hidden="true">·</span> <time datetime="${p.data}">${formatDate(p.data)}</time></p>
           </div>
         </div>
       </header>
@@ -427,24 +417,23 @@ ${p.imagem ? `
           <div class="mercado-prose">
 ${p.html}
           </div>${fonte}
+          <aside class="mercado-signature" aria-label="Sobre o autor">
+            <img class="mercado-signature__photo" src="${SIGNATURE.src}" width="${SIGNATURE.width}" height="${SIGNATURE.height}" alt="${esc(AUTHOR_ALT)}" loading="lazy" decoding="async" />
+            <div class="mercado-signature__body">
+              <p class="mercado-signature__name">${AUTHOR}</p>
+              <p class="mercado-signature__role">Consultor imobiliário em Ribeirão Preto e região</p>
+              <p class="mercado-signature__creci">CRECI 323468</p>
+              <p class="mercado-signature__note">Acompanho quem decide sobre patrimônio, do diagnóstico ao próximo passo.</p>
+              <p class="mercado-signature__actions">
+                <a class="btn btn--primary" href="${esc(waLink(waText))}" target="_blank" rel="noopener">Conversar no WhatsApp</a>
+                <a class="mercado-signature__link" href="${AUTHOR_URL}">Conheça minha trajetória</a>
+              </p>
+            </div>
+          </aside>
+          <p class="mercado-back"><a href="/mercado/">← Voltar para Leitura de mercado</a></p>
         </div>
       </div>
-    </article>
-
-    <section class="section section--alt mercado-cta">
-      <div class="container">
-        <div class="mercado-cta__inner reveal">
-          <p class="eyebrow">Conversa</p>
-          <h2>Quer entender como isso afeta a sua decisão?</h2>
-          <p>Cada patrimônio tem um contexto. Se este texto tocou em algo que você está avaliando, podemos conversar com calma.</p>
-          <p class="mercado-cta__actions">
-            <a class="btn btn--primary" href="${esc(waLink(waText))}" target="_blank" rel="noopener noreferrer">Conversar no WhatsApp</a>
-            <a class="btn btn--ghost" href="/mercado/">Ver outros textos</a>
-          </p>
-        </div>
-        <p class="mercado-back"><a href="/mercado/">← Voltar para Leitura de mercado</a></p>
-      </div>
-    </section>`;
+    </article>`;
 }
 
 function postJsonLd(p) {
@@ -457,7 +446,7 @@ function postJsonLd(p) {
     dateModified: p.data,
     inLanguage: "pt-BR",
     articleSection: p.categoria,
-    author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${AVATAR.src}`, jobTitle: "Consultor imobiliário" },
+    author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${SIGNATURE.src}`, jobTitle: "Consultor imobiliário" },
     publisher: { "@type": "Person", name: AUTHOR, url: `${SITE}/` },
     mainEntityOfPage: { "@type": "WebPage", "@id": p.url },
     url: p.url,
