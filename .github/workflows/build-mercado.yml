@@ -1,0 +1,74 @@
+name: Leitura de mercado
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "mercado/posts/**"
+      - "scripts/build-mercado.mjs"
+      - "atuacao.html"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: build-mercado
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Gerar páginas
+        id: build
+        run: node scripts/build-mercado.mjs
+
+      - name: Publicar alterações
+        id: publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A mercado sitemap.xml
+          if git diff --cached --quiet; then
+            echo "Nada mudou."
+            exit 0
+          fi
+          git commit -m "Atualiza Leitura de mercado"
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then echo "pushed=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+            echo "O main mudou durante o build. Sincronizando e gerando de novo ($i)..."
+            git fetch origin main
+            git reset --hard origin/main
+            node scripts/build-mercado.mjs
+            git add -A mercado sitemap.xml
+            git diff --cached --quiet && exit 0
+            git commit -m "Atualiza Leitura de mercado"
+          done
+          exit 1
+
+      # Garantia: pede ao GitHub Pages um novo build do main (modo "deploy from branch"),
+      # caso o push feito pelo bot não dispare o build sozinho.
+      - name: Pedir build do GitHub Pages
+        if: steps.publish.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "::warning::Não foi possível pedir o build do Pages; o push do bot normalmente já o dispara."
+
+      - name: Avisar sobre textos com problema
+        if: steps.build.outputs.problems != ''
+        run: |
+          echo "::error::${{ steps.build.outputs.problems }} texto(s) não foram publicados por erro no preenchimento. Veja o resumo desta execução."
+          exit 1
