@@ -21,13 +21,13 @@ Para compreender o impacto dessa mudança na decisão patrimonial, é fundamenta
 
 Esse movimento macroeconômico gera o efeito de custo de oportunidade. Na prática, trata-se da comparação contínua entre a remuneração de manter recursos aplicados em títulos de dívida e o potencial de conservação de valor gerado por ativos tangíveis. Em economias com histórico inflacionário, a renda fixa remunera o tempo, mas não garante a reposição física da riqueza no longo prazo, ao passo que a posse de imóveis tende a acompanhar o custo da construção e a escassez do solo.
 
-Em ciclos anteriores, parte dos compradores se antecipou aos cortes de juros, sem esperar que a taxa chegasse ao ponto mais baixo. Para quem decide com calma, o ponto central não é acertar o momento exato, mas saber com clareza o que se busca quando surge a opção certa.
+Em ciclos anteriores, parte dos compradores se antecipou aos cortes de juros e começou a avaliar imóveis ainda nos primeiros sinais de flexibilização. Para quem decide com calma, isso significa que acompanhar o ciclo desde o início permite comparar opções com mais tempo e critério.
 
 No contexto específico de Ribeirão Preto, esse mecanismo ganha relevância adicional devido à força motriz do agronegócio e ao polo regional de saúde e serviços. A cidade possui eixos urbanos consolidados, sobretudo em condomínios horizontais fechados e loteamentos estruturados na Zona Sul, cuja oferta de terrenos é fisicamente restrita. A liquidez regional, muitas vezes alimentada pelos resultados da safra e pela atividade empresarial, tende a migrar para esses ativos como instrumento de blindagem familiar e consolidação intergeracional.
 
 Decidir bem diante desse novo patamar de juros exige planejamento e visão de longo prazo. O objetivo de quem possui patrimônio consolidado não é especular com oscilações conjunturais, mas posicionar o capital em ativos duráveis, juridicamente seguros e bem localizados, capazes de gerar utilidade e proteger as próximas gerações.
 
-Para analisar com calma o momento dos juros e as opções de alocação patrimonial mais adequadas para a sua família em Ribeirão Preto, convido você para conversarmos pelo WhatsApp.
+Para analisar detalhadamente o momento dos juros e as opções de alocação patrimonial mais adequadas para a sua família em Ribeirão Preto, convido você para conversarmos pelo WhatsApp.
 
 ## Fontes
 
