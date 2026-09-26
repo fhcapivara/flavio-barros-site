@@ -392,7 +392,7 @@
     const nome = visitorName || "Visitante";
     const title = p.title || "Imóvel";
     const place = placeLine(p);
-    const url = (p.detailUrl && p.detailUrl.indexOf("lanportus") === -1) ? p.detailUrl : ("https://fhcapivara.github.io/flavio-barros-site/imovel.html?ref=" + encodeURIComponent(p.ref || ""));
+    const url = (p.detailUrl && p.detailUrl.indexOf("lanportus") === -1) ? p.detailUrl : ("https://flaviodebarros.com.br/imovel.html?ref=" + encodeURIComponent(p.ref || ""));
     const text =
       "Olá, Flávio. Falei com a Capi. Meu nome é " +
       nome +
