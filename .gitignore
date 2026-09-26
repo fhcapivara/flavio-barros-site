@@ -4,3 +4,6 @@ benchmark/
 preview/
 *.md
 !README.md
+
+# Leitura de mercado: textos em Markdown devem ir para o repositório
+!mercado/**/*.md
