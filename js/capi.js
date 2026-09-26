@@ -27,6 +27,7 @@
   const steps = [
     {
       id: "ritmo",
+      short: "Ambiente",
       text: "No seu dia a dia, você prefere um ambiente mais recolhido e silencioso, ou com mais movimento e convivência?",
       options: [
         { label: "Mais recolhido e silencioso", value: "privacidade" },
@@ -36,6 +37,7 @@
     },
     {
       id: "chegada",
+      short: "Tipo de imóvel",
       text: "O que faz mais sentido neste momento?",
       options: [
         { label: "Morar com área externa e jardim", value: "casa" },
@@ -47,6 +49,7 @@
     },
     {
       id: "dormitorios",
+      short: "Dormitórios",
       text: "Para o dia a dia da casa, quantos dormitórios fazem sentido neste momento?",
       options: [
         { label: "Até 2 dormitórios", value: "2" },
@@ -57,6 +60,7 @@
     },
     {
       id: "objetivo",
+      short: "Objetivo",
       text: "Neste momento, o foco é morar, investir, ou ainda avaliar as duas possibilidades?",
       options: [
         { label: "Morar", value: "morar" },
@@ -66,12 +70,14 @@
     },
     {
       id: "regiao",
+      short: "Região",
       text: "Há algum bairro ou região em Ribeirão Preto (ou arredores) que já desperta o seu interesse, ou prefere manter as opções em aberto?",
       options: [{ label: "Prefiro manter as opções em aberto", value: "aberto" }],
       allowFree: true,
     },
     {
       id: "decisores",
+      short: "Quem decide",
       text: "Além de você, alguém mais participa dessa decisão?",
       options: [
         { label: "Sim, alguém da família", value: "casa" },
@@ -81,6 +87,7 @@
     },
     {
       id: "prazo",
+      short: "Prazo",
       text: "Vocês desejam avançar com mais urgência, ou preferem escolher com calma?",
       options: [
         { label: "Com mais urgência", value: "curto" },
@@ -90,6 +97,7 @@
     },
     {
       id: "rotina",
+      short: "Rotina",
       text: "Há algo indispensável na rotina — espaço para trabalho, visitas, animais — que eu deva considerar?",
       options: [
         { label: "Espaço para visitas", value: "visitas" },
@@ -161,7 +169,7 @@
   function ask() {
     clearChoices();
     while (step < steps.length && shouldSkipStep(steps[step])) {
-      answers[steps[step].id] = { value: "aberto", label: "Em aberto" };
+      answers[steps[step].id] = { value: "aberto", label: "Em aberto", skipped: true };
       step += 1;
     }
     if (step >= steps.length) {
@@ -388,24 +396,43 @@
     return visitSlot.value;
   }
 
+  function answersBlock() {
+    const lines = [];
+    steps.forEach((st) => {
+      const a = answers[st.id];
+      if (!a || a.skipped) return;
+      lines.push("\u2022 " + st.short + ": " + a.label);
+    });
+    return lines.length ? "Minhas respostas:\n" + lines.join("\n") : "";
+  }
+
+  function intro() {
+    return "Olá, Flávio." + (visitorName ? " Aqui é " + visitorName + "." : "") + " Fiz a Curadoria Capi no seu site.";
+  }
+
+  function visitLabel() {
+    if (!visitSlot || visitSlot.value === "combinar") return "a combinar pelo WhatsApp";
+    return visitSlot.label;
+  }
+
   function waForProperty(p) {
-    const nome = visitorName || "Visitante";
     const title = p.title || "Imóvel";
-    const place = placeLine(p);
-    const url = (p.detailUrl && p.detailUrl.indexOf("lanportus") === -1) ? p.detailUrl : ("https://flaviodebarros.com.br/imovel.html?ref=" + encodeURIComponent(p.ref || ""));
-    const text =
-      "Olá, Flávio. Falei com a Capi. Meu nome é " +
-      nome +
-      ". Prefiro visitar este imóvel: " +
-      title +
-      " — " +
-      place +
-      ". Link: " +
-      url +
-      ". Melhor horário: " +
-      horarioLabel() +
-      ".";
-    return waHref(text);
+    const parts = [intro()];
+    const block = answersBlock();
+    if (block) parts.push(block);
+    parts.push(
+      "Imóvel que escolhi: " + title + (p.ref ? " (ref. " + p.ref + ")" : "") +
+      "\nPrefiro visitar: " + visitLabel()
+    );
+    return waHref(parts.join("\n\n"));
+  }
+
+  function waFallback() {
+    const parts = [intro()];
+    const block = answersBlock();
+    if (block) parts.push(block);
+    parts.push("Ainda não fechamos três opções. Podemos conversar?");
+    return waHref(parts.join("\n\n"));
   }
 
   function showResults(ok) {
@@ -421,11 +448,7 @@
       if (waBtn) {
         waBtn.hidden = false;
         waBtn.textContent = "Falar com o Flávio";
-        waBtn.href = waHref(
-          "Olá, Flávio. Falei com a Capi" +
-            (visitorName ? ". Meu nome é " + visitorName : "") +
-            " e ainda não fechamos três opções. Podemos conversar?"
-        );
+        waBtn.href = waFallback();
       }
       return;
     }
@@ -438,11 +461,7 @@
       if (waBtn) {
         waBtn.hidden = false;
         waBtn.textContent = "Falar com o Flávio";
-        waBtn.href = waHref(
-          "Olá, Flávio. Falei com a Capi" +
-            (visitorName ? ". Meu nome é " + visitorName : "") +
-            " e ainda não fechamos três opções. Podemos conversar?"
-        );
+        waBtn.href = waFallback();
       }
       return;
     }

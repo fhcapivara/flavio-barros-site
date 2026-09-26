@@ -1888,3 +1888,5 @@ em {
   object-fit: cover;
   display: block;
 }
+
+.prime-wa-lead { margin-top: var(--space-5); max-width: 34rem; }
