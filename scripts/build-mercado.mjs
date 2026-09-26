@@ -38,14 +38,14 @@ const PLACEHOLDER = "[LEITURA DO FLÁVIO]";
 
 const CATEGORIES = [
   "Ribeirão Preto e região",
-  "Crédito e juros",
+  "Patrimônio, juros e tributos",
   "Investir e comercial",
   "Terreno e projeto",
   "Bairros e condomínios",
 ];
 const CATEGORY_TOPICS = {
   "Ribeirão Preto e região": "o mercado imobiliário de Ribeirão Preto e região",
-  "Crédito e juros": "crédito imobiliário, financiamento e juros",
+  "Patrimônio, juros e tributos": "patrimônio, sucessão, juros e tributação de imóveis",
   "Investir e comercial": "investimento imobiliário e imóveis comerciais",
   "Terreno e projeto": "terrenos, construção e projeto",
   "Bairros e condomínios": "bairros e condomínios",
@@ -280,6 +280,8 @@ function readPosts() {
   const posts = [];
   const seen = new Map();
   const catBySlug = new Map(CATEGORIES.map((c) => [slugify(c), c]));
+  // Nome antigo continua aceito.
+  catBySlug.set(slugify("Crédito e juros"), "Patrimônio, juros e tributos");
   for (const file of files) {
     const fm = parseFrontMatter(readFileSync(join(POSTS_DIR, file), "utf8"));
     if (!fm) { problem(file, "o arquivo precisa começar com o bloco entre linhas --- (veja o _modelo.md)."); continue; }

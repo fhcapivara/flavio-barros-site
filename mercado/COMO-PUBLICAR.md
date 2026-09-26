@@ -48,7 +48,7 @@ Use **negrito** para destacar uma ideia e [um link](https://www.exemplo.com.br) 
 - **titulo**: o título do texto.
 - **categoria**: copie exatamente uma destas opções:
   - Ribeirão Preto e região
-  - Crédito e juros
+  - Patrimônio, juros e tributos
   - Investir e comercial
   - Terreno e projeto
   - Bairros e condomínios
