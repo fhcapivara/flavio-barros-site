@@ -33,6 +33,12 @@ const TEMPLATE_PAGE = join(ROOT, "atuacao.html");
 const WHATSAPP = "5516991166681";
 const AUTHOR = "Flávio Barros";
 const INDEX_THRESHOLD = 5;
+const AUTHOR_ROLE = "Consultor imobiliário em Ribeirão Preto, CRECI 323468";
+const AUTHOR_ALT = "Flávio Barros, consultor imobiliário em Ribeirão Preto";
+const AUTHOR_URL = "/sobre.html";
+// Retrato do autor. Nomes novos a cada troca de foto (cache do navegador).
+const PORTRAIT = { src: "/images/mercado/flavio-leitura-2026.webp", width: 473, height: 800 };
+const AVATAR = { src: "/images/mercado/flavio-avatar-2026.webp", width: 200, height: 200 };
 // Enquanto o corpo contiver este marcador, o texto é tratado como rascunho.
 const PLACEHOLDER = "[LEITURA DO FLÁVIO]";
 
@@ -344,7 +350,7 @@ function filters(cats, active) {
           </nav>`;
 }
 
-function listingBody({ eyebrow, h1, lead, cats, active, posts, back }) {
+function listingBody({ eyebrow, h1, lead, cats, active, posts, back, portrait }) {
   const list = posts.length
     ? `        <div class="mercado-list">
 ${posts.map(card).join("\n")}
@@ -355,13 +361,23 @@ ${posts.map(card).join("\n")}
           <p>Aqui vou reunir leituras curtas sobre preços, crédito, bairros e oportunidades em Ribeirão Preto e região. Enquanto isso, se quiser conversar sobre um imóvel ou sobre o momento do mercado, estou à disposição.</p>
           <p class="mercado-empty__cta"><a class="btn btn--primary" href="https://wa.me/${WHATSAPP}" target="_blank" rel="noopener noreferrer">Conversar no WhatsApp</a></p>
         </div>`;
-  return `    <section class="page-hero mercado-hero">
-      <div class="container">
-        <div class="page-hero__inner reveal">
+  const intro = `<div class="page-hero__inner reveal">
           <p class="eyebrow">${eyebrow}</p>
           <h1>${h1}</h1>
           <p class="lead">${lead}</p>
-        </div>
+        </div>`;
+  const heroTop = portrait
+    ? `        <div class="mercado-hero__grid">
+        ${intro}
+        <figure class="mercado-hero__portrait reveal">
+          <img src="${PORTRAIT.src}" width="${PORTRAIT.width}" height="${PORTRAIT.height}" alt="${esc(AUTHOR_ALT)}" loading="eager" fetchpriority="high" decoding="async" />
+          <figcaption>${AUTHOR} <span aria-hidden="true">·</span> CRECI 323468</figcaption>
+        </figure>
+        </div>`
+    : `        ${intro}`;
+  return `    <section class="page-hero mercado-hero${portrait ? " mercado-hero--portrait" : ""}">
+      <div class="container">
+${heroTop}
 ${filters(cats, active)}
       </div>
     </section>
@@ -388,7 +404,16 @@ function postBody(p) {
             <p class="eyebrow"><a class="mercado-post__crumb" href="/mercado/">Leitura de mercado</a> <span aria-hidden="true">·</span> <a class="mercado-post__crumb" href="/mercado/categoria/${p.catSlug}.html">${esc(p.categoria)}</a></p>
             <h1>${esc(p.titulo)}</h1>
             <p class="lead">${esc(p.resumo)}</p>
-            <p class="mercado-byline">Por <span class="mercado-byline__author">${AUTHOR}</span> <span aria-hidden="true">·</span> <time datetime="${p.data}">${formatDate(p.data)}</time></p>
+            <div class="mercado-author">
+              <a class="mercado-author__link" href="${AUTHOR_URL}">
+                <img class="mercado-author__avatar" src="${AVATAR.src}" width="56" height="56" alt="${esc(AUTHOR_ALT)}" loading="lazy" decoding="async" />
+                <span class="mercado-author__id">
+                  <span class="mercado-author__name">${AUTHOR}</span>
+                  <span class="mercado-author__role">${AUTHOR_ROLE}</span>
+                </span>
+              </a>
+              <p class="mercado-author__date">Publicado em <time datetime="${p.data}">${formatDate(p.data)}</time></p>
+            </div>
           </div>
         </div>
       </header>
@@ -432,7 +457,7 @@ function postJsonLd(p) {
     dateModified: p.data,
     inLanguage: "pt-BR",
     articleSection: p.categoria,
-    author: { "@type": "Person", name: AUTHOR, url: `${SITE}/sobre.html` },
+    author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${AVATAR.src}`, jobTitle: "Consultor imobiliário" },
     publisher: { "@type": "Person", name: AUTHOR, url: `${SITE}/` },
     mainEntityOfPage: { "@type": "WebPage", "@id": p.url },
     url: p.url,
@@ -484,6 +509,7 @@ writeFileSync(join(MERCADO, "index.html"), page({
     cats: activeCats,
     active: null,
     posts,
+    portrait: true,
   }),
 }));
 

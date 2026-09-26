@@ -2076,3 +2076,87 @@ em {
   gap: var(--space-3);
   margin-top: var(--space-6);
 }
+
+/* Retrato do autor na abertura de /mercado/ */
+.mercado-hero__grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.mercado-hero__portrait {
+  order: -1;
+  margin: 0;
+  width: 9.5rem;
+}
+.mercado-hero__portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 12%;
+  background: var(--off-white);
+}
+.mercado-hero__portrait figcaption {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stone);
+  white-space: nowrap;
+}
+@media (min-width: 860px) {
+  .mercado-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(15rem, 24vw, 18.5rem);
+    gap: var(--space-9);
+    align-items: center;
+  }
+  .mercado-hero__portrait { order: 0; width: auto; }
+  .mercado-hero__portrait img { aspect-ratio: auto; object-fit: initial; }
+  .mercado-hero__portrait figcaption {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border-strong);
+  }
+}
+
+/* Autor no post */
+.mercado-author { margin-top: var(--space-6); }
+.mercado-author__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: inherit;
+}
+.mercado-author__avatar {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--off-white);
+  box-shadow: 0 0 0 1px var(--border-strong);
+}
+.mercado-author__id { display: flex; flex-direction: column; gap: 2px; }
+.mercado-author__name {
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--black);
+  transition: color 0.25s var(--ease);
+}
+.mercado-author__role {
+  font-size: var(--text-sm);
+  color: var(--stone-dark);
+  line-height: 1.45;
+}
+.mercado-author__link:hover .mercado-author__name { color: var(--green); }
+.mercado-author__date {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+  max-width: 26rem;
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
