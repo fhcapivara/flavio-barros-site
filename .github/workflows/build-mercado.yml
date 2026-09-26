@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - "mercado/posts/**"
+      - "mercado/estudos/**"
+      - "js/estudos.js"
       - "scripts/build-mercado.mjs"
       - "atuacao.html"
   workflow_dispatch:

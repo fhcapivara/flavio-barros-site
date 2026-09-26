@@ -27,8 +27,6 @@ No contexto específico de Ribeirão Preto, esse mecanismo ganha relevância adi
 
 Decidir bem diante desse novo patamar de juros exige planejamento e visão de longo prazo. O objetivo de quem possui patrimônio consolidado não é especular com oscilações conjunturais, mas posicionar o capital em ativos duráveis, juridicamente seguros e bem localizados, capazes de gerar utilidade e proteger as próximas gerações.
 
-Para analisar detalhadamente o momento dos juros e as opções de alocação patrimonial mais adequadas para a sua família em Ribeirão Preto, convido você para conversarmos pelo WhatsApp.
-
 ## Fontes
 
 - [Banco Central do Brasil: Copom reduz a taxa Selic para 13,75% a.a.](https://www.bcb.gov.br/detalhenoticia/21261/nota)

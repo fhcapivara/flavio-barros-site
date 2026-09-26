@@ -8,9 +8,12 @@
  * Saída:    mercado/index.html
  *           mercado/<slug>.html
  *           mercado/categoria/<slug-da-categoria>.html
+ *           mercado/estudos/index.html e mercado/estudos/<slug>.html
+ *             (a partir de mercado/estudos/*.md; "_" no início ou
+ *             "rascunho: true" são ignorados)
  *           sitemap.xml (apenas as entradas /mercado/ são substituídas)
  *
- * Todos os arquivos .html em mercado/ e mercado/categoria/ são GERADOS e
+ * Todos os arquivos .html em mercado/, mercado/categoria/ e mercado/estudos/ são GERADOS e
  * apagados a cada execução (limpeza de páginas antigas). Não edite à mão.
  *
  * Cabeçalho, navegação, rodapé, WhatsApp fixo e scripts são copiados de
@@ -20,6 +23,7 @@
  */
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, existsSync, appendFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -28,6 +32,10 @@ const SITE = "https://flaviodebarros.com.br";
 const MERCADO = join(ROOT, "mercado");
 const POSTS_DIR = join(MERCADO, "posts");
 const CAT_DIR = join(MERCADO, "categoria");
+const ESTUDOS_DIR = join(MERCADO, "estudos");
+// Script dos estudos, compartilhamento e avaliação. A versão muda quando o arquivo muda (cache).
+const ESTUDOS_JS = join(ROOT, "js", "estudos.js");
+const ESTUDOS_JS_V = existsSync(ESTUDOS_JS) ? createHash("sha1").update(readFileSync(ESTUDOS_JS)).digest("hex").slice(0, 8) : "0";
 const SITEMAP = join(ROOT, "sitemap.xml");
 const TEMPLATE_PAGE = join(ROOT, "atuacao.html");
 const WHATSAPP = "5516991166681";
@@ -55,14 +63,14 @@ const CATEGORY_TOPICS = {
   "Terreno e projeto": "terrenos, construção e projeto",
   "Bairros e condomínios": "bairros e condomínios",
 };
-const RESERVED_SLUGS = new Set(["index", "categoria", "posts"]);
+const RESERVED_SLUGS = new Set(["index", "categoria", "posts", "estudos"]);
 const MONTHS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
   "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
 const problems = [];
-function problem(file, msg) {
+function problem(file, msg, dir = "posts") {
   problems.push(`${file}: ${msg}`);
-  console.error(`::warning file=mercado/posts/${file}::${msg}`);
+  console.error(`::warning file=mercado/${dir}/${file}::${msg}`);
 }
 
 /* ---------------- utilidades ---------------- */
@@ -273,6 +281,7 @@ ${body}
 
   ${c.sticky}
   ${c.scripts}
+  <script src="/js/estudos.js?v=${ESTUDOS_JS_V}" defer></script>
 </body>
 </html>
 `;
@@ -324,6 +333,57 @@ function readPosts() {
   return posts;
 }
 
+/* ---------------- leitura dos estudos ---------------- */
+function formatMonth(ym) {
+  const [y, m] = ym.split("-").map(Number);
+  const name = MONTHS[m - 1];
+  return `${name.charAt(0).toUpperCase()}${name.slice(1)} de ${y}`;
+}
+function readEstudos() {
+  if (!existsSync(ESTUDOS_DIR)) return [];
+  const files = readdirSync(ESTUDOS_DIR).filter((f) => f.toLowerCase().endsWith(".md") && !f.startsWith("_") && !f.startsWith(".")).sort();
+  const list = [];
+  const seenSlug = new Map();
+  const seenId = new Map();
+  for (const file of files) {
+    const fm = parseFrontMatter(readFileSync(join(ESTUDOS_DIR, file), "utf8"));
+    if (!fm) { problem(file, "o arquivo precisa começar com o bloco entre linhas --- (veja o _modelo.md).", "estudos"); continue; }
+    const d = fm.data;
+    if (/^(true|sim|yes)$/i.test(d.rascunho || "")) { console.log(`Estudo em rascunho ignorado: ${file}`); continue; }
+    const titulo = plain(d.titulo || "");
+    if (!titulo) { problem(file, "falta o campo titulo.", "estudos"); continue; }
+    const id = (d.id || "").trim();
+    if (!/^[a-z0-9][a-z0-9-]*$/.test(id)) { problem(file, `id inválido ("${id}"). Use letras minúsculas, números e hífens, igual ao que está no Apps Script.`, "estudos"); continue; }
+    if (seenId.has(id)) { problem(file, `o id "${id}" já é usado por ${seenId.get(id)}.`, "estudos"); continue; }
+    const data = (d.data || "").trim();
+    if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(data)) { problem(file, `data inválida ("${data}"). Use ano e mês, por exemplo 2026-09.`, "estudos"); continue; }
+    const resumo = plain(d.resumo || "");
+    if (!resumo) { problem(file, "falta o campo resumo.", "estudos"); continue; }
+    const slug = slugify(d.slug || titulo);
+    if (!slug || slug === "index") { problem(file, `o endereço "${slug}" não pode ser usado. Defina outro slug.`, "estudos"); continue; }
+    if (seenSlug.has(slug)) { problem(file, `já existe outro estudo com o endereço "${slug}" (${seenSlug.get(slug)}).`, "estudos"); continue; }
+    seenSlug.set(slug, file);
+    seenId.set(id, file);
+    const oqr = plain(d.o_que_responde || "");
+    list.push({
+      file, titulo, id, slug, data, resumo,
+      tituloSeo: plain(d.titulo_seo || "") || `${titulo} | Estudos de mercado | ${AUTHOR}`,
+      resumoCurto: plain(d.resumo_curto || "") || truncate(resumo, 140),
+      tipo: plain(d.tipo || "") || "Estudo de mercado",
+      mes: formatMonth(data),
+      oQueResponde: oqr.includes("|") ? oqr.split("|").map((x) => x.trim()).filter(Boolean) : oqr,
+      regiao: plain(d.regiao || ""),
+      lancamento: plain(d.lancamento || ""),
+      paginas: plain(d.paginas || ""),
+      imagem: d.imagem ? d.imagem.trim() : "",
+      html: fm.body.trim() ? markdown(fm.body.trim()) : "",
+      url: `${SITE}/mercado/estudos/${slug}.html`,
+    });
+  }
+  list.sort((a, b) => (a.data === b.data ? a.titulo.localeCompare(b.titulo, "pt-BR") : a.data < b.data ? 1 : -1));
+  return list;
+}
+
 /* ---------------- blocos de página ---------------- */
 function waLink(text) {
   return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`;
@@ -341,15 +401,15 @@ function card(p) {
 }
 
 function filters(cats, active) {
-  if (!cats.length) return "";
   const items = [`<a href="/mercado/"${active ? "" : ' aria-current="page"'}>Todos</a>`]
-    .concat(cats.map((c) => `<a href="/mercado/categoria/${slugify(c)}.html"${active === c ? ' aria-current="page"' : ""}>${esc(c)}</a>`));
-  return `          <nav class="mercado-filters reveal" aria-label="Categorias">
+    .concat(cats.map((c) => `<a href="/mercado/categoria/${slugify(c)}.html"${active === c ? ' aria-current="page"' : ""}>${esc(c)}</a>`))
+    .concat([`<a class="mercado-filters__estudos" href="/mercado/estudos/"${active === "estudos" ? ' aria-current="page"' : ""}>Estudos para download</a>`]);
+  return `          <nav class="mercado-filters reveal" aria-label="Seções de Leitura de mercado">
             ${items.join("\n            ")}
           </nav>`;
 }
 
-function listingBody({ eyebrow, h1, lead, cats, active, posts, back, portrait }) {
+function listingBody({ eyebrow, h1, lead, cats, active, posts, back, portrait, estudos }) {
   const list = posts.length
     ? `        <div class="mercado-list">
 ${posts.map(card).join("\n")}
@@ -386,7 +446,233 @@ ${filters(cats, active)}
 ${list}${back ? `
         <p class="mercado-back"><a href="/mercado/">← Todos os textos de Leitura de mercado</a></p>` : ""}
       </div>
-    </section>`;
+    </section>${estudos ? "\n\n" + estudosBlock(estudos) : ""}`;
+}
+
+const ICONS = {
+  whatsapp: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20l1.2-3.9A8 8 0 1 1 8 18.9z"/><path d="M9.2 8.6c.2-.4.5-.4.8-.4h.5l1 2.1-.6.8c.5 1 1.3 1.8 2.3 2.3l.8-.6 2.1 1v.5c0 .3 0 .6-.4.8-.9.6-2.4.4-4.2-1.1-1.8-1.5-2.9-3.4-2.3-5.4z"/></svg>',
+  instagram: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.8"/><path d="M17.2 6.8v.01"/></svg>',
+  linkedin: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M8.2 10.5v6M8.2 7.6v.01M11.8 16.5v-6M11.8 13.2c0-1.6 1-2.7 2.3-2.7s2 .9 2 2.5v3.5"/></svg>',
+  link: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',
+};
+
+function shareAndVote(p) {
+  const shareText = `Achei esta leitura do Flávio Barros interessante: ${p.titulo} ${p.url}`;
+  return `
+          <div class="mercado-share" data-share-url="${esc(p.url)}" data-share-title="${esc(p.titulo)}">
+            <p class="mercado-share__label">Compartilhar esta leitura</p>
+            <div class="mercado-share__buttons">
+              <a class="mercado-share__btn" href="https://wa.me/?text=${encodeURIComponent(shareText)}" target="_blank" rel="noopener">${ICONS.whatsapp}<span>WhatsApp</span></a>
+              <button class="mercado-share__btn" type="button" data-share="instagram" hidden>${ICONS.instagram}<span>Instagram</span></button>
+              <a class="mercado-share__btn" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(p.url)}" target="_blank" rel="noopener">${ICONS.linkedin}<span>LinkedIn</span></a>
+              <button class="mercado-share__btn" type="button" data-share="copy" hidden>${ICONS.link}<span>Copiar link</span></button>
+            </div>
+            <p class="mercado-share__status" role="status" aria-live="polite"></p>
+          </div>
+          <div class="mercado-vote" data-artigo="${esc(p.slug)}" data-titulo="${esc(p.titulo)}" hidden>
+            <p class="mercado-vote__question">Esta leitura foi útil para você?</p>
+            <div class="mercado-vote__buttons">
+              <button class="mercado-vote__btn" type="button" data-voto="sim">Sim</button>
+              <button class="mercado-vote__btn" type="button" data-voto="nao">Não</button>
+            </div>
+            <p class="mercado-vote__thanks" role="status" aria-live="polite" hidden>Obrigado pela resposta.</p>
+          </div>`;
+}
+
+function signature(waText) {
+  return `
+          <aside class="mercado-signature" aria-label="Sobre o autor">
+            <img class="mercado-signature__photo" src="${SIGNATURE.src}" width="${SIGNATURE.width}" height="${SIGNATURE.height}" alt="${esc(AUTHOR_ALT)}" loading="lazy" decoding="async" />
+            <div class="mercado-signature__body">
+              <p class="mercado-signature__name">${AUTHOR}</p>
+              <p class="mercado-signature__role">Consultor imobiliário em Ribeirão Preto e região</p>
+              <p class="mercado-signature__creci">CRECI 323468</p>
+              <p class="mercado-signature__note">Acompanho quem decide sobre patrimônio, do diagnóstico ao próximo passo.</p>
+              <p class="mercado-signature__actions">
+                <a class="btn btn--primary" href="${esc(waLink(waText))}" target="_blank" rel="noopener">Conversar no WhatsApp</a>
+                <a class="mercado-signature__link" href="${AUTHOR_URL}">Conheça minha trajetória</a>
+              </p>
+            </div>
+          </aside>`;
+}
+
+/* ---------------- estudos: blocos ---------------- */
+function downloadButton(e, label = "Baixar o estudo") {
+  return `<a class="btn btn--primary estudos-download" href="/mercado/estudos/${e.slug}.html#baixar" data-estudo-id="${esc(e.id)}" data-estudo-titulo="${esc(e.titulo)}">${label}</a>`;
+}
+
+function estudoCard(e, h = "h2") {
+  return `          <article class="estudos-card reveal">
+            ${e.imagem ? `<a class="estudos-card__cover" href="/mercado/estudos/${e.slug}.html" tabindex="-1" aria-hidden="true"><img src="${esc(localPath(e.imagem))}" alt="" loading="lazy" decoding="async" /></a>\n            ` : ""}<div class="estudos-card__body">
+              <p class="estudos-card__meta">${esc(e.tipo)}<span aria-hidden="true">·</span>${esc(e.mes)}</p>
+              <${h} class="estudos-card__title"><a href="/mercado/estudos/${e.slug}.html">${esc(e.titulo)}</a></${h}>
+              <p class="estudos-card__text">${esc(e.resumoCurto)}</p>
+              <p class="estudos-card__actions">
+                ${downloadButton(e)}
+                <a class="estudos-card__more" href="/mercado/estudos/${e.slug}.html">Ver detalhes</a>
+              </p>
+            </div>
+          </article>`;
+}
+
+const ESTUDOS_EMPTY = "Os primeiros estudos chegam em breve.";
+
+function estudosModal() {
+  return `
+    <dialog class="estudos-modal" id="estudos-modal" aria-labelledby="estudos-modal-title">
+      <div class="estudos-modal__panel">
+        <button class="estudos-modal__close" type="button" data-estudos-close aria-label="Fechar"><span aria-hidden="true">×</span></button>
+        <p class="estudos-modal__estudo" data-estudos-titulo></p>
+        <div class="estudos-modal__step" data-estudos-step="form">
+          <h2 class="estudos-modal__title" id="estudos-modal-title">Para onde envio o estudo?</h2>
+          <p class="estudos-modal__intro">Informe o seu nome e o seu telefone para liberar o download.</p>
+          <form class="estudos-form" novalidate>
+            <label class="estudos-field">
+              <span class="estudos-field__label">Nome</span>
+              <input class="estudos-field__input" type="text" name="nome" autocomplete="name" maxlength="120" required />
+            </label>
+            <label class="estudos-field">
+              <span class="estudos-field__label">Telefone (WhatsApp)</span>
+              <input class="estudos-field__input" type="tel" name="telefone" inputmode="tel" autocomplete="tel" placeholder="(16) 99999-9999" maxlength="20" required />
+            </label>
+            <div class="estudos-form__hp" aria-hidden="true">
+              <label>Empresa <input type="text" name="empresa" tabindex="-1" autocomplete="off" /></label>
+            </div>
+            <label class="estudos-check">
+              <input type="checkbox" name="consentimento" required />
+              <span>Autorizo o contato de Flávio Barros sobre este estudo, conforme a <a href="/privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</span>
+            </label>
+            <p class="estudos-form__error" role="alert" hidden></p>
+            <button class="btn btn--primary estudos-form__submit" type="submit">Liberar download</button>
+          </form>
+        </div>
+        <div class="estudos-modal__step" data-estudos-step="ok" hidden>
+          <h2 class="estudos-modal__title">Obrigado, <span data-estudos-nome></span>.</h2>
+          <p class="estudos-modal__intro">O seu estudo está pronto para download.</p>
+          <p class="estudos-modal__actions"><a class="btn btn--primary" href="#" target="_blank" rel="noopener" data-estudos-link>Baixar o estudo</a></p>
+          <p class="estudos-modal__note">Se o download não começar, toque no botão acima.</p>
+        </div>
+        <div class="estudos-modal__step" data-estudos-step="breve" hidden>
+          <h2 class="estudos-modal__title">Download disponível em breve</h2>
+          <p class="estudos-modal__intro">Estou finalizando a liberação deste material pelo site. Se preferir, peça o estudo pelo WhatsApp e eu envio para você.</p>
+          <p class="estudos-modal__actions"><a class="btn btn--primary" href="https://wa.me/${WHATSAPP}" target="_blank" rel="noopener" data-estudos-wa>Pedir pelo WhatsApp</a></p>
+        </div>
+      </div>
+    </dialog>`;
+}
+
+function estudosBlock(estudos) {
+  const latest = estudos.slice(0, 3);
+  return `    <section class="section section--alt mercado-estudos" aria-labelledby="mercado-estudos-title">
+      <div class="container">
+        <div class="mercado-estudos__header reveal">
+          <p class="eyebrow">Estudos para download</p>
+          <h2 id="mercado-estudos-title">Estudos de mercado em Ribeirão Preto</h2>
+          <p class="mercado-estudos__lead">${latest.length ? "Análises dos lançamentos e das regiões que acompanho de perto, em PDF." : ESTUDOS_EMPTY}</p>
+        </div>${latest.length ? `
+        <div class="estudos-list">
+${latest.map((e) => estudoCard(e, "h3")).join("\n")}
+        </div>
+        <p class="mercado-estudos__all"><a href="/mercado/estudos/">Ver todos os estudos</a></p>` : ""}
+      </div>
+    </section>${latest.length ? estudosModal() : ""}`;
+}
+
+function estudosIndexBody(estudos, cats) {
+  const list = estudos.length
+    ? `        <div class="estudos-list">
+${estudos.map((e) => estudoCard(e)).join("\n")}
+        </div>`
+    : `        <p class="estudos-empty reveal">${ESTUDOS_EMPTY}</p>`;
+  return `    <section class="page-hero mercado-hero">
+      <div class="container">
+        <div class="page-hero__inner reveal">
+          <p class="eyebrow"><a class="mercado-post__crumb" href="/mercado/">Leitura de mercado</a> <span aria-hidden="true">·</span> Estudos</p>
+          <h1>Estudos de mercado em Ribeirão Preto</h1>
+          <p class="lead">Análises dos lançamentos e das regiões que acompanho de perto. Material para quem quer decidir com dados, e não com impressão.</p>
+        </div>
+${filters(cats, "estudos")}
+      </div>
+    </section>
+
+    <section class="section mercado-section">
+      <div class="container">
+${list}
+        <p class="mercado-back"><a href="/mercado/">← Todos os textos de Leitura de mercado</a></p>
+      </div>
+    </section>${estudos.length ? estudosModal() : ""}`;
+}
+
+function estudoBody(e) {
+  const oqr = Array.isArray(e.oQueResponde)
+    ? `<ul class="estudos-page__answers">\n${e.oQueResponde.map((x) => `              <li>${esc(x)}</li>`).join("\n")}\n            </ul>`
+    : e.oQueResponde ? `<p>${esc(e.oQueResponde)}</p>` : "";
+  const facts = [
+    e.lancamento && ["Lançamento", e.lancamento],
+    e.regiao && ["Região", e.regiao],
+    ["Data", e.mes],
+    ["Formato", e.paginas ? `PDF, ${e.paginas} páginas` : "PDF"],
+  ].filter(Boolean);
+  return `    <article class="estudos-page">
+      <header class="page-hero mercado-hero">
+        <div class="container">
+          <div class="page-hero__inner reveal">
+            <p class="eyebrow"><a class="mercado-post__crumb" href="/mercado/">Leitura de mercado</a> <span aria-hidden="true">·</span> <a class="mercado-post__crumb" href="/mercado/estudos/">Estudos</a></p>
+            <h1>${esc(e.titulo)}</h1>
+            <p class="lead">${esc(e.resumo)}</p>
+            <p class="mercado-byline">${esc(e.tipo)} <span aria-hidden="true">·</span> Por <a class="mercado-byline__author" href="${AUTHOR_URL}">${AUTHOR}</a> <span aria-hidden="true">·</span> <time datetime="${e.data}">${esc(e.mes)}</time></p>
+          </div>
+        </div>
+      </header>
+
+      <div class="section mercado-post__section">
+        <div class="container">
+          <div class="estudos-page__grid">
+            <div class="estudos-page__main">${e.imagem ? `
+              <figure class="estudos-page__cover"><img src="${esc(localPath(e.imagem))}" alt="Capa do estudo ${esc(e.titulo)}" decoding="async" /></figure>` : ""}
+              <section class="estudos-page__block" aria-labelledby="oqr">
+                <h2 id="oqr">O que o estudo responde</h2>
+            ${oqr}
+              </section>${e.html ? `
+              <div class="mercado-prose estudos-page__prose">
+${e.html}
+              </div>` : ""}
+            </div>
+            <aside class="estudos-panel" id="baixar" aria-label="Baixar o estudo">
+              <p class="estudos-panel__eyebrow">Estudo em PDF</p>
+              <p class="estudos-panel__title">${esc(e.titulo)}</p>
+              <dl class="estudos-panel__facts">
+${facts.map(([k, v]) => `                <div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("\n")}
+              </dl>
+              ${downloadButton(e)}
+              <p class="estudos-panel__note">Pedimos apenas nome e telefone para liberar o download.</p>
+            </aside>
+          </div>
+${signature(`Olá, Flávio. Vi o estudo "${e.titulo}" no seu site e gostaria de conversar.`)}
+          <p class="mercado-back"><a href="/mercado/estudos/">← Todos os estudos</a></p>
+        </div>
+      </div>
+    </article>${estudosModal()}`;
+}
+
+function estudoJsonLd(e) {
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "Report",
+    headline: e.titulo,
+    name: e.tituloSeo,
+    description: e.resumo,
+    datePublished: `${e.data}-01`,
+    inLanguage: "pt-BR",
+    author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${SIGNATURE.src}`, jobTitle: "Consultor imobiliário" },
+    publisher: { "@type": "Person", name: AUTHOR, url: `${SITE}/` },
+    mainEntityOfPage: { "@type": "WebPage", "@id": e.url },
+    url: e.url,
+    isPartOf: { "@type": "CollectionPage", name: "Estudos de mercado em Ribeirão Preto", url: `${SITE}/mercado/estudos/` },
+    spatialCoverage: { "@type": "Place", name: e.regiao || "Ribeirão Preto, SP" },
+  };
+  if (e.imagem) ld.image = [absUrl(e.imagem)];
+  return ld;
 }
 
 function postBody(p) {
@@ -416,20 +702,7 @@ ${p.imagem ? `
         <div class="container">
           <div class="mercado-prose">
 ${p.html}
-          </div>${fonte}
-          <aside class="mercado-signature" aria-label="Sobre o autor">
-            <img class="mercado-signature__photo" src="${SIGNATURE.src}" width="${SIGNATURE.width}" height="${SIGNATURE.height}" alt="${esc(AUTHOR_ALT)}" loading="lazy" decoding="async" />
-            <div class="mercado-signature__body">
-              <p class="mercado-signature__name">${AUTHOR}</p>
-              <p class="mercado-signature__role">Consultor imobiliário em Ribeirão Preto e região</p>
-              <p class="mercado-signature__creci">CRECI 323468</p>
-              <p class="mercado-signature__note">Acompanho quem decide sobre patrimônio, do diagnóstico ao próximo passo.</p>
-              <p class="mercado-signature__actions">
-                <a class="btn btn--primary" href="${esc(waLink(waText))}" target="_blank" rel="noopener">Conversar no WhatsApp</a>
-                <a class="mercado-signature__link" href="${AUTHOR_URL}">Conheça minha trajetória</a>
-              </p>
-            </div>
-          </aside>
+          </div>${fonte}${shareAndVote(p)}${signature(waText)}
           <p class="mercado-back"><a href="/mercado/">← Voltar para Leitura de mercado</a></p>
         </div>
       </div>
@@ -472,10 +745,12 @@ function updateSitemap(entries) {
 /* ---------------- execução ---------------- */
 const CHROME = loadChrome();
 const posts = readPosts();
+const estudos = readEstudos();
 
 // limpeza de tudo que foi gerado antes
 for (const f of readdirSync(MERCADO)) if (f.endsWith(".html")) rmSync(join(MERCADO, f));
 if (existsSync(CAT_DIR)) rmSync(CAT_DIR, { recursive: true, force: true });
+if (existsSync(ESTUDOS_DIR)) for (const f of readdirSync(ESTUDOS_DIR)) if (f.endsWith(".html")) rmSync(join(ESTUDOS_DIR, f));
 
 const byCat = new Map();
 for (const p of posts) {
@@ -499,8 +774,30 @@ writeFileSync(join(MERCADO, "index.html"), page({
     active: null,
     posts,
     portrait: true,
+    estudos,
   }),
 }));
+
+mkdirSync(ESTUDOS_DIR, { recursive: true });
+writeFileSync(join(ESTUDOS_DIR, "index.html"), page({
+  title: "Estudos de mercado em Ribeirão Preto | Flávio Barros",
+  description: "Estudos de Flávio Barros sobre lançamentos e regiões de Ribeirão Preto, em PDF, para quem quer decidir com dados, e não com impressão.",
+  canonical: `${SITE}/mercado/estudos/`,
+  robots: estudos.length ? "index,follow" : "noindex,follow",
+  body: estudosIndexBody(estudos, activeCats),
+}));
+for (const e of estudos) {
+  writeFileSync(join(ESTUDOS_DIR, `${e.slug}.html`), page({
+    title: e.tituloSeo,
+    description: truncate(e.resumo, 300),
+    canonical: e.url,
+    robots: "index,follow",
+    ogType: "article",
+    image: e.imagem ? absUrl(e.imagem) : "",
+    jsonld: estudoJsonLd(e),
+    body: estudoBody(e),
+  }));
+}
 
 for (const p of posts) {
   writeFileSync(join(MERCADO, `${p.slug}.html`), page({
@@ -548,9 +845,13 @@ if (posts.length) {
   }
   for (const p of posts) entries.push({ loc: p.url, lastmod: p.data, changefreq: "monthly", priority: "0.6" });
 }
+if (estudos.length) {
+  entries.push({ loc: `${SITE}/mercado/estudos/`, lastmod: `${estudos[0].data}-01`, changefreq: "monthly", priority: "0.6" });
+  for (const e of estudos) entries.push({ loc: e.url, lastmod: `${e.data}-01`, changefreq: "monthly", priority: "0.6" });
+}
 updateSitemap(entries);
 
-console.log(`Leitura de mercado: ${posts.length} texto(s), ${activeCats.length} categoria(s), ${indexableCats.length} indexável(is).`);
+console.log(`Leitura de mercado: ${posts.length} texto(s), ${activeCats.length} categoria(s), ${indexableCats.length} indexável(is), ${estudos.length} estudo(s).`);
 if (problems.length) {
   console.error(`\n${problems.length} arquivo(s) com problema (não publicados):\n- ${problems.join("\n- ")}`);
   if (process.env.GITHUB_STEP_SUMMARY) {

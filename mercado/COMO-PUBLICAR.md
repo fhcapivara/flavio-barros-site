@@ -82,3 +82,36 @@ Confira primeiro se o bloco `[LEITURA DO FLÁVIO]` foi substituído pela sua opi
 Se um campo estiver faltando ou com erro (por exemplo, a data em outro formato ou uma categoria diferente das cinco opções), o texto não é publicado e o GitHub envia um e-mail avisando. Os detalhes aparecem na aba **Actions** do repositório. Corrija o arquivo e clique em **Commit changes** de novo.
 
 Observação: o arquivo `_modelo.md` é apenas o modelo e nunca é publicado. Arquivos cujo nome começa com `_` são ignorados.
+
+# Como publicar um estudo de mercado (PDF para download)
+
+Os estudos aparecem em https://flaviodebarros.com.br/mercado/estudos/ e no fim da página de Leitura de mercado. Para baixar, o visitante informa nome e telefone. Você recebe um e-mail a cada download e o pedido fica gravado na planilha **Downloads de estudos**, no seu Google Drive.
+
+**Importante:** o PDF nunca vai para o GitHub. Se estiver no repositório, o Google indexa o arquivo e as pessoas baixam sem passar pelo formulário.
+
+## Passo a passo
+
+1. **PDF no Drive.** Envie o PDF para a pasta de estudos no seu Google Drive. Clique com o botão direito > **Compartilhar** > "Acesso geral": **Qualquer pessoa com o link**. Copie o link: o ID do arquivo é o trecho entre `/d/` e `/view`.
+2. **Apps Script.** Abra o projeto **Estudos do site** em https://script.google.com. Em `CONFIG.ESTUDOS`, acrescente uma linha com um id novo (letras minúsculas, números e hífens), o título e o ID do arquivo:
+   `'residencial-exemplo-2026-10': { titulo: 'Residencial Exemplo: estudo de lançamento', driveFileId: '1AbC...xyz' }`
+   Depois: **Implantar** > **Gerenciar implantações** > lápis > Versão: **Nova versão** > **Implantar**. O endereço do app continua o mesmo.
+3. **Capa (opcional).** Envie a imagem da capa para `images/estudos/` com um nome novo, por exemplo `residencial-exemplo-capa-2026-10.webp` (largura de 1400 px é suficiente).
+4. **Página do estudo.** Na pasta https://github.com/fhcapivara/flavio-barros-site/tree/main/mercado/estudos, crie um arquivo `.md` copiando o `_modelo.md`. Preencha os campos. O campo `id` precisa ser **igual** ao id do passo 2. Faça o commit.
+5. Em cerca de 2 minutos o estudo aparece no site. Teste o download você mesmo: deve chegar o e-mail "Novo download: ..." e surgir uma linha na planilha.
+
+## Campos do estudo
+
+- **titulo**: título que aparece na página e nos cartões.
+- **titulo_seo**: opcional. Título para o Google e a aba do navegador.
+- **slug**: opcional. Endereço da página. Em branco, é criado a partir do título.
+- **id**: identificador do estudo, igual ao do Apps Script.
+- **tipo**: por exemplo `Estudo de lançamento` ou `Estudo de região`.
+- **data**: ano e mês, no formato `2026-10`. Aparece como "Outubro de 2026".
+- **resumo**: duas frases. Aparece no Google e no topo da página.
+- **resumo_curto**: opcional. Uma linha para os cartões.
+- **o_que_responde**: os temas do estudo, separados por ` | `. Viram uma lista.
+- **regiao**, **lancamento**, **paginas**: aparecem no quadro de download.
+- **imagem**: opcional. Caminho da capa, por exemplo `images/estudos/residencial-exemplo-capa-2026-10.webp`.
+- **rascunho**: `true` deixa o estudo fora do site.
+
+Evite na página pública frases de promessa (retorno, valorização garantida) e valores. Os números ficam no PDF.

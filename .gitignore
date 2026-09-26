@@ -7,3 +7,7 @@ preview/
 
 # Leitura de mercado: textos em Markdown devem ir para o repositório
 !mercado/**/*.md
+
+# Estudos de mercado: PDFs e originais nunca vão para o repositório
+/estudos/
+*.pdf
