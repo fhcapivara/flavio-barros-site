@@ -21,7 +21,7 @@ O que dá identidade ao bairro é a paisagem. De um lado está o Ipê Golf Club,
 
 A oferta é variada. Há condomínios horizontais com lotes de perfis bem diferentes: o Colina do Golfe tem lotes com média de 430 m², o Ipê Branco, média de 1.080 m², e o Ipê Rosa, média de 2.100 m². O Reserva do Ipê trouxe lotes de 540 a 728 m² junto à borda da mata. Nas áreas verticais está também o Birdie, lançamento que integra a minha [Seleção Prime](/prime-birdie.html): torres com arquitetura Perkins&Will, próximas da Mata de Santa Tereza e do campo de golfe.
 
-No número 4300 da Avenida Luiz Eduardo Toledo Prado fica o Terras de Florença, condomínio de casas térreas e sobrados que o mercado e os anúncios agrupam na Vila do Golf. É um empreendimento próprio, desenvolvido pela PDG, fora da sequência de condomínios da Vila do Ipê, e o estudo de vizinhança do Alphaville o cita entre os residenciais do seu entorno, o que mostra a posição de transição rumo a Bonfim Paulista. Os lotes partem de 317 m², a fiação é subterrânea e a área de lazer interna reúne piscinas, quadras de tênis e poliesportiva, campo de futebol e pista de cooper.
+No número 4300 da Avenida Luiz Eduardo Toledo Prado fica o Terras de Florença, condomínio de casas térreas e sobrados que o mercado agrupa na Vila do Golf, já no caminho para Bonfim Paulista. É um empreendimento próprio, fora da sequência de condomínios da Vila do Ipê. Os lotes partem de 317 m², a fiação é subterrânea e a área de lazer interna reúne piscinas, quadras de tênis e poliesportiva, campo de futebol e pista de cooper.
 
 ## Para quem faz sentido
 
