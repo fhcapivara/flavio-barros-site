@@ -324,6 +324,9 @@ function readEstudos() {
       lancamento: plain(d.lancamento || ""),
       paginas: plain(d.paginas || ""),
       imagem: d.imagem ? d.imagem.trim() : "",
+      // og_imagem (opcional): imagem só para o compartilhamento (WhatsApp, redes), de preferência
+      // JPG 1200x630. Em branco, o compartilhamento usa a capa (imagem).
+      ogImagem: d.og_imagem ? d.og_imagem.trim() : "",
       // og_padrao: sim usa a imagem padrão do site no compartilhamento, em vez da capa.
       ogPadrao: /^(true|sim|yes)$/i.test((d.og_padrao || "").trim()),
       html: fm.body.trim() ? markdown(fm.body.trim()) : "",
@@ -704,7 +707,7 @@ for (const e of estudos) {
     canonical: e.url,
     robots: "index,follow",
     ogType: "article",
-    image: ogImage(e.ogPadrao ? "" : e.imagem, `Capa do estudo ${e.titulo}`),
+    image: ogImage(e.ogPadrao ? "" : e.ogImagem || e.imagem, `Capa do estudo ${e.titulo}`),
     jsonld: estudoJsonLd(e),
     body: estudoBody(e),
     nav: "/estudos/",

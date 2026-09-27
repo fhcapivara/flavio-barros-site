@@ -40,7 +40,10 @@ lancamento: Nome do empreendimento, da construtora Tal
 paginas: 12
 # imagem: capa do estudo (opcional), por exemplo images/estudos/nome-do-estudo-capa.webp
 imagem:
-# og_padrao: sim usa a imagem padrão do site ao compartilhar (WhatsApp, redes), em vez da capa.
+# og_imagem (opcional): imagem só para o compartilhamento (WhatsApp, redes), de preferência JPG
+# 1200x630 em images/og/ (o WhatsApp lida melhor com JPG do que com WebP). Em branco, usa a capa.
+og_imagem:
+# og_padrao: sim usa a imagem padrão do site ao compartilhar (WhatsApp, redes), em vez da capa e da og_imagem.
 # Use quando a capa tiver textos que não devem aparecer na prévia.
 og_padrao:
 # rascunho: true deixa o estudo fora do site até você mudar para false.
