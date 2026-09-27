@@ -96,6 +96,9 @@
       if (prazo) parts.push("Prazo: " + prazo);
       if (mensagem) parts.push("Obs.: " + mensagem);
 
+      // Medição (só com consentimento, via js/consent.js). Nenhum dado do formulário é enviado.
+      if (window.fbConsent) window.fbConsent.track("whatsapp_click", { link_location: "contato_form" });
+
       var url =
         "https://wa.me/5516991166681?text=" +
         encodeURIComponent(parts.join("\n"));
