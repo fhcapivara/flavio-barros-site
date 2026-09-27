@@ -117,6 +117,7 @@ Você responde e envia o material pela própria conversa. O nome serve apenas pa
 - **Texto abaixo do bloco de campos**: fechamento com o número de páginas e o convite, por exemplo "São 16 páginas de análise feitas por mim. Peça o seu e eu envio pessoalmente pelo WhatsApp."
 - **regiao**, **lancamento**, **paginas**: aparecem no quadro lateral do estudo.
 - **imagem**: opcional. Caminho da capa, por exemplo `images/estudos/residencial-exemplo-capa-2026-10.webp`.
+- **og_padrao**: opcional. Com `sim`, a prévia ao compartilhar o link (WhatsApp, redes sociais) usa a imagem padrão do site, com o retrato de Flávio, em vez da capa. Use quando a capa tiver textos que não devem aparecer na prévia. Em branco, a prévia usa a capa.
 - **rascunho**: `true` deixa o estudo fora do site.
 
 Evite na página pública frases de promessa (retorno, valorização garantida) e valores. Os números ficam no material enviado.

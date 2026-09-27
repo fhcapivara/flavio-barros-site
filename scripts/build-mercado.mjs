@@ -105,7 +105,7 @@ function localPath(p) {
 const absUrl = (p) => (/^https?:\/\//i.test(p) ? p : SITE + localPath(p));
 
 // Imagem padrão de compartilhamento (Open Graph / Twitter).
-const OG_DEFAULT = { src: "/images/og/flavio-barros-og-1200x630.jpg", width: 1200, height: 630, alt: "Flávio Barros, consultor imobiliário em Ribeirão Preto" };
+const OG_DEFAULT = { src: "/images/og/flavio-barros-og-v2-1200x630.jpg", width: 1200, height: 630, alt: "Flávio Barros, consultor imobiliário em Ribeirão Preto" };
 // Lê largura e altura de JPG, PNG ou WebP do próprio site (sem dependências).
 function imageSize(p) {
   try {
@@ -432,6 +432,8 @@ function readEstudos() {
       lancamento: plain(d.lancamento || ""),
       paginas: plain(d.paginas || ""),
       imagem: d.imagem ? d.imagem.trim() : "",
+      // og_padrao: sim usa a imagem padrão do site no compartilhamento, em vez da capa.
+      ogPadrao: /^(true|sim|yes)$/i.test((d.og_padrao || "").trim()),
       html: fm.body.trim() ? markdown(fm.body.trim()) : "",
       url: `${SITE}/mercado/estudos/${slug}.html`,
     });
@@ -830,7 +832,7 @@ for (const e of estudos) {
     canonical: e.url,
     robots: "index,follow",
     ogType: "article",
-    image: ogImage(e.imagem, `Capa do estudo ${e.titulo}`),
+    image: ogImage(e.ogPadrao ? "" : e.imagem, `Capa do estudo ${e.titulo}`),
     jsonld: estudoJsonLd(e),
     body: estudoBody(e),
     nav: "/mercado/estudos/",

@@ -15,6 +15,7 @@ regiao: Eixo da Avenida do Café, no entorno do campus da USP e do Hospital das 
 lancamento: Residencial Barão de Campo Belo, da construtora Pereira Martins
 paginas: 16
 imagem: images/estudos/barao-de-campo-belo-capa-2026-09.webp
+og_padrao: sim
 ---
 
 São 16 páginas de análise feitas por mim. Peça o seu e eu envio pessoalmente pelo WhatsApp.
