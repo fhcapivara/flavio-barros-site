@@ -1,6 +1,6 @@
 ---
 # Arquivos que começam com "_" não são publicados. Copie este modelo para um arquivo novo,
-# por exemplo mercado/estudos/residencial-exemplo.md, e preencha os campos.
+# por exemplo estudos/residencial-exemplo.md, e preencha os campos.
 #
 # Estrutura sugerida para a página:
 # 1. resumo: abertura em dois parágrafos. O primeiro é uma pergunta que desperta interesse.

@@ -85,7 +85,7 @@ Observação: o arquivo `_modelo.md` é apenas o modelo e nunca é publicado. Ar
 
 # Como publicar um estudo de mercado (enviado pelo WhatsApp)
 
-Os estudos aparecem em https://flaviodebarros.com.br/mercado/estudos/ e no fim da página de Leitura de mercado. Para pedir um estudo, o visitante clica em **Receber pelo WhatsApp** e informa apenas o nome. O site abre uma conversa no seu WhatsApp, (16) 99116-6681, com a mensagem pronta:
+Os estudos têm seção própria, separada da Leitura de mercado: https://flaviodebarros.com.br/estudos/ (item "Estudos" do menu). Os endereços antigos em /mercado/estudos/ continuam funcionando e levam automaticamente para /estudos/. Para pedir um estudo, o visitante clica em **Receber pelo WhatsApp** e informa apenas o nome. O site abre uma conversa no seu WhatsApp, (16) 99116-6681, com a mensagem pronta:
 
 "Olá, Flávio, meu nome é Maria Silva e gostaria de receber o material Residencial Barão de Campo Belo."
 
@@ -96,7 +96,7 @@ Você responde e envia o material pela própria conversa. O nome serve apenas pa
 ## Passo a passo
 
 1. **Capa (opcional).** Envie a imagem da capa para `images/estudos/` com um nome novo, por exemplo `residencial-exemplo-capa-2026-10.webp` (largura de 1400 px é suficiente).
-2. **Página do estudo.** Na pasta https://github.com/fhcapivara/flavio-barros-site/tree/main/mercado/estudos, crie um arquivo `.md` copiando o `_modelo.md`. Preencha os campos e faça o commit.
+2. **Página do estudo.** Na pasta https://github.com/fhcapivara/flavio-barros-site/tree/main/estudos, crie um arquivo `.md` copiando o `_modelo.md`. Preencha os campos e faça o commit.
 3. Em cerca de 2 minutos o estudo aparece no site. Teste você mesmo: clique no botão, informe um nome e confira se a mensagem chega certa no WhatsApp.
 
 ## Campos do estudo

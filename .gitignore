@@ -11,6 +11,8 @@ preview/
 # Acervo: páginas de região em Markdown também vão para o repositório
 !data/regioes/*.md
 
-# Estudos de mercado: PDFs e originais nunca vão para o repositório
-/estudos/
+# Estudos de mercado: PDFs e originais nunca vão para o repositório.
+# A pasta estudos/ guarda só as páginas (.md e .html geradas).
+/estudos/originais/
 *.pdf
+!estudos/*.md

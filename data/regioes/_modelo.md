@@ -23,6 +23,8 @@ resumo: Primeiro parágrafo de abertura. | Segundo parágrafo, opcional.
 # busca: termos separados por " | ", procurados no bairro, no condomínio e no título do imóvel.
 # Acentos, apóstrofos e maiúsculas são ignorados ("Olhos D'Água" = "olhos dagua").
 busca: nome da regiao
+# busca_bairro (opcional): termos procurados SÓ no campo bairro do imóvel (mais restrito que busca).
+busca_bairro:
 # tipos (opcional): casa | apartamento | sobrado | terreno. Em branco, todos os residenciais e terrenos.
 tipos:
 # incluir_comerciais: sim inclui salas, salões, galpões e terrenos comerciais. Padrão: não.
