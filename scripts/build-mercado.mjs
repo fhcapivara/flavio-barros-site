@@ -103,6 +103,37 @@ function localPath(p) {
   return "/" + p.replace(/^(\.\.\/|\.\/)+/, "").replace(/^\/+/, "");
 }
 const absUrl = (p) => (/^https?:\/\//i.test(p) ? p : SITE + localPath(p));
+
+// Imagem padrão de compartilhamento (Open Graph / Twitter).
+const OG_DEFAULT = { src: "/images/og/flavio-barros-og-1200x630.jpg", width: 1200, height: 630, alt: "Flávio Barros, consultor imobiliário em Ribeirão Preto" };
+// Lê largura e altura de JPG, PNG ou WebP do próprio site (sem dependências).
+function imageSize(p) {
+  try {
+    if (/^(https?:)?\/\//i.test(p)) return null;
+    const b = readFileSync(join(ROOT, localPath(p).slice(1)));
+    if (b.readUInt32BE(0) === 0x89504e47) return { width: b.readUInt32BE(16), height: b.readUInt32BE(20) };
+    if (b.toString("ascii", 0, 4) === "RIFF" && b.toString("ascii", 8, 12) === "WEBP") {
+      const kind = b.toString("ascii", 12, 16);
+      if (kind === "VP8X") return { width: 1 + b.readUIntLE(24, 3), height: 1 + b.readUIntLE(27, 3) };
+      if (kind === "VP8 ") return { width: b.readUInt16LE(26) & 0x3fff, height: b.readUInt16LE(28) & 0x3fff };
+      if (kind === "VP8L") { const v = b.readUInt32LE(21); return { width: 1 + (v & 0x3fff), height: 1 + ((v >> 14) & 0x3fff) }; }
+    }
+    if (b[0] === 0xff && b[1] === 0xd8) {
+      let i = 2;
+      while (i < b.length) {
+        if (b[i] !== 0xff) { i++; continue; }
+        const m = b[i + 1];
+        if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) return { width: b.readUInt16BE(i + 7), height: b.readUInt16BE(i + 5) };
+        i += 2 + b.readUInt16BE(i + 2);
+      }
+    }
+  } catch (e) { /* sem dimensões */ }
+  return null;
+}
+function ogImage(imagem, alt) {
+  if (!imagem) return { ...OG_DEFAULT, url: SITE + OG_DEFAULT.src };
+  return { url: absUrl(imagem), alt: alt || OG_DEFAULT.alt, ...(imageSize(imagem) || {}) };
+}
 const truncate = (s, n) => (s.length <= n ? s : s.slice(0, n - 1).replace(/\s+\S*$/, "") + "…");
 
 /* ---------------- front matter ---------------- */
@@ -251,6 +282,7 @@ function loadChrome() {
 
 function page({ title, description, canonical, robots, ogType = "website", image, jsonld, body, nav = "/mercado/" }) {
   const c = CHROME;
+  const og = image && image.url ? image : ogImage("");
   // Marca no menu a seção atual (Leitura de mercado ou Estudos).
   const header = c.header.replace(new RegExp(`(<div class="nav__links">[\\s\\S]*?<a href="${nav.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}")`), '$1 aria-current="page"');
   return `<!DOCTYPE html>
@@ -262,6 +294,11 @@ function page({ title, description, canonical, robots, ogType = "website", image
   <title>${esc(title)}</title>
   ${c.headLinks}
   <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#F7F5F2" />
   <link rel="canonical" href="${esc(canonical)}" />
   <meta name="robots" content="${robots}" />
   <meta property="og:locale" content="pt_BR" />
@@ -269,7 +306,14 @@ function page({ title, description, canonical, robots, ogType = "website", image
   <meta property="og:site_name" content="Flávio Barros" />
   <meta property="og:title" content="${esc(title)}" />
   <meta property="og:description" content="${esc(description)}" />
-  <meta property="og:url" content="${esc(canonical)}" />${image ? `\n  <meta property="og:image" content="${esc(image)}" />` : ""}${jsonld ? `\n  <script type="application/ld+json">\n${JSON.stringify(jsonld, null, 2).replace(/</g, "\\u003c")}\n  </script>` : ""}
+  <meta property="og:url" content="${esc(canonical)}" />
+  <meta property="og:image" content="${esc(og.url)}" />${og.width ? `\n  <meta property="og:image:width" content="${og.width}" />\n  <meta property="og:image:height" content="${og.height}" />` : ""}
+  <meta property="og:image:alt" content="${esc(og.alt)}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${esc(title)}" />
+  <meta name="twitter:description" content="${esc(description)}" />
+  <meta name="twitter:image" content="${esc(og.url)}" />
+  <meta name="twitter:image:alt" content="${esc(og.alt)}" />${jsonld ? `\n  <script type="application/ld+json">\n${JSON.stringify(jsonld, null, 2).replace(/</g, "\\u003c")}\n  </script>` : ""}
 </head>
 <body>
   <a class="skip-link" href="#main">Ir para o conteúdo</a>
@@ -752,7 +796,7 @@ for (const p of posts) {
 const activeCats = CATEGORIES.filter((c) => byCat.has(c));
 
 const LIST_TITLE = "Mercado imobiliário em Ribeirão Preto: leitura de Flávio Barros";
-const LIST_DESC = "Leituras curtas de Flávio Barros sobre o mercado imobiliário em Ribeirão Preto e região: preços, crédito, bairros, condomínios, terrenos e investimento.";
+const LIST_DESC = "Leituras de Flávio Barros sobre o mercado imobiliário em Ribeirão Preto e região: juros, patrimônio, bairros, condomínios, terrenos e estudos de lançamentos.";
 writeFileSync(join(MERCADO, "index.html"), page({
   title: `${LIST_TITLE}`,
   description: LIST_DESC,
@@ -786,7 +830,7 @@ for (const e of estudos) {
     canonical: e.url,
     robots: "index,follow",
     ogType: "article",
-    image: e.imagem ? absUrl(e.imagem) : "",
+    image: ogImage(e.imagem, `Capa do estudo ${e.titulo}`),
     jsonld: estudoJsonLd(e),
     body: estudoBody(e),
     nav: "/mercado/estudos/",
@@ -800,7 +844,7 @@ for (const p of posts) {
     canonical: p.url,
     robots: "index,follow",
     ogType: "article",
-    image: p.imagem ? absUrl(p.imagem) : "",
+    image: ogImage(p.imagem, p.titulo),
     jsonld: postJsonLd(p),
     body: postBody(p),
   }));
