@@ -4,7 +4,7 @@
 #
 # Regras automáticas (a cada build):
 # - publicado: sim e pelo menos 1 imóvel encontrado: página indexável, no sitemap e listada
-#   em "Regiões que acompanho de perto" no Acervo.
+#   na faixa "Escolha pelo endereço" do Acervo e na lista "Bairros" do rodapé de todas as páginas.
 # - publicado: sim e nenhum imóvel: página continua no ar com noindex, sai do sitemap e da lista.
 #   Volta sozinha quando surgirem imóveis.
 # - publicado: não: a página não é gerada.
@@ -13,8 +13,14 @@ publicado: não
 slug: nome-da-regiao
 # titulo: H1 da página.
 titulo: Casas em condomínio no Nome da Região, Ribeirão Preto
-# nome: rótulo curto na lista de regiões do Acervo (opcional; em branco, usa o titulo).
+# nome: rótulo da região (opcional; em branco, usa o titulo).
 nome: Nome da Região
+# nome_curto (opcional): nome na faixa do Acervo e no rodapé. Em branco, usa o nome.
+nome_curto:
+# resumo_faixa: linha curta do cartão na faixa "Escolha pelo endereço" do Acervo (sem ponto final).
+resumo_faixa: uma frase curta sobre o bairro
+# ordem (opcional): posição na faixa e no rodapé (1, 2, 3...). Sem ordem, vai para o fim, em ordem alfabética.
+ordem:
 # titulo_seo e descricao (até 155 caracteres) para o Google e o compartilhamento.
 titulo_seo: Imóveis à venda no Nome da Região, Ribeirão Preto | Flávio Barros
 descricao:

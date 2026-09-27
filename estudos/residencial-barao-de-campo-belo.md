@@ -14,7 +14,7 @@ o_que_responde: O que o ciclo de juros até 2030 muda na decisão entre renda fi
 regiao: Eixo da Avenida do Café, no entorno do campus da USP e do Hospital das Clínicas
 lancamento: Residencial Barão de Campo Belo, da construtora Pereira Martins
 paginas: 16
-imagem: images/estudos/barao-de-campo-belo-capa-2026-09.webp
+imagem: images/estudos/barao-de-campo-belo-capa-2026-09b.webp
 og_padrao: sim
 ---
 

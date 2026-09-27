@@ -3,6 +3,9 @@
 publicado: sim
 slug: vila-do-golf
 nome: Vila do Golf
+nome_curto: 
+resumo_faixa: entre o campo de golfe e a Mata de Santa Tereza
+ordem: 1
 titulo: Vila do Golf: morar entre o campo de golfe e a Mata de Santa Tereza
 titulo_seo: Imóveis à venda na Vila do Golf, Ribeirão Preto | Flávio Barros
 descricao: Casas e terrenos na Vila do Golf, zona sul de Ribeirão Preto. Curadoria entre o campo do Ipê Golf Club e a Mata de Santa Tereza.

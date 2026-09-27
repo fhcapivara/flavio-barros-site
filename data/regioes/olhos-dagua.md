@@ -3,6 +3,9 @@
 publicado: sim
 slug: olhos-dagua
 nome: Jardim Olhos D'Água
+nome_curto: Olhos D'Água
+resumo_faixa: casas e terrenos em condomínio, cercados de verde
+ordem: 3
 titulo: Casas e terrenos em condomínio no Jardim Olhos D'Água
 titulo_seo: Casas e terrenos no Olhos D'Água, Ribeirão Preto | Flávio Barros
 descricao: Casas e terrenos em condomínio no Jardim Olhos D'Água I e II: Borda da Mata, Borda do Parque, Bela Vista e Buganvile. Curadoria na zona sul.

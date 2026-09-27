@@ -151,6 +151,9 @@ function readRegioes() {
       file: f, slug, titulo, busca, buscaBairro,
       publicado: yes(d.publicado),
       nome: d.nome || titulo,
+      nomeCurto: d.nome_curto || d.nome || titulo,
+      resumoFaixa: d.resumo_faixa || "",
+      ordem: Number(d.ordem) || 999,
       tituloSeo: d.titulo_seo || `${titulo} | Flávio Barros`,
       descricao: d.descricao || "",
       resumo: list(d.resumo),
@@ -291,6 +294,54 @@ ${prose(after)}
 `;
 }
 
+/* ---- faixa "Escolha pelo endereço" (selecao.html) e rodapé "Bairros" (todas as páginas) ---- */
+function faixaHtml(ativas) {
+  if (!ativas.length) return "";
+  const cards = ativas.map((r) => `<li><a class="acervo-faixa__card" href="/imoveis/${esc(r.slug)}.html"><span class="acervo-faixa__nome">${esc(r.nomeCurto)}</span>${r.resumoFaixa ? `<span class="acervo-faixa__linha">${esc(r.resumoFaixa)}</span>` : ""}</a></li>`).join("");
+  return `<nav class="acervo-faixa" aria-labelledby="acervo-faixa-title"><div class="acervo-faixa__head"><h2 class="acervo-faixa__title" id="acervo-faixa-title">Escolha pelo endereço</h2><p class="acervo-faixa__lead">Cada bairro tem seu ritmo. Conheça o lugar antes de escolher o imóvel.</p></div><ul class="acervo-faixa__lista">${cards}</ul></nav>`;
+}
+function footerBairrosHtml(ativas) {
+  if (!ativas.length) return "";
+  return `<div class="footer__col footer__bairros"><h4>Bairros</h4>${ativas.map((r) => `<a href="/imoveis/${esc(r.slug)}.html">${esc(r.nomeCurto)}</a>`).join("")}</div>`;
+}
+function footerPages() {
+  const out = [];
+  const walk = (dir, deep) => {
+    if (!existsSync(dir)) return;
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const f = join(dir, e.name);
+      if (e.isDirectory()) { if (deep && !e.name.startsWith(".") && e.name !== "node_modules") walk(f, true); }
+      else if (e.name.endsWith(".html")) out.push(f);
+    }
+  };
+  walk(ROOT, false);
+  walk(join(ROOT, "mercado"), true);
+  walk(join(ROOT, "estudos"), true);
+  return out;
+}
+const FOOTER_RE = /(<!-- BAIRROS-RODAPE:INICIO[^>]*-->)[\s\S]*?(<!-- BAIRROS-RODAPE:FIM -->)/;
+function withFooterBairros(html, block) {
+  if (!html.includes('class="site-footer"')) return html;
+  if (FOOTER_RE.test(html)) return html.replace(FOOTER_RE, (_, a, b) => `${a}${block}${b}`);
+  const mark = `<!-- BAIRROS-RODAPE:INICIO (gerado por scripts/build-acervo.mjs a partir de data/regioes/) -->${block}<!-- BAIRROS-RODAPE:FIM -->`;
+  const contato = /(\n[ \t]*)(<div class="footer__col">\s*<h4>Contato<\/h4>)/;
+  if (contato.test(html)) return html.replace(contato, (_, ws, col) => `${ws}${mark}${ws}${col}`);
+  const links = /(<div class="footer__links">[\s\S]*?<\/div>)(\n[ \t]*)/;
+  if (links.test(html)) return html.replace(links, (_, col, ws) => `${col}${ws}${mark}${ws}`);
+  console.warn("Rodapé sem ponto de inserção para Bairros");
+  return html;
+}
+function updateFooters(ativas) {
+  const block = footerBairrosHtml(ativas);
+  let n = 0;
+  for (const f of footerPages()) {
+    const src = readFileSync(f, "utf8");
+    const out = withFooterBairros(src, block);
+    if (out !== src) { writeFileSync(f, out); n++; }
+  }
+  if (n) console.log(`Rodapé "Bairros" atualizado em ${n} página(s).`);
+}
+
 function updateSitemap(entries) {
   let xml = readFileSync(SITEMAP, "utf8");
   xml = xml.replace(/[ \t]*<url>\s*<loc>https:\/\/flaviodebarros\.com\.br\/imoveis\/[\s\S]*?<\/url>[ \t]*\r?\n?/g, "");
@@ -310,22 +361,22 @@ export function buildAcervo() {
   const grid = visible.filter((p) => !isCommercialListing(p));
   const lastmod = String(data.generatedAt || new Date().toISOString()).slice(0, 10);
 
-  // Regiões
+  // Regiões: primeiro decide quais estão ativas (publicadas e com pelo menos 1 imóvel),
+  // depois atualiza o rodapé "Bairros" de todas as páginas (inclusive atuacao.html, que serve
+  // de moldura), e só então gera as páginas de região com a moldura já atualizada.
   const regioes = readRegioes();
+  const pub = regioes.filter((r) => r.publicado).map((r) => ({ r, its: visible.filter((p) => regionMatches(r, p)) }));
+  const ativas = pub.filter((x) => x.its.length).map((x) => x.r)
+    .sort((a, b) => a.ordem - b.ordem || a.nomeCurto.localeCompare(b.nomeCurto, "pt-BR"));
+  updateFooters(ativas);
   const chrome = loadChrome();
   mkdirSync(OUT_DIR, { recursive: true });
   const keep = new Set();
   const sitemap = [];
-  const links = [];
-  for (const r of regioes) {
-    if (!r.publicado) continue;
-    const its = visible.filter((p) => regionMatches(r, p));
+  for (const { r, its } of pub) {
     writeFileSync(join(OUT_DIR, `${r.slug}.html`), regionPage(r, its, chrome));
     keep.add(`${r.slug}.html`);
-    if (its.length) {
-      sitemap.push({ loc: `${SITE}/imoveis/${r.slug}.html`, lastmod });
-      links.push(`<li><a href="/imoveis/${r.slug}.html">${esc(r.nome)}</a></li>`);
-    }
+    if (its.length) sitemap.push({ loc: `${SITE}/imoveis/${r.slug}.html`, lastmod });
     console.log(`Região ${r.slug}: ${its.length} imóvel(is)${its.length ? "" : " (noindex, fora do sitemap)"}`);
   }
   for (const f of readdirSync(OUT_DIR)) if (f.endsWith(".html") && !keep.has(f)) rmSync(join(OUT_DIR, f));
@@ -337,9 +388,9 @@ export function buildAcervo() {
   html = html.replace(/<div class="selecao-grid" id="selecao-grid"[^>]*>/, `<div class="selecao-grid" id="selecao-grid" aria-live="polite" data-refs="${grid.map((p) => esc(p.ref)).join(",")}">`);
   html = between(html, "ACERVO-CONTAGEM", esc(countText(grid.length)));
   html = between(html, "ACERVO-JSONLD", "\n" + ldScript(itemListLd(grid, "Imóveis à venda em Ribeirão Preto e região", `${SITE}/selecao.html`)) + "\n  ");
-  html = between(html, "ACERVO-REGIOES", links.length ? `<p class="acervo-regioes__label">Regiões que acompanho de perto:</p><ul class="acervo-regioes__lista">${links.join("")}</ul>` : "");
+  html = between(html, "ACERVO-FAIXA", faixaHtml(ativas));
   writeFileSync(SELECAO_HTML, html);
-  console.log(`Acervo: ${grid.length} imóvel(is) no grid padrão de selecao.html; ${links.length} região(ões) listada(s).`);
+  console.log(`Acervo: ${grid.length} imóvel(is) no grid padrão de selecao.html; ${ativas.length} região(ões) na faixa e no rodapé.`);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) buildAcervo();

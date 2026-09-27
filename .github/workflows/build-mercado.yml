@@ -54,7 +54,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A mercado estudos imoveis sitemap.xml selecao.html
+          git add -A mercado estudos imoveis sitemap.xml selecao.html && git add -u -- ':(glob)*.html'
           if git diff --cached --quiet; then
             echo "Nada mudou."
             exit 0
@@ -67,7 +67,7 @@ jobs:
             git reset --hard origin/main
             node scripts/build-mercado.mjs
             node scripts/build-acervo.mjs
-            git add -A mercado estudos imoveis sitemap.xml selecao.html
+            git add -A mercado estudos imoveis sitemap.xml selecao.html && git add -u -- ':(glob)*.html'
             git diff --cached --quiet && exit 0
             git commit -m "Atualiza Leitura de mercado"
           done

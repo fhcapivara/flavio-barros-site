@@ -3,6 +3,9 @@
 publicado: sim
 slug: jardim-botanico
 nome: Jardim Botânico e Bosque das Juritis
+nome_curto: Jardim Botânico
+resumo_faixa: dois parques e condomínios horizontais
+ordem: 6
 titulo: Jardim Botânico e Bosque das Juritis: uma região, dois desenhos de bairro
 titulo_seo: Imóveis à venda no Jardim Botânico, Ribeirão Preto | Flávio Barros
 descricao: Imóveis no Jardim Botânico e no Bosque das Juritis, zona sul de Ribeirão Preto: dois parques, condomínios horizontais e curadoria Flávio Barros.

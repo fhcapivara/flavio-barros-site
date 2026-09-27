@@ -3,6 +3,9 @@
 publicado: sim
 slug: reserva-santa-luisa
 nome: Reserva Santa Luisa
+nome_curto: 
+resumo_faixa: mata, lago e acesso pela João Fiúsa
+ordem: 5
 titulo: Reserva Santa Luisa: casas e terrenos entre a mata, o lago e a João Fiúsa
 titulo_seo: Imóveis no Reserva Santa Luisa, Ribeirão Preto | Flávio Barros
 descricao: Casas e terrenos no Reserva Santa Luisa, em Bonfim Paulista: mata preservada, lago e acesso pela João Fiúsa. Curadoria de Flávio Barros.

@@ -3,6 +3,9 @@
 publicado: sim
 slug: jardim-canada
 nome: Jardim Canadá
+nome_curto: 
+resumo_faixa: o lado residencial de um endereço clássico da zona sul
+ordem: 4
 titulo: Jardim Canadá: casas e terrenos no lado residencial de um endereço clássico da zona sul
 titulo_seo: Imóveis à venda no Jardim Canadá, Ribeirão Preto | Flávio Barros
 descricao: Casas e terrenos no Jardim Canadá, zona sul de Ribeirão Preto, com foco nas ruas residenciais e na parte fechada do bairro. Curadoria Flávio Barros.

@@ -3,6 +3,9 @@
 publicado: sim
 slug: alphaville
 nome: Alphaville
+nome_curto: 
+resumo_faixa: três residenciais, um clube e a mata ao lado
+ordem: 2
 titulo: Alphaville Ribeirão Preto: três residenciais, um clube e a mata como vizinha
 titulo_seo: Imóveis à venda no Alphaville, Ribeirão Preto | Flávio Barros
 descricao: Casas e terrenos no Alphaville I, II e III, em Bonfim Paulista, Ribeirão Preto. Clube, mata preservada e curadoria de lotes e residências.

@@ -2529,12 +2529,41 @@ em {
 /* ----- Acervo: guia e regiões ----- */
 .acervo-guia__inner { max-width: 760px; }
 .acervo-guia__inner p { margin-top: var(--space-4); color: var(--stone-dark); line-height: 1.7; }
-.acervo-regioes:empty, .acervo-regioes:not(:has(li)) { display: none; }
-.acervo-regioes__label { margin-top: var(--space-6) !important; font-weight: 500; color: var(--black) !important; }
-.acervo-regioes__lista { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); margin-top: var(--space-3); padding: 0; list-style: none; }
-.acervo-regioes__lista a { color: var(--green); text-decoration: underline; text-underline-offset: 3px; }
 .acervo-regiao__vazio { color: var(--stone-dark); }
 .acervo-regiao__texto { padding-block: var(--space-7); }
 .acervo-regiao__texto + .section--selecao { padding-top: var(--space-5); }
 .breadcrumb a { color: inherit; }
 .breadcrumb a:hover { color: var(--green); }
+
+/* ----- Acervo: faixa "Escolha pelo endereço" (gerada por scripts/build-acervo.mjs) ----- */
+.acervo-faixa { padding-top: var(--space-6); margin-bottom: var(--space-6); }
+.acervo-faixa__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-5); margin-bottom: var(--space-4); }
+.acervo-faixa__title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 500; line-height: 1.2; letter-spacing: 0; margin: 0; }
+.acervo-faixa__lead { font-size: var(--text-sm); color: var(--stone-dark); margin: 0; max-width: none; }
+.acervo-faixa__lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+.acervo-faixa__lista li { margin: 0; padding: 0; }
+.acervo-faixa__card { display: flex; flex-direction: column; gap: var(--space-2); height: 100%; padding: var(--space-4) var(--space-4) var(--space-5); border: 1px solid var(--border); border-top: 1px solid var(--stone-light); background: transparent; color: var(--black); text-decoration: none; min-height: auto; transition: border-color 0.25s var(--ease), background 0.25s var(--ease); }
+.acervo-faixa__card:hover, .acervo-faixa__card:focus-visible { border-color: var(--green); background: var(--surface, rgba(255,255,255,0.5)); }
+.acervo-faixa__nome { font-family: var(--font-display); font-size: 1.3125rem; font-weight: 500; line-height: 1.15; color: var(--black); }
+.acervo-faixa__card:hover .acervo-faixa__nome { color: var(--green); }
+.acervo-faixa__linha { font-size: var(--text-xs); line-height: 1.5; letter-spacing: 0.01em; color: var(--stone-dark); }
+@media (min-width: 1200px) {
+  .acervo-faixa__lista { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .acervo-faixa { padding-top: var(--space-5); margin-bottom: var(--space-5); }
+  .acervo-faixa__head { display: block; }
+  .acervo-faixa__lead { margin-top: var(--space-1); }
+  .acervo-faixa__lista { display: flex; grid-template-columns: none; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: var(--space-3); margin-inline: calc(-1 * var(--space-5)); padding-inline: var(--space-5); scroll-padding-inline: var(--space-5); }
+  .acervo-faixa__lista::-webkit-scrollbar { display: none; }
+  .acervo-faixa__lista li { flex: 0 0 68%; scroll-snap-align: start; }
+}
+
+/* ----- Rodapé: coluna "Bairros" (gerada por scripts/build-acervo.mjs) ----- */
+@media (min-width: 700px) {
+  .footer__grid:has(.footer__bairros) { grid-template-columns: 1.3fr 1fr 1fr 1fr; }
+}
+@media (max-width: 699px) {
+  .footer__grid:has(.footer__bairros) { grid-template-columns: 1fr 1fr; gap: var(--space-7) var(--space-5); }
+  .footer__grid:has(.footer__bairros) > :not(.footer__col):not(.footer__links), .footer__grid:has(.footer__bairros) > .footer__col:last-child:not(.footer__bairros) { grid-column: 1 / -1; }
+}
