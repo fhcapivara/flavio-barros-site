@@ -2590,3 +2590,95 @@ em {
   .footer__grid:has(.footer__bairros, .footer__dossies) > .footer__col:not(.footer__bairros):not(.footer__dossies):not(:last-child) { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--space-5); row-gap: var(--space-3); }
   .footer__grid:has(.footer__bairros, .footer__dossies) > .footer__col:not(.footer__bairros):not(.footer__dossies):not(:last-child) h4 { grid-column: 1 / -1; }
 }
+
+/* Aviso de cookies (js/consent.js) */
+.consent {
+  position: fixed;
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: var(--space-3);
+  z-index: 95;
+  max-width: 34rem;
+  padding: var(--space-4) var(--space-5);
+  background: var(--off-white);
+  color: var(--stone-dark);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 40px rgba(10, 10, 10, 0.12);
+  font-family: var(--font-body);
+}
+.consent[hidden] { display: none; }
+.consent__text {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--stone-dark);
+  max-width: none;
+  margin: 0;
+}
+.consent__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-4);
+  margin-top: var(--space-3);
+}
+.consent__link {
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  color: var(--stone-dark);
+  border-bottom: 1px solid var(--stone-light);
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.consent__link:hover { color: var(--black); border-color: var(--black); }
+.consent__actions {
+  display: flex;
+  gap: var(--space-2);
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+.consent__btn {
+  flex: 0 1 8.5rem;
+  min-height: var(--touch);
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: transparent;
+  border: 1px solid var(--black);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+.consent__btn:hover { background: var(--black); color: var(--off-white); }
+.consent__btn:focus-visible,
+.consent__link:focus-visible,
+.footer__cookies:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+@media (max-width: 599px) {
+  .consent { left: var(--space-2); right: var(--space-2); bottom: var(--space-2); padding: var(--space-4); }
+  .consent__actions { flex-basis: 100%; }
+  .consent__btn { flex: 1 1 0; }
+}
+@media (min-width: 900px) {
+  .consent { left: var(--space-5); bottom: var(--space-5); right: auto; }
+}
+/* Com o aviso aberto, o WhatsApp fixo (mobile) sobe para não ficar por baixo dele. */
+.consent-open .wa-sticky { bottom: calc(var(--consent-h, 0px) + var(--space-2) + var(--space-3)); }
+
+/* Rodapé: Preferências de cookies */
+.footer__legal { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2); }
+.footer__cookies {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(247, 245, 242, 0.18);
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.footer__cookies:hover { color: var(--off-white); border-color: var(--off-white); }

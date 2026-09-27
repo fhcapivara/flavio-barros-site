@@ -1,6 +1,6 @@
 /*
  * Leitura de mercado: pedido de estudos pelo WhatsApp, compartilhamento e avaliação dos textos.
- * Sem bibliotecas externas, sem cookies. Carregado em todas as páginas de /mercado/.
+ * Sem bibliotecas externas, sem cookies (a medição fica em js/consent.js). Carregado em todas as páginas de /mercado/.
  *
  * Estudos: o visitante informa só o nome. O nome serve apenas para montar a mensagem
  * do WhatsApp e não é enviado a nenhum servidor nem guardado.
@@ -99,6 +99,8 @@ var VOTOS_ENDPOINT = "";
       setError("");
       var text = "Olá, Flávio, meu nome é " + nome + " e gostaria de receber o material " + current.material + ".";
       var url = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(text);
+      // Medição (só com consentimento, via js/consent.js). O nome não é enviado.
+      if (window.fbConsent) window.fbConsent.track("dossie_request", { material: current.material });
       var win = null;
       try { win = window.open(url, "_blank"); } catch (err) { win = null; }
       if (win) {
