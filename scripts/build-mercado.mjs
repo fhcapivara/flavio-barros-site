@@ -671,7 +671,7 @@ for (const p of posts) {
 const activeCats = CATEGORIES.filter((c) => byCat.has(c));
 
 const LIST_TITLE = "Mercado imobiliário em Ribeirão Preto: leitura de Flávio Barros";
-const LIST_DESC = "Leituras de Flávio Barros sobre o mercado imobiliário em Ribeirão Preto e região: juros, patrimônio, bairros, condomínios, terrenos e estudos de lançamentos.";
+const LIST_DESC = "Leituras de Flávio Barros sobre o mercado imobiliário em Ribeirão Preto e região: juros, tributos, patrimônio, bairros, condomínios e terrenos.";
 writeFileSync(join(MERCADO, "index.html"), page({
   title: `${LIST_TITLE}`,
   description: LIST_DESC,
@@ -720,7 +720,6 @@ function redirectPage(to) {
   <title>Página movida | Flávio Barros</title>
   <meta http-equiv="refresh" content="0; url=${to}" />
   <link rel="canonical" href="${to}" />
-  <meta name="robots" content="noindex,follow" />
 </head>
 <body>
   <p>Esta página mudou de endereço: <a href="${to}">${to}</a></p>
