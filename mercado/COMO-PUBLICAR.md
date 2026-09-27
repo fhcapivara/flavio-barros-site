@@ -83,35 +83,36 @@ Se um campo estiver faltando ou com erro (por exemplo, a data em outro formato o
 
 Observação: o arquivo `_modelo.md` é apenas o modelo e nunca é publicado. Arquivos cujo nome começa com `_` são ignorados.
 
-# Como publicar um estudo de mercado (PDF para download)
+# Como publicar um estudo de mercado (enviado pelo WhatsApp)
 
-Os estudos aparecem em https://flaviodebarros.com.br/mercado/estudos/ e no fim da página de Leitura de mercado. Para baixar, o visitante informa nome e telefone. Você recebe um e-mail a cada download e o pedido fica gravado na planilha **Downloads de estudos**, no seu Google Drive.
+Os estudos aparecem em https://flaviodebarros.com.br/mercado/estudos/ e no fim da página de Leitura de mercado. Para pedir um estudo, o visitante clica em **Receber o estudo pelo WhatsApp** e informa apenas o nome. O site abre uma conversa no seu WhatsApp, (16) 99116-6681, com a mensagem pronta:
 
-**Importante:** o PDF nunca vai para o GitHub. Se estiver no repositório, o Google indexa o arquivo e as pessoas baixam sem passar pelo formulário.
+"Olá, Flávio, meu nome é Maria Silva e gostaria de receber o material Residencial Barão de Campo Belo."
+
+Você responde e envia o material pela própria conversa. O nome serve apenas para montar a mensagem: o site não grava nem envia esse dado a nenhum servidor.
+
+**Importante:** o arquivo do estudo nunca vai para o GitHub. Guarde-o no seu computador ou no Google Drive para enviar pelo WhatsApp.
 
 ## Passo a passo
 
-1. **PDF no Drive.** Envie o PDF para a pasta de estudos no seu Google Drive. Clique com o botão direito > **Compartilhar** > "Acesso geral": **Qualquer pessoa com o link**. Copie o link: o ID do arquivo é o trecho entre `/d/` e `/view`.
-2. **Apps Script.** Abra o projeto **Estudos do site** em https://script.google.com. Em `CONFIG.ESTUDOS`, acrescente uma linha com um id novo (letras minúsculas, números e hífens), o título e o ID do arquivo:
-   `'residencial-exemplo-2026-10': { titulo: 'Residencial Exemplo: estudo de lançamento', driveFileId: '1AbC...xyz' }`
-   Depois: **Implantar** > **Gerenciar implantações** > lápis > Versão: **Nova versão** > **Implantar**. O endereço do app continua o mesmo.
-3. **Capa (opcional).** Envie a imagem da capa para `images/estudos/` com um nome novo, por exemplo `residencial-exemplo-capa-2026-10.webp` (largura de 1400 px é suficiente).
-4. **Página do estudo.** Na pasta https://github.com/fhcapivara/flavio-barros-site/tree/main/mercado/estudos, crie um arquivo `.md` copiando o `_modelo.md`. Preencha os campos. O campo `id` precisa ser **igual** ao id do passo 2. Faça o commit.
-5. Em cerca de 2 minutos o estudo aparece no site. Teste o download você mesmo: deve chegar o e-mail "Novo download: ..." e surgir uma linha na planilha.
+1. **Capa (opcional).** Envie a imagem da capa para `images/estudos/` com um nome novo, por exemplo `residencial-exemplo-capa-2026-10.webp` (largura de 1400 px é suficiente).
+2. **Página do estudo.** Na pasta https://github.com/fhcapivara/flavio-barros-site/tree/main/mercado/estudos, crie um arquivo `.md` copiando o `_modelo.md`. Preencha os campos e faça o commit.
+3. Em cerca de 2 minutos o estudo aparece no site. Teste você mesmo: clique no botão, informe um nome e confira se a mensagem chega certa no WhatsApp.
 
 ## Campos do estudo
 
 - **titulo**: título que aparece na página e nos cartões.
 - **titulo_seo**: opcional. Título para o Google e a aba do navegador.
 - **slug**: opcional. Endereço da página. Em branco, é criado a partir do título.
-- **id**: identificador do estudo, igual ao do Apps Script.
+- **id**: opcional. Identificador interno do estudo. Em branco, usa o slug.
+- **material**: opcional. Nome do estudo na mensagem de WhatsApp. Em branco, usa o título até os dois-pontos (por exemplo, "Residencial Barão de Campo Belo").
 - **tipo**: por exemplo `Estudo de lançamento` ou `Estudo de região`.
 - **data**: ano e mês, no formato `2026-10`. Aparece como "Outubro de 2026".
 - **resumo**: duas frases. Aparece no Google e no topo da página.
 - **resumo_curto**: opcional. Uma linha para os cartões.
 - **o_que_responde**: os temas do estudo, separados por ` | `. Viram uma lista.
-- **regiao**, **lancamento**, **paginas**: aparecem no quadro de download.
+- **regiao**, **lancamento**, **paginas**: aparecem no quadro lateral do estudo.
 - **imagem**: opcional. Caminho da capa, por exemplo `images/estudos/residencial-exemplo-capa-2026-10.webp`.
 - **rascunho**: `true` deixa o estudo fora do site.
 
-Evite na página pública frases de promessa (retorno, valorização garantida) e valores. Os números ficam no PDF.
+Evite na página pública frases de promessa (retorno, valorização garantida) e valores. Os números ficam no material enviado.

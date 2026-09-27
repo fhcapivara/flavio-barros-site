@@ -1,19 +1,23 @@
 /*
- * Leitura de mercado: download de estudos, compartilhamento e avaliação dos textos.
+ * Leitura de mercado: pedido de estudos pelo WhatsApp, compartilhamento e avaliação dos textos.
  * Sem bibliotecas externas, sem cookies. Carregado em todas as páginas de /mercado/.
  *
- * ESTUDOS_ENDPOINT: URL do app da Web do Google Apps Script (termina em /exec).
- * Enquanto estiver vazio, o botão "Baixar o estudo" mostra "Download disponível em breve"
- * e os votos ficam só no navegador do visitante.
+ * Estudos: o visitante informa só o nome. O nome serve apenas para montar a mensagem
+ * do WhatsApp e não é enviado a nenhum servidor nem guardado.
+ *
+ * VOTOS_ENDPOINT: URL opcional (por exemplo, app da Web do Google Apps Script) que recebe
+ * os votos "Esta leitura foi útil?". Enquanto estiver vazio, os votos ficam só no navegador.
  */
-var ESTUDOS_ENDPOINT = "";
+var VOTOS_ENDPOINT = "";
 
 (function () {
   "use strict";
 
+  var WHATSAPP = "5516991166681";
+
   function post(data) {
     // text/plain evita a requisição de preflight (CORS) no Apps Script.
-    return fetch(ESTUDOS_ENDPOINT, {
+    return fetch(VOTOS_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(data),
@@ -32,51 +36,40 @@ var ESTUDOS_ENDPOINT = "";
     return value;
   }
 
-  /* ---------- Estudos: formulário de download ---------- */
+  /* ---------- Estudos: pedido pelo WhatsApp ---------- */
   var modal = document.getElementById("estudos-modal");
   if (modal) {
     var form = modal.querySelector(".estudos-form");
     var errorEl = modal.querySelector(".estudos-form__error");
-    var submit = modal.querySelector(".estudos-form__submit");
     var titleEl = modal.querySelector("[data-estudos-titulo]");
-    var nomeEl = modal.querySelector("[data-estudos-nome]");
-    var linkEl = modal.querySelector("[data-estudos-link]");
-    var waEl = modal.querySelector("[data-estudos-wa]");
-    var phone = form.elements.telefone;
     var current = null;
     var lastTrigger = null;
 
-    var showStep = function (name) {
-      modal.querySelectorAll("[data-estudos-step]").forEach(function (el) {
-        el.hidden = el.getAttribute("data-estudos-step") !== name;
-      });
-    };
     var setError = function (msg) {
       errorEl.textContent = msg || "";
       errorEl.hidden = !msg;
     };
-    var open = function (id, titulo, trigger) {
-      current = { id: id, titulo: titulo };
-      lastTrigger = trigger || null;
-      titleEl.textContent = titulo;
+    var fromButton = function (btn) {
+      var titulo = btn.getAttribute("data-estudo-titulo") || "";
+      return {
+        titulo: titulo,
+        material: btn.getAttribute("data-estudo-material") || titulo.split(":")[0].trim(),
+      };
+    };
+    var open = function (btn) {
+      current = fromButton(btn);
+      lastTrigger = btn || null;
+      titleEl.textContent = current.titulo;
       setError("");
-      submit.disabled = false;
-      submit.textContent = "Liberar download";
-      if (!ESTUDOS_ENDPOINT) {
-        waEl.href = "https://wa.me/5516991166681?text=" + encodeURIComponent("Olá, Flávio. Gostaria de receber o estudo \"" + titulo + "\".");
-        showStep("breve");
-      } else {
-        showStep("form");
-      }
       if (typeof modal.showModal === "function") modal.showModal();
       else modal.setAttribute("open", "");
       document.documentElement.classList.add("estudos-modal-open");
-      var first = modal.querySelector("[data-estudos-step]:not([hidden]) input, [data-estudos-step]:not([hidden]) .btn");
+      var first = form.elements.nome;
       if (first) setTimeout(function () { first.focus(); }, 30);
     };
     var close = function () {
       if (typeof modal.close === "function") modal.close();
-      else modal.removeAttribute("open");
+      else { modal.removeAttribute("open"); document.documentElement.classList.remove("estudos-modal-open"); }
     };
     modal.addEventListener("close", function () {
       document.documentElement.classList.remove("estudos-modal-open");
@@ -89,58 +82,33 @@ var ESTUDOS_ENDPOINT = "";
     document.querySelectorAll("[data-estudo-id]").forEach(function (btn) {
       btn.addEventListener("click", function (e) {
         e.preventDefault();
-        open(btn.getAttribute("data-estudo-id"), btn.getAttribute("data-estudo-titulo"), btn);
+        open(btn);
       });
     });
-    if (location.hash === "#baixar") {
+    if (location.hash === "#solicitar" || location.hash === "#baixar") {
       var auto = document.querySelector(".estudos-panel [data-estudo-id]");
-      if (auto) open(auto.getAttribute("data-estudo-id"), auto.getAttribute("data-estudo-titulo"), auto);
+      if (auto) open(auto);
     }
-
-    // Máscara leve: (16) 99999-9999
-    phone.addEventListener("input", function () {
-      var d = phone.value.replace(/\D/g, "");
-      if (d.length > 11 && d.indexOf("55") === 0) d = d.slice(2);
-      d = d.slice(0, 11);
-      var cut = d.length > 10 ? 7 : 6;
-      var out = d;
-      if (d.length > 2) out = "(" + d.slice(0, 2) + ") " + d.slice(2, cut);
-      if (d.length > cut) out += "-" + d.slice(cut);
-      phone.value = out;
-    });
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!current) return;
+      if (form.elements.empresa && form.elements.empresa.value) { close(); return; }
       var nome = form.elements.nome.value.replace(/\s+/g, " ").trim();
-      var digits = phone.value.replace(/\D/g, "");
       if (nome.length < 2) { setError("Informe o seu nome."); form.elements.nome.focus(); return; }
-      if (digits.length < 10) { setError("Informe um telefone com DDD, por exemplo (16) 99999-9999."); phone.focus(); return; }
-      if (!form.elements.consentimento.checked) { setError("Marque a autorização para liberar o download."); return; }
-      if (!ESTUDOS_ENDPOINT) { showStep("breve"); return; }
       setError("");
-      submit.disabled = true;
-      submit.textContent = "Liberando o download…";
-      post({
-        acao: "download",
-        estudo_id: current.id,
-        nome: nome,
-        telefone: phone.value,
-        consentimento: true,
-        pagina: location.origin + location.pathname,
-        empresa: form.elements.empresa.value,
-      }).then(function (res) {
-        if (!res || !res.ok || !res.url) throw new Error((res && res.erro) || "sem url");
-        nomeEl.textContent = nome.split(" ")[0];
-        linkEl.href = res.url;
-        showStep("ok");
-        linkEl.focus();
-        try { window.open(res.url, "_blank", "noopener"); } catch (err) { /* o botão continua disponível */ }
-      }).catch(function () {
-        submit.disabled = false;
-        submit.textContent = "Liberar download";
-        setError("Não foi possível liberar o download agora. Tente de novo em instantes ou fale comigo pelo WhatsApp, (16) 99116-6681.");
-      });
+      var text = "Olá, Flávio, meu nome é " + nome + " e gostaria de receber o material " + current.material + ".";
+      var url = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(text);
+      var win = null;
+      try { win = window.open(url, "_blank"); } catch (err) { win = null; }
+      if (win) {
+        try { win.opener = null; } catch (err) { /* sem acesso, tudo bem */ }
+      } else {
+        // Janela bloqueada (comum no Safari do iPhone): segue na mesma aba.
+        window.location.href = url;
+        return;
+      }
+      close();
     });
   }
 
@@ -205,7 +173,7 @@ var ESTUDOS_ENDPOINT = "";
         var voto = btn.getAttribute("data-voto");
         store(key, voto);
         done();
-        if (!ESTUDOS_ENDPOINT) return;
+        if (!VOTOS_ENDPOINT) return;
         var cid = store("mercado-cid");
         if (!cid) cid = store("mercado-cid", Math.random().toString(36).slice(2) + Date.now().toString(36));
         post({ acao: "voto", artigo: artigo, titulo: box.getAttribute("data-titulo"), voto: voto, cid: cid || "" }).catch(function () {});

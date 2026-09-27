@@ -6,8 +6,11 @@ titulo: Nome do empreendimento ou da região: estudo de lançamento
 titulo_seo:
 # slug é opcional: endereço da página (letras minúsculas, sem acentos, com hífens).
 slug:
-# id precisa ser IGUAL ao id cadastrado no Apps Script (CONFIG), que aponta para o PDF no Google Drive.
+# id é opcional: identificador interno do estudo (letras minúsculas, números e hífens). Em branco, usa o slug.
 id: nome-do-estudo-2026-10
+# material é opcional: nome do estudo na mensagem de WhatsApp ("gostaria de receber o material ...").
+# Em branco, usa o título até os dois-pontos, por exemplo "Nome do empreendimento ou da região".
+material:
 tipo: Estudo de lançamento
 # data: ano e mês, no formato AAAA-MM.
 data: 2026-10

@@ -119,17 +119,17 @@
             </ul>
               </section>
             </div>
-            <aside class="estudos-panel" id="baixar" aria-label="Baixar o estudo">
-              <p class="estudos-panel__eyebrow">Estudo em PDF</p>
+            <aside class="estudos-panel" id="solicitar" aria-label="Solicitar o estudo">
+              <p class="estudos-panel__eyebrow">Estudo sob solicitação</p>
               <p class="estudos-panel__title">Residencial Barão de Campo Belo: estudo de lançamento</p>
               <dl class="estudos-panel__facts">
                 <div><dt>Lançamento</dt><dd>Residencial Barão de Campo Belo, da construtora Pereira Martins</dd></div>
                 <div><dt>Região</dt><dd>Eixo da Avenida do Café, no entorno do campus da USP e do Hospital das Clínicas</dd></div>
                 <div><dt>Data</dt><dd>Setembro de 2026</dd></div>
-                <div><dt>Formato</dt><dd>PDF, 16 páginas</dd></div>
+                <div><dt>Extensão</dt><dd>16 páginas</dd></div>
               </dl>
-              <a class="btn btn--primary estudos-download" href="/mercado/estudos/residencial-barao-de-campo-belo.html#baixar" data-estudo-id="barao-campo-belo-2026-09" data-estudo-titulo="Residencial Barão de Campo Belo: estudo de lançamento">Baixar o estudo</a>
-              <p class="estudos-panel__note">Pedimos apenas nome e telefone para liberar o download.</p>
+              <a class="btn btn--primary estudos-solicitar" href="/mercado/estudos/residencial-barao-de-campo-belo.html#solicitar" data-estudo-id="barao-campo-belo-2026-09" data-estudo-titulo="Residencial Barão de Campo Belo: estudo de lançamento" data-estudo-material="Residencial Barão de Campo Belo">Receber o estudo pelo WhatsApp</a>
+              <p class="estudos-panel__note">Basta informar o seu nome. O estudo é enviado pelo WhatsApp.</p>
             </aside>
           </div>
 
@@ -154,40 +154,20 @@
       <div class="estudos-modal__panel">
         <button class="estudos-modal__close" type="button" data-estudos-close aria-label="Fechar"><span aria-hidden="true">×</span></button>
         <p class="estudos-modal__estudo" data-estudos-titulo></p>
-        <div class="estudos-modal__step" data-estudos-step="form">
-          <h2 class="estudos-modal__title" id="estudos-modal-title">Para onde envio o estudo?</h2>
-          <p class="estudos-modal__intro">Informe o seu nome e o seu telefone para liberar o download.</p>
-          <form class="estudos-form" novalidate>
-            <label class="estudos-field">
-              <span class="estudos-field__label">Nome</span>
-              <input class="estudos-field__input" type="text" name="nome" autocomplete="name" maxlength="120" required />
-            </label>
-            <label class="estudos-field">
-              <span class="estudos-field__label">Telefone (WhatsApp)</span>
-              <input class="estudos-field__input" type="tel" name="telefone" inputmode="tel" autocomplete="tel" placeholder="(16) 99999-9999" maxlength="20" required />
-            </label>
-            <div class="estudos-form__hp" aria-hidden="true">
-              <label>Empresa <input type="text" name="empresa" tabindex="-1" autocomplete="off" /></label>
-            </div>
-            <label class="estudos-check">
-              <input type="checkbox" name="consentimento" required />
-              <span>Autorizo o contato de Flávio Barros sobre este estudo, conforme a <a href="/privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</span>
-            </label>
-            <p class="estudos-form__error" role="alert" hidden></p>
-            <button class="btn btn--primary estudos-form__submit" type="submit">Liberar download</button>
-          </form>
-        </div>
-        <div class="estudos-modal__step" data-estudos-step="ok" hidden>
-          <h2 class="estudos-modal__title">Obrigado, <span data-estudos-nome></span>.</h2>
-          <p class="estudos-modal__intro">O seu estudo está pronto para download.</p>
-          <p class="estudos-modal__actions"><a class="btn btn--primary" href="#" target="_blank" rel="noopener" data-estudos-link>Baixar o estudo</a></p>
-          <p class="estudos-modal__note">Se o download não começar, toque no botão acima.</p>
-        </div>
-        <div class="estudos-modal__step" data-estudos-step="breve" hidden>
-          <h2 class="estudos-modal__title">Download disponível em breve</h2>
-          <p class="estudos-modal__intro">Estou finalizando a liberação deste material pelo site. Se preferir, peça o estudo pelo WhatsApp e eu envio para você.</p>
-          <p class="estudos-modal__actions"><a class="btn btn--primary" href="https://wa.me/5516991166681" target="_blank" rel="noopener" data-estudos-wa>Pedir pelo WhatsApp</a></p>
-        </div>
+        <h2 class="estudos-modal__title" id="estudos-modal-title">Como posso chamar você?</h2>
+        <p class="estudos-modal__intro">Informe o seu nome e eu envio o estudo pelo WhatsApp.</p>
+        <form class="estudos-form" novalidate>
+          <label class="estudos-field">
+            <span class="estudos-field__label">Nome</span>
+            <input class="estudos-field__input" type="text" name="nome" autocomplete="name" maxlength="120" required />
+          </label>
+          <div class="estudos-form__hp" aria-hidden="true">
+            <label>Empresa <input type="text" name="empresa" tabindex="-1" autocomplete="off" /></label>
+          </div>
+          <p class="estudos-form__error" role="alert" hidden></p>
+          <button class="btn btn--primary estudos-form__submit" type="submit">Solicitar pelo WhatsApp</button>
+          <p class="estudos-modal__note">Você será direcionado ao WhatsApp de Flávio.</p>
+        </form>
       </div>
     </dialog>
   </main>
@@ -236,6 +216,6 @@
     <span class="wa-sticky__label">WhatsApp</span>
   </a>
   <script src="/js/main.js"></script>
-  <script src="/js/estudos.js?v=08e5b3bf" defer></script>
+  <script src="/js/estudos.js?v=be54264b" defer></script>
 </body>
 </html>

@@ -352,8 +352,8 @@ function readEstudos() {
     if (/^(true|sim|yes)$/i.test(d.rascunho || "")) { console.log(`Estudo em rascunho ignorado: ${file}`); continue; }
     const titulo = plain(d.titulo || "");
     if (!titulo) { problem(file, "falta o campo titulo.", "estudos"); continue; }
-    const id = (d.id || "").trim();
-    if (!/^[a-z0-9][a-z0-9-]*$/.test(id)) { problem(file, `id inválido ("${id}"). Use letras minúsculas, números e hífens, igual ao que está no Apps Script.`, "estudos"); continue; }
+    const id = (d.id || "").trim() || slugify(d.slug || titulo);
+    if (!/^[a-z0-9][a-z0-9-]*$/.test(id)) { problem(file, `id inválido ("${id}"). Use letras minúsculas, números e hífens.`, "estudos"); continue; }
     if (seenId.has(id)) { problem(file, `o id "${id}" já é usado por ${seenId.get(id)}.`, "estudos"); continue; }
     const data = (d.data || "").trim();
     if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(data)) { problem(file, `data inválida ("${data}"). Use ano e mês, por exemplo 2026-09.`, "estudos"); continue; }
@@ -370,6 +370,8 @@ function readEstudos() {
       tituloSeo: plain(d.titulo_seo || "") || `${titulo} | Estudos de mercado | ${AUTHOR}`,
       resumoCurto: plain(d.resumo_curto || "") || truncate(resumo, 140),
       tipo: plain(d.tipo || "") || "Estudo de mercado",
+      // Nome do material na mensagem de WhatsApp. Padrão: o título até os dois-pontos.
+      material: plain(d.material || "") || titulo.split(":")[0].trim(),
       mes: formatMonth(data),
       oQueResponde: oqr.includes("|") ? oqr.split("|").map((x) => x.trim()).filter(Boolean) : oqr,
       regiao: plain(d.regiao || ""),
@@ -403,7 +405,7 @@ function card(p) {
 function filters(cats, active) {
   const items = [`<a href="/mercado/"${active ? "" : ' aria-current="page"'}>Todos</a>`]
     .concat(cats.map((c) => `<a href="/mercado/categoria/${slugify(c)}.html"${active === c ? ' aria-current="page"' : ""}>${esc(c)}</a>`))
-    .concat([`<a class="mercado-filters__estudos" href="/mercado/estudos/"${active === "estudos" ? ' aria-current="page"' : ""}>Estudos para download</a>`]);
+    .concat([`<a class="mercado-filters__estudos" href="/mercado/estudos/"${active === "estudos" ? ' aria-current="page"' : ""}>Estudos de mercado</a>`]);
   return `          <nav class="mercado-filters reveal" aria-label="Seções de Leitura de mercado">
             ${items.join("\n            ")}
           </nav>`;
@@ -497,8 +499,8 @@ function signature(waText) {
 }
 
 /* ---------------- estudos: blocos ---------------- */
-function downloadButton(e, label = "Baixar o estudo") {
-  return `<a class="btn btn--primary estudos-download" href="/mercado/estudos/${e.slug}.html#baixar" data-estudo-id="${esc(e.id)}" data-estudo-titulo="${esc(e.titulo)}">${label}</a>`;
+function requestButton(e, label = "Receber o estudo pelo WhatsApp") {
+  return `<a class="btn btn--primary estudos-solicitar" href="/mercado/estudos/${e.slug}.html#solicitar" data-estudo-id="${esc(e.id)}" data-estudo-titulo="${esc(e.titulo)}" data-estudo-material="${esc(e.material)}">${label}</a>`;
 }
 
 function estudoCard(e, h = "h2") {
@@ -508,7 +510,7 @@ function estudoCard(e, h = "h2") {
               <${h} class="estudos-card__title"><a href="/mercado/estudos/${e.slug}.html">${esc(e.titulo)}</a></${h}>
               <p class="estudos-card__text">${esc(e.resumoCurto)}</p>
               <p class="estudos-card__actions">
-                ${downloadButton(e)}
+                ${requestButton(e)}
                 <a class="estudos-card__more" href="/mercado/estudos/${e.slug}.html">Ver detalhes</a>
               </p>
             </div>
@@ -523,40 +525,20 @@ function estudosModal() {
       <div class="estudos-modal__panel">
         <button class="estudos-modal__close" type="button" data-estudos-close aria-label="Fechar"><span aria-hidden="true">×</span></button>
         <p class="estudos-modal__estudo" data-estudos-titulo></p>
-        <div class="estudos-modal__step" data-estudos-step="form">
-          <h2 class="estudos-modal__title" id="estudos-modal-title">Para onde envio o estudo?</h2>
-          <p class="estudos-modal__intro">Informe o seu nome e o seu telefone para liberar o download.</p>
-          <form class="estudos-form" novalidate>
-            <label class="estudos-field">
-              <span class="estudos-field__label">Nome</span>
-              <input class="estudos-field__input" type="text" name="nome" autocomplete="name" maxlength="120" required />
-            </label>
-            <label class="estudos-field">
-              <span class="estudos-field__label">Telefone (WhatsApp)</span>
-              <input class="estudos-field__input" type="tel" name="telefone" inputmode="tel" autocomplete="tel" placeholder="(16) 99999-9999" maxlength="20" required />
-            </label>
-            <div class="estudos-form__hp" aria-hidden="true">
-              <label>Empresa <input type="text" name="empresa" tabindex="-1" autocomplete="off" /></label>
-            </div>
-            <label class="estudos-check">
-              <input type="checkbox" name="consentimento" required />
-              <span>Autorizo o contato de Flávio Barros sobre este estudo, conforme a <a href="/privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</span>
-            </label>
-            <p class="estudos-form__error" role="alert" hidden></p>
-            <button class="btn btn--primary estudos-form__submit" type="submit">Liberar download</button>
-          </form>
-        </div>
-        <div class="estudos-modal__step" data-estudos-step="ok" hidden>
-          <h2 class="estudos-modal__title">Obrigado, <span data-estudos-nome></span>.</h2>
-          <p class="estudos-modal__intro">O seu estudo está pronto para download.</p>
-          <p class="estudos-modal__actions"><a class="btn btn--primary" href="#" target="_blank" rel="noopener" data-estudos-link>Baixar o estudo</a></p>
-          <p class="estudos-modal__note">Se o download não começar, toque no botão acima.</p>
-        </div>
-        <div class="estudos-modal__step" data-estudos-step="breve" hidden>
-          <h2 class="estudos-modal__title">Download disponível em breve</h2>
-          <p class="estudos-modal__intro">Estou finalizando a liberação deste material pelo site. Se preferir, peça o estudo pelo WhatsApp e eu envio para você.</p>
-          <p class="estudos-modal__actions"><a class="btn btn--primary" href="https://wa.me/${WHATSAPP}" target="_blank" rel="noopener" data-estudos-wa>Pedir pelo WhatsApp</a></p>
-        </div>
+        <h2 class="estudos-modal__title" id="estudos-modal-title">Como posso chamar você?</h2>
+        <p class="estudos-modal__intro">Informe o seu nome e eu envio o estudo pelo WhatsApp.</p>
+        <form class="estudos-form" novalidate>
+          <label class="estudos-field">
+            <span class="estudos-field__label">Nome</span>
+            <input class="estudos-field__input" type="text" name="nome" autocomplete="name" maxlength="120" required />
+          </label>
+          <div class="estudos-form__hp" aria-hidden="true">
+            <label>Empresa <input type="text" name="empresa" tabindex="-1" autocomplete="off" /></label>
+          </div>
+          <p class="estudos-form__error" role="alert" hidden></p>
+          <button class="btn btn--primary estudos-form__submit" type="submit">Solicitar pelo WhatsApp</button>
+          <p class="estudos-modal__note">Você será direcionado ao WhatsApp de Flávio.</p>
+        </form>
       </div>
     </dialog>`;
 }
@@ -566,9 +548,9 @@ function estudosBlock(estudos) {
   return `    <section class="section section--alt mercado-estudos" aria-labelledby="mercado-estudos-title">
       <div class="container">
         <div class="mercado-estudos__header reveal">
-          <p class="eyebrow">Estudos para download</p>
+          <p class="eyebrow">Estudos sob solicitação</p>
           <h2 id="mercado-estudos-title">Estudos de mercado em Ribeirão Preto</h2>
-          <p class="mercado-estudos__lead">${latest.length ? "Análises dos lançamentos e das regiões que acompanho de perto, em PDF." : ESTUDOS_EMPTY}</p>
+          <p class="mercado-estudos__lead">${latest.length ? "Análises dos lançamentos e das regiões que acompanho de perto, enviadas pelo WhatsApp." : ESTUDOS_EMPTY}</p>
         </div>${latest.length ? `
         <div class="estudos-list">
 ${latest.map((e) => estudoCard(e, "h3")).join("\n")}
@@ -611,7 +593,7 @@ function estudoBody(e) {
     e.lancamento && ["Lançamento", e.lancamento],
     e.regiao && ["Região", e.regiao],
     ["Data", e.mes],
-    ["Formato", e.paginas ? `PDF, ${e.paginas} páginas` : "PDF"],
+    e.paginas && ["Extensão", `${e.paginas} páginas`],
   ].filter(Boolean);
   return `    <article class="estudos-page">
       <header class="page-hero mercado-hero">
@@ -638,14 +620,14 @@ function estudoBody(e) {
 ${e.html}
               </div>` : ""}
             </div>
-            <aside class="estudos-panel" id="baixar" aria-label="Baixar o estudo">
-              <p class="estudos-panel__eyebrow">Estudo em PDF</p>
+            <aside class="estudos-panel" id="solicitar" aria-label="Solicitar o estudo">
+              <p class="estudos-panel__eyebrow">Estudo sob solicitação</p>
               <p class="estudos-panel__title">${esc(e.titulo)}</p>
               <dl class="estudos-panel__facts">
 ${facts.map(([k, v]) => `                <div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("\n")}
               </dl>
-              ${downloadButton(e)}
-              <p class="estudos-panel__note">Pedimos apenas nome e telefone para liberar o download.</p>
+              ${requestButton(e)}
+              <p class="estudos-panel__note">Basta informar o seu nome. O estudo é enviado pelo WhatsApp.</p>
             </aside>
           </div>
 ${signature(`Olá, Flávio. Vi o estudo "${e.titulo}" no seu site e gostaria de conversar.`)}
@@ -781,7 +763,7 @@ writeFileSync(join(MERCADO, "index.html"), page({
 mkdirSync(ESTUDOS_DIR, { recursive: true });
 writeFileSync(join(ESTUDOS_DIR, "index.html"), page({
   title: "Estudos de mercado em Ribeirão Preto | Flávio Barros",
-  description: "Estudos de Flávio Barros sobre lançamentos e regiões de Ribeirão Preto, em PDF, para quem quer decidir com dados, e não com impressão.",
+  description: "Estudos de Flávio Barros sobre lançamentos e regiões de Ribeirão Preto, enviados pelo WhatsApp, para quem quer decidir com dados, e não com impressão.",
   canonical: `${SITE}/mercado/estudos/`,
   robots: estudos.length ? "index,follow" : "noindex,follow",
   body: estudosIndexBody(estudos, activeCats),
