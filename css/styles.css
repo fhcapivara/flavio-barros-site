@@ -2534,3 +2534,7 @@ em {
 .acervo-regioes__lista { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); margin-top: var(--space-3); padding: 0; list-style: none; }
 .acervo-regioes__lista a { color: var(--green); text-decoration: underline; text-underline-offset: 3px; }
 .acervo-regiao__vazio { color: var(--stone-dark); }
+.acervo-regiao__texto { padding-block: var(--space-7); }
+.acervo-regiao__texto + .section--selecao { padding-top: var(--space-5); }
+.breadcrumb a { color: inherit; }
+.breadcrumb a:hover { color: var(--green); }

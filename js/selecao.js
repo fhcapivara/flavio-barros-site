@@ -57,6 +57,25 @@
     return false;
   }
 
+  // Locação/aluguel fora do Acervo e anúncios idênticos uma vez só
+  // (mesmas regras de scripts/build-acervo.mjs e scripts/sync-lanportus.mjs).
+  function isRental(p) {
+    return /loca[cç][aã]o|aluguel/i.test((p.title || "") + " " + (p.description || "") + " " + (p.tags || []).join(" "));
+  }
+  function normKey(s) {
+    return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/['´`’‘]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
+  }
+  function cleanItems(items) {
+    var seen = {};
+    return (items || []).filter(function (p) {
+      if (isRental(p)) return false;
+      var k = [normKey(p.title), p.type, Math.round(Number(p.area) || 0), Number(p.beds) || 0, normKey(p.neighborhood)].join("|");
+      if (seen[k]) return false;
+      seen[k] = 1;
+      return true;
+    });
+  }
+
   function isPresentationOk(p) {
     if (EXCLUDE_REFS[String(p.ref)]) return false;
     return true;
@@ -473,7 +492,7 @@
   }
 
   function boot(items) {
-    state.items = items || [];
+    state.items = cleanItems(items);
     populateRegioes();
     readParams();
     syncRobots();
@@ -489,7 +508,7 @@
       tryCatalogRefresh()
         .then(function (fresh) {
           if (fresh && fresh.length) {
-            state.items = fresh;
+            state.items = cleanItems(fresh);
             populateRegioes();
             render();
           }

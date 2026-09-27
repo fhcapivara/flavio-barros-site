@@ -17,6 +17,7 @@
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { markdown } from "./lib/markdown.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -39,6 +40,22 @@ const TYPE_ALIAS = { casa: "HOUSE", casas: "HOUSE", apartamento: "APARTMENT", ap
 const isCommercialLand = (p) => p.type === "LAND" && /comerci|industri|galp|barrac|lote comercial|terreno comercial/.test(((p.title || "") + " " + (p.neighborhood || "") + " " + (p.tags || []).join(" ")).toLowerCase());
 const isCommercialListing = (p) => !!COMMERCIAL[p.type] || isCommercialLand(p);
 const typeLabel = (t) => TYPE_LABEL[t] || t || "";
+// Anúncios de locação ou aluguel ficam fora do Acervo (mesma regra em js/selecao.js e no sync).
+export const isRental = (p) => /loca[cç][aã]o|aluguel/i.test((p.title || "") + " " + (p.description || "") + " " + (p.tags || []).join(" "));
+// Anúncios idênticos (mesmo título, tipo, área, quartos e bairro) aparecem uma vez só.
+const dupKey = (p) => [norm(p.title), p.type, Math.round(Number(p.area) || 0), Number(p.beds) || 0, norm(p.neighborhood)].join("|");
+export function cleanItems(items, log) {
+  const seen = new Map();
+  const out = [];
+  for (const p of items) {
+    if (isRental(p)) { if (log) log.rental.push(`${p.ref} (${p.title})`); continue; }
+    const k = dupKey(p);
+    if (seen.has(k)) { if (log) log.dup.push(`${p.ref} (igual a ${seen.get(k)}: ${p.title})`); continue; }
+    seen.set(k, p.ref);
+    out.push(p);
+  }
+  return out;
+}
 
 // Mesmo escape de js/selecao.js (escapeHtml), para o HTML sair idêntico.
 const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -116,8 +133,6 @@ function parseFrontMatter(src) {
 }
 const yes = (v) => /^(sim|true|yes)$/i.test(String(v || "").trim());
 const list = (v) => String(v || "").split("|").map((x) => x.trim()).filter(Boolean);
-const paragraphs = (md) => md.split(/\n\s*\n/).map((x) => x.replace(/\s+/g, " ").trim()).filter(Boolean)
-  .map((x) => `<p>${esc(x).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")}</p>`).join("\n          ");
 
 function readRegioes() {
   if (!existsSync(REGIOES_DIR)) return [];
@@ -130,9 +145,10 @@ function readRegioes() {
     if (!/^[a-z0-9][a-z0-9-]*$/.test(slug)) { console.warn(`Região ignorada (slug inválido "${slug}"): ${f}`); continue; }
     const titulo = d.titulo || "";
     const busca = list(d.busca).map(norm);
-    if (!titulo || !busca.length) { console.warn(`Região ignorada (faltam titulo ou busca): ${f}`); continue; }
+    const buscaBairro = list(d.busca_bairro).map(norm);
+    if (!titulo || !(busca.length || buscaBairro.length)) { console.warn(`Região ignorada (faltam titulo ou busca): ${f}`); continue; }
     out.push({
-      file: f, slug, titulo, busca,
+      file: f, slug, titulo, busca, buscaBairro,
       publicado: yes(d.publicado),
       nome: d.nome || titulo,
       tituloSeo: d.titulo_seo || `${titulo} | Flávio Barros`,
@@ -149,7 +165,8 @@ function regionMatches(r, p) {
   if (r.tipos.length && !r.tipos.includes(p.type)) return false;
   if (!r.comerciais && isCommercialListing(p)) return false;
   const hay = norm([p.neighborhood, p.condominio, p.title].join(" "));
-  return r.busca.some((t) => hay.includes(t));
+  const bairro = norm(p.neighborhood);
+  return r.busca.some((t) => hay.includes(t)) || r.buscaBairro.some((t) => bairro.includes(t));
 }
 
 /* ---- moldura do site (copiada de atuacao.html, como em build-mercado.mjs) ---- */
@@ -168,15 +185,36 @@ function loadChrome() {
   return { header, footer, sticky, scripts, headLinks };
 }
 
+const GRID_MARKER = /^\s*\[GRADE DE IM[ÓO]VEIS DO ACERVO DESTE BAIRRO\]\s*$/im;
+
 function regionPage(r, items, c) {
   const url = `${SITE}/imoveis/${r.slug}.html`;
   const desc = r.descricao || `${r.titulo}: imóveis à venda com curadoria de Flávio Barros em Ribeirão Preto.`;
   const robots = items.length ? "index,follow" : "noindex,follow";
   const wa = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Olá, Flávio. Vi a página ${r.nome} no seu site e gostaria da sua curadoria.`)}`;
+  const e = (s) => esc(s);
   const grid = items.length
     ? `<p class="selecao-count">${esc(countText(items.length))}</p>\n        <div class="selecao-grid">\n${items.map((p) => cardHtml(p, "/")).join("\n")}\n        </div>`
     : `<p class="acervo-regiao__vazio">No momento não há imóveis desta região no acervo. Fale comigo e eu aviso quando surgir uma boa opção.</p>`;
-  const e = (s) => esc(s);
+  const [before, after = ""] = r.body.split(GRID_MARKER);
+  const prose = (md) => md.trim() ? `
+    <section class="section acervo-regiao__texto">
+      <div class="container">
+        <div class="mercado-prose reveal">
+${markdown(md.trim())}
+        </div>
+      </div>
+    </section>
+` : "";
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Início", item: `${SITE}/` },
+      { "@type": "ListItem", position: 2, name: "Imóveis", item: `${SITE}/selecao.html` },
+      { "@type": "ListItem", position: 3, name: r.nome, item: url },
+    ],
+  };
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -208,6 +246,7 @@ function regionPage(r, items, c) {
   <meta name="twitter:description" content="${e(desc)}" />
   <meta name="twitter:image" content="${OG.url}" />
   <meta name="twitter:image:alt" content="${e(OG.alt)}" />
+${ldScript(breadcrumb)}
 ${items.length ? ldScript(itemListLd(items, r.titulo, url)) + "\n" : ""}</head>
 <body>
   <a class="skip-link" href="#main">Ir para o conteúdo</a>
@@ -217,28 +256,20 @@ ${items.length ? ldScript(itemListLd(items, r.titulo, url)) + "\n" : ""}</head>
     <section class="page-hero">
       <div class="container">
         <div class="page-hero__inner reveal">
-          <p class="eyebrow"><a href="/selecao.html">Acervo</a></p>
+          <nav class="breadcrumb eyebrow" aria-label="Você está em"><a href="/">Início</a> <span aria-hidden="true">·</span> <a href="/selecao.html">Imóveis</a> <span aria-hidden="true">·</span> <span aria-current="page">${e(r.nome)}</span></nav>
           <h1>${e(r.titulo)}</h1>
 ${r.resumo.map((x) => `          <p class="lead">${e(x)}</p>`).join("\n")}
         </div>
       </div>
     </section>
-${r.body ? `
-    <section class="section acervo-guia">
-      <div class="container">
-        <div class="acervo-guia__inner reveal">
-          ${paragraphs(r.body)}
-        </div>
-      </div>
-    </section>
-` : ""}
-    <section class="section section--selecao">
+${prose(before)}
+    <section class="section section--selecao" aria-label="Imóveis do acervo nesta região">
       <div class="container container--wide">
         ${grid}
         <p class="mercado-back"><a href="/selecao.html">← Ver todo o acervo</a></p>
       </div>
     </section>
-
+${prose(after)}
     <section class="section section--dark cta-band">
       <div class="container">
         <div class="cta-band__inner reveal">
@@ -272,7 +303,10 @@ export function buildAcervo() {
   const data = JSON.parse(readFileSync(DATA, "utf8"));
   const items = data.items || [];
   const exclude = new Set(existsSync(EXCLUDE) ? (JSON.parse(readFileSync(EXCLUDE, "utf8")).refs || []).map(String) : []);
-  const visible = items.filter((p) => !exclude.has(String(p.ref)));
+  const log = { rental: [], dup: [] };
+  const visible = cleanItems(items, log).filter((p) => !exclude.has(String(p.ref)));
+  if (log.rental.length) console.log(`Fora do Acervo (locação/aluguel): ${log.rental.join("; ")}`);
+  if (log.dup.length) console.log(`Fora do Acervo (duplicados): ${log.dup.join("; ")}`);
   const grid = visible.filter((p) => !isCommercialListing(p));
   const lastmod = String(data.generatedAt || new Date().toISOString()).slice(0, 10);
 

@@ -10,7 +10,7 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildAcervo } from "./build-acervo.mjs";
+import { buildAcervo, cleanItems } from "./build-acervo.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -100,8 +100,10 @@ async function main() {
   if (!res.ok) throw new Error(`Catalog fetch failed: ${res.status}`);
   const text = await res.text();
   const catalog = parseCatalog(text);
-  const items = catalog.filter(passesInternalFilter).map(slim);
-  items.sort((a, b) => b.sale - a.sale || a.ref.localeCompare(b.ref));
+  const sorted = catalog.filter(passesInternalFilter).map(slim);
+  sorted.sort((a, b) => b.sale - a.sale || a.ref.localeCompare(b.ref));
+  // Sem locação/aluguel e sem anúncios duplicados (mesma regra do site).
+  const items = cleanItems(sorted);
 
   const byType = {};
   for (const p of items) byType[p.type] = (byType[p.type] || 0) + 1;
