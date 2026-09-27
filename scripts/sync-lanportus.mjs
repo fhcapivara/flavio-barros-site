@@ -118,7 +118,7 @@ async function main() {
   };
 
   mkdirSync(dirname(OUT), { recursive: true });
-  writeFileSync(OUT, JSON.stringify(payload, null, 2) + "\n", "utf8");
+  writeFileSync(OUT, (JSON.stringify(payload, null, 2) + "\n").normalize("NFC"), "utf8");
   console.log(`Wrote ${items.length} items → data/selecao.json`);
   console.log("byType:", byType);
 

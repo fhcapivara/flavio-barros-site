@@ -21,7 +21,9 @@
  *
  * Sem dependências externas. Node 18+.
  */
-import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, existsSync, appendFileSync } from "node:fs";
+import { readFileSync, writeFileSync as fsWriteFileSync, readdirSync, mkdirSync, rmSync, existsSync, appendFileSync } from "node:fs";
+// Todo texto gravado sai normalizado em NFC (acentos pré-compostos, nunca "e" + acento combinante).
+const writeFileSync = (file, data, ...rest) => fsWriteFileSync(file, typeof data === "string" ? data.normalize("NFC") : data, ...rest);
 import { dirname, join } from "node:path";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
@@ -169,7 +171,8 @@ function loadChrome() {
   const afterFooter = html.slice(html.indexOf("</footer>"));
   const scripts = (afterFooter.match(/<script\b[^>]*src="[^"]*"[^>]*><\/script>/g) || []).map(absolutize).join("\n  ");
   const headLinks = (html.match(/<link rel="preconnect"[^>]*>|<link href="https:\/\/fonts\.googleapis\.com\/css2[^>]*>/g) || []).join("\n  ");
-  return { header, footer, sticky, scripts, headLinks };
+  const cssHref = "/" + ((html.match(/href="\/?(css\/styles\.css[^"]*)"/) || [])[1] || "css/styles.css");
+  return { header, footer, sticky, scripts, headLinks, cssHref };
 }
 
 function page({ title, description, canonical, robots, ogType = "website", image, jsonld, body, nav = "/mercado/" }) {
@@ -185,7 +188,7 @@ function page({ title, description, canonical, robots, ogType = "website", image
   <meta name="description" content="${esc(description)}" />
   <title>${esc(title)}</title>
   ${c.headLinks}
-  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="${c.cssHref}" />
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
