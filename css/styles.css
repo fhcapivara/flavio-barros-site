@@ -2559,11 +2559,22 @@ em {
   .acervo-faixa__lista li { flex: 0 0 68%; scroll-snap-align: start; }
 }
 
-/* ----- Rodapé: coluna "Bairros" (gerada por scripts/build-acervo.mjs) ----- */
-@media (min-width: 700px) {
-  .footer__grid:has(.footer__bairros) { grid-template-columns: 1.3fr 1fr 1fr 1fr; }
+/* ----- Rodapé: colunas "Bairros" e "Dossiês em PDF" (geradas por scripts/build-acervo.mjs) ----- */
+.footer__col a.footer__all { color: var(--stone-muted); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(247, 245, 242, 0.25); }
+.footer__col a.footer__all:hover { color: var(--off-white); }
+@media (min-width: 1100px) {
+  .footer__grid:has(.footer__bairros, .footer__dossies) { grid-template-columns: 1.2fr repeat(3, minmax(0, 1fr)) 1.2fr; gap: var(--space-7); }
+  .footer__grid:has(.footer__bairros, .footer__dossies) > .footer__col:last-child a { white-space: nowrap; }
+}
+@media (min-width: 700px) and (max-width: 1099px) {
+  .footer__grid:has(.footer__bairros, .footer__dossies) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .footer__grid:has(.footer__bairros, .footer__dossies) > :first-child,
+  .footer__grid:has(.footer__bairros, .footer__dossies) > .footer__col:last-child:not(.footer__bairros):not(.footer__dossies) { grid-column: 1 / -1; }
 }
 @media (max-width: 699px) {
-  .footer__grid:has(.footer__bairros) { grid-template-columns: 1fr 1fr; gap: var(--space-7) var(--space-5); }
-  .footer__grid:has(.footer__bairros) > :not(.footer__col):not(.footer__links), .footer__grid:has(.footer__bairros) > .footer__col:last-child:not(.footer__bairros) { grid-column: 1 / -1; }
+  .footer__grid:has(.footer__bairros, .footer__dossies) { grid-template-columns: 1fr 1fr; gap: var(--space-7) var(--space-5); }
+  .footer__grid:has(.footer__bairros, .footer__dossies) > :not(.footer__bairros):not(.footer__dossies) { grid-column: 1 / -1; }
+  /* Navegação em duas colunas para o rodapé não ficar longo */
+  .footer__grid:has(.footer__bairros, .footer__dossies) > .footer__col:not(.footer__bairros):not(.footer__dossies):not(:last-child) { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--space-5); row-gap: var(--space-3); }
+  .footer__grid:has(.footer__bairros, .footer__dossies) > .footer__col:not(.footer__bairros):not(.footer__dossies):not(:last-child) h4 { grid-column: 1 / -1; }
 }

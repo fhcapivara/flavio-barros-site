@@ -449,7 +449,7 @@ function signature(waText) {
 }
 
 /* ---------------- estudos: blocos ---------------- */
-function requestButton(e, label = "Receber pelo WhatsApp") {
+function requestButton(e, label = "Receber o dossiê em PDF") {
   return `<a class="btn btn--primary estudos-solicitar" href="/estudos/${e.slug}.html#solicitar" data-estudo-id="${esc(e.id)}" data-estudo-titulo="${esc(e.titulo)}" data-estudo-material="${esc(e.material)}">${label}</a>`;
 }
 
@@ -485,7 +485,7 @@ function estudosModal() {
             <label>Empresa <input type="text" name="empresa" tabindex="-1" autocomplete="off" /></label>
           </div>
           <p class="estudos-form__error" role="alert" hidden></p>
-          <button class="btn btn--primary estudos-form__submit" type="submit">Receber pelo WhatsApp</button>
+          <button class="btn btn--primary estudos-form__submit" type="submit">Receber o dossiê em PDF</button>
           <p class="estudos-modal__note">O estudo é enviado por mim, pessoalmente, na nossa conversa.</p>
         </form>
       </div>
@@ -501,9 +501,9 @@ ${estudos.map((e) => estudoCard(e)).join("\n")}
   return `    <section class="page-hero mercado-hero">
       <div class="container">
         <div class="page-hero__inner reveal">
-          <p class="eyebrow">Estudos</p>
-          <h1>Estudos de mercado em Ribeirão Preto</h1>
-          <p class="lead">Análises aprofundadas de empreendimentos e oportunidades selecionadas, preparadas por mim. Cada estudo está disponível para receber pelo WhatsApp.</p>
+          <p class="eyebrow">Dossiês</p>
+          <h1>Dossiês de mercado</h1>
+          <p class="lead">Estudos completos em PDF, preparados por mim, sobre empreendimentos e oportunidades selecionadas. Escolha o seu e receba pelo WhatsApp.</p>
         </div>
       </div>
     </section>
@@ -529,7 +529,7 @@ function estudoBody(e) {
       <header class="page-hero mercado-hero">
         <div class="container">
           <div class="page-hero__inner reveal">
-            <p class="eyebrow"><a class="mercado-post__crumb" href="/estudos/">Estudos</a></p>
+            <p class="eyebrow"><a class="mercado-post__crumb" href="/estudos/">Dossiês</a></p>
             <h1>${esc(e.titulo)}</h1>
 ${e.abertura.map((x) => `            <p class="lead">${esc(x)}</p>`).join("\n")}
             <p class="mercado-byline">${esc(e.tipo)} <span aria-hidden="true">·</span> Por <a class="mercado-byline__author" href="${AUTHOR_URL}">${AUTHOR}</a> <span aria-hidden="true">·</span> <time datetime="${e.data}">${esc(e.mes)}</time></p>
@@ -556,12 +556,12 @@ ${e.html}
               <dl class="estudos-panel__facts">
 ${facts.map(([k, v]) => `                <div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("\n")}
               </dl>
-              ${requestButton(e, "Receber o estudo pelo WhatsApp")}
+              ${requestButton(e)}
               <p class="estudos-panel__note">O estudo é enviado por mim, pessoalmente, na nossa conversa.</p>
             </aside>
           </div>
 ${signature(`Olá, Flávio. Vi o estudo "${e.titulo}" no seu site e gostaria de conversar.`)}
-          <p class="mercado-back"><a href="/estudos/">← Todos os estudos</a></p>
+          <p class="mercado-back"><a href="/estudos/">← Todos os dossiês</a></p>
         </div>
       </div>
     </article>${estudosModal()}`;
@@ -581,7 +581,7 @@ function estudoJsonLd(e) {
     publisher: { "@type": "Person", name: AUTHOR, url: `${SITE}/` },
     mainEntityOfPage: { "@type": "WebPage", "@id": e.url },
     url: e.url,
-    isPartOf: { "@type": "CollectionPage", name: "Estudos de mercado em Ribeirão Preto", url: `${SITE}/estudos/` },
+    isPartOf: { "@type": "CollectionPage", name: "Dossiês de mercado", url: `${SITE}/estudos/` },
     spatialCoverage: { "@type": "Place", name: e.regiao || "Ribeirão Preto, SP" },
   };
   if (e.imagem) ld.image = [absUrl(e.imagem)];
@@ -659,6 +659,12 @@ function updateSitemap(entries) {
 const CHROME = loadChrome();
 const posts = readPosts();
 const estudos = readEstudos();
+// Lista dos estudos publicados, usada por scripts/build-acervo.mjs na coluna "Dossiês em PDF" do rodapé.
+{
+  const out = join(ROOT, "data", "estudos-publicados.json");
+  const json = JSON.stringify(estudos.map((e) => ({ slug: e.slug, nome: e.material, data: e.data })), null, 2) + "\n";
+  if (!existsSync(out) || readFileSync(out, "utf8") !== json) writeFileSync(out, json);
+}
 
 // limpeza de tudo que foi gerado antes
 for (const f of readdirSync(MERCADO)) if (f.endsWith(".html")) rmSync(join(MERCADO, f));
@@ -693,8 +699,8 @@ writeFileSync(join(MERCADO, "index.html"), page({
 
 mkdirSync(ESTUDOS_DIR, { recursive: true });
 writeFileSync(join(ESTUDOS_DIR, "index.html"), page({
-  title: "Estudos de mercado em Ribeirão Preto | Flávio Barros",
-  description: "Estudos de Flávio Barros sobre lançamentos e regiões de Ribeirão Preto, enviados pelo WhatsApp, para quem quer decidir com dados, e não com impressão.",
+  title: "Dossiês de mercado em PDF | Ribeirão Preto | Flávio Barros",
+  description: "Dossiês de Flávio Barros em PDF: estudos completos sobre empreendimentos em Ribeirão Preto e região. Escolha o seu e receba pelo WhatsApp.",
   canonical: `${SITE}/estudos/`,
   robots: estudos.length ? "index,follow" : "noindex,follow",
   body: estudosIndexBody(estudos),

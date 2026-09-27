@@ -319,27 +319,45 @@ function footerPages() {
   walk(join(ROOT, "estudos"), true);
   return out;
 }
-const FOOTER_RE = /(<!-- BAIRROS-RODAPE:INICIO[^>]*-->)[\s\S]*?(<!-- BAIRROS-RODAPE:FIM -->)/;
-function withFooterBairros(html, block) {
+function footerDossiesHtml(estudos) {
+  if (!estudos.length) return "";
+  return `<div class="footer__col footer__dossies"><h4>Dossiês em PDF</h4>${estudos.map((e) => `<a href="/estudos/${esc(e.slug)}.html">${esc(e.nome)}</a>`).join("")}<a class="footer__all" href="/estudos/">Ver todos os dossiês</a></div>`;
+}
+// Estudos publicados: lista gravada por scripts/build-mercado.mjs (rode-o antes deste script).
+function readEstudosPublicados() {
+  const f = join(ROOT, "data", "estudos-publicados.json");
+  try { return JSON.parse(readFileSync(f, "utf8")).filter((e) => e && e.slug && e.nome); } catch { return []; }
+}
+const markerRe = (name) => new RegExp(`(<!-- ${name}:INICIO[^>]*-->)[\\s\\S]*?(<!-- ${name}:FIM -->)`);
+const markerBlock = (name, block) => `<!-- ${name}:INICIO (gerado por scripts/build-acervo.mjs) -->${block}<!-- ${name}:FIM -->`;
+function withFooterBlocks(html, bairros, dossies) {
   if (!html.includes('class="site-footer"')) return html;
-  if (FOOTER_RE.test(html)) return html.replace(FOOTER_RE, (_, a, b) => `${a}${block}${b}`);
-  const mark = `<!-- BAIRROS-RODAPE:INICIO (gerado por scripts/build-acervo.mjs a partir de data/regioes/) -->${block}<!-- BAIRROS-RODAPE:FIM -->`;
-  const contato = /(\n[ \t]*)(<div class="footer__col">\s*<h4>Contato<\/h4>)/;
-  if (contato.test(html)) return html.replace(contato, (_, ws, col) => `${ws}${mark}${ws}${col}`);
-  const links = /(<div class="footer__links">[\s\S]*?<\/div>)(\n[ \t]*)/;
-  if (links.test(html)) return html.replace(links, (_, col, ws) => `${col}${ws}${mark}${ws}`);
-  console.warn("Rodapé sem ponto de inserção para Bairros");
+  // Bairros
+  if (markerRe("BAIRROS-RODAPE").test(html)) html = html.replace(markerRe("BAIRROS-RODAPE"), (_, a, b) => `${a}${bairros}${b}`);
+  else {
+    const mark = markerBlock("BAIRROS-RODAPE", bairros);
+    const contato = /(\n[ \t]*)(<div class="footer__col">\s*<h4>Contato<\/h4>)/;
+    const links = /(<div class="footer__links">[\s\S]*?<\/div>)(\n[ \t]*)/;
+    if (contato.test(html)) html = html.replace(contato, (_, ws, col) => `${ws}${mark}${ws}${col}`);
+    else if (links.test(html)) html = html.replace(links, (_, col, ws) => `${col}${ws}${mark}${ws}`);
+    else { console.warn("Rodapé sem ponto de inserção para Bairros"); return html; }
+  }
+  // Dossiês em PDF, logo depois de Bairros
+  if (markerRe("DOSSIES-RODAPE").test(html)) html = html.replace(markerRe("DOSSIES-RODAPE"), (_, a, b) => `${a}${dossies}${b}`);
+  else html = html.replace(/(<!-- BAIRROS-RODAPE:FIM -->)(\n[ \t]*)/, (_, fim, ws) => `${fim}${ws}${markerBlock("DOSSIES-RODAPE", dossies)}${ws}`);
   return html;
 }
 function updateFooters(ativas) {
-  const block = footerBairrosHtml(ativas);
+  const bairros = footerBairrosHtml(ativas);
+  const estudos = readEstudosPublicados();
+  const dossies = footerDossiesHtml(estudos);
   let n = 0;
   for (const f of footerPages()) {
     const src = readFileSync(f, "utf8");
-    const out = withFooterBairros(src, block);
+    const out = withFooterBlocks(src, bairros, dossies);
     if (out !== src) { writeFileSync(f, out); n++; }
   }
-  if (n) console.log(`Rodapé "Bairros" atualizado em ${n} página(s).`);
+  console.log(`Rodapé: ${ativas.length} bairro(s), ${estudos.length} dossiê(s)${n ? `; atualizado em ${n} página(s)` : ""}.`);
 }
 
 function updateSitemap(entries) {

@@ -83,23 +83,23 @@ Se um campo estiver faltando ou com erro (por exemplo, a data em outro formato o
 
 Observação: o arquivo `_modelo.md` é apenas o modelo e nunca é publicado. Arquivos cujo nome começa com `_` são ignorados.
 
-# Como publicar um estudo de mercado (enviado pelo WhatsApp)
+# Como publicar um dossiê (estudo em PDF enviado pelo WhatsApp)
 
-Os estudos têm seção própria, separada da Leitura de mercado: https://flaviodebarros.com.br/estudos/ (item "Estudos" do menu). Os endereços antigos em /mercado/estudos/ continuam funcionando e levam automaticamente para /estudos/. Para pedir um estudo, o visitante clica em **Receber pelo WhatsApp** e informa apenas o nome. O site abre uma conversa no seu WhatsApp, (16) 99116-6681, com a mensagem pronta:
+Os dossiês têm seção própria, separada da Leitura de mercado: https://flaviodebarros.com.br/estudos/ (item "Dossiês" do menu; o endereço continua /estudos/). Os endereços antigos em /mercado/estudos/ continuam funcionando e levam automaticamente para /estudos/. Cada dossiê publicado aparece também no rodapé de todas as páginas, na coluna "Dossiês em PDF", com o link "Ver todos os dossiês". Para pedir um dossiê, o visitante clica em **Receber o dossiê em PDF** e informa apenas o nome. O site abre uma conversa no seu WhatsApp, (16) 99116-6681, com a mensagem pronta:
 
 "Olá, Flávio, meu nome é Maria Silva e gostaria de receber o material Residencial Barão de Campo Belo."
 
 Você responde e envia o material pela própria conversa. O nome serve apenas para montar a mensagem: o site não grava nem envia esse dado a nenhum servidor.
 
-**Importante:** o arquivo do estudo nunca vai para o GitHub. Guarde-o no seu computador ou no Google Drive para enviar pelo WhatsApp.
+**Importante:** o PDF do dossiê nunca vai para o GitHub. Guarde-o no seu computador ou no Google Drive para enviar pelo WhatsApp.
 
 ## Passo a passo
 
 1. **Capa (opcional).** Envie a imagem da capa para `images/estudos/` com um nome novo, por exemplo `residencial-exemplo-capa-2026-10.webp` (largura de 1400 px é suficiente).
-2. **Página do estudo.** Na pasta https://github.com/fhcapivara/flavio-barros-site/tree/main/estudos, crie um arquivo `.md` copiando o `_modelo.md`. Preencha os campos e faça o commit.
-3. Em cerca de 2 minutos o estudo aparece no site. Teste você mesmo: clique no botão, informe um nome e confira se a mensagem chega certa no WhatsApp.
+2. **Página do dossiê.** Na pasta https://github.com/fhcapivara/flavio-barros-site/tree/main/estudos, crie um arquivo `.md` copiando o `_modelo.md`. Preencha os campos e faça o commit.
+3. Em cerca de 2 minutos o dossiê aparece no site, na página Dossiês e no rodapé. Teste você mesmo: clique no botão, informe um nome e confira se a mensagem chega certa no WhatsApp.
 
-## Campos do estudo
+## Campos do dossiê
 
 - **titulo**: título que aparece na página e nos cartões.
 - **titulo_seo**: opcional. Título para o Google e a aba do navegador.
@@ -117,7 +117,8 @@ Você responde e envia o material pela própria conversa. O nome serve apenas pa
 - **Texto abaixo do bloco de campos**: fechamento com o número de páginas e o convite, por exemplo "São 16 páginas de análise feitas por mim. Peça o seu e eu envio pessoalmente pelo WhatsApp."
 - **regiao**, **lancamento**, **paginas**: aparecem no quadro lateral do estudo.
 - **imagem**: opcional. Caminho da capa, por exemplo `images/estudos/residencial-exemplo-capa-2026-10.webp`.
+- **og_imagem**: opcional. Imagem só para a prévia ao compartilhar o link, de preferência JPG 1200x630 em `images/og/` (o WhatsApp lida melhor com JPG do que com WebP). Em branco, a prévia usa a capa.
 - **og_padrao**: opcional. Com `sim`, a prévia ao compartilhar o link (WhatsApp, redes sociais) usa a imagem padrão do site, com o retrato de Flávio, em vez da capa. Use quando a capa tiver textos que não devem aparecer na prévia. Em branco, a prévia usa a capa.
-- **rascunho**: `true` deixa o estudo fora do site.
+- **rascunho**: `true` deixa o dossiê fora do site (e fora do rodapé).
 
 Evite na página pública frases de promessa (retorno, valorização garantida) e valores. Os números ficam no material enviado.
