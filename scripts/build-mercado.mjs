@@ -249,8 +249,10 @@ function loadChrome() {
   return { header, footer, sticky, scripts, headLinks };
 }
 
-function page({ title, description, canonical, robots, ogType = "website", image, jsonld, body }) {
+function page({ title, description, canonical, robots, ogType = "website", image, jsonld, body, nav = "/mercado/" }) {
   const c = CHROME;
+  // Marca no menu a seção atual (Leitura de mercado ou Estudos).
+  const header = c.header.replace(new RegExp(`(<div class="nav__links">[\\s\\S]*?<a href="${nav.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}")`), '$1 aria-current="page"');
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -271,7 +273,7 @@ function page({ title, description, canonical, robots, ogType = "website", image
 </head>
 <body>
   <a class="skip-link" href="#main">Ir para o conteúdo</a>
-  ${c.header}
+  ${header}
 
   <main id="main">
 ${body}
@@ -365,10 +367,16 @@ function readEstudos() {
     seenSlug.set(slug, file);
     seenId.set(id, file);
     const oqr = plain(d.o_que_responde || "");
+    // resumo: parágrafos de abertura separados por " | ".
+    const abertura = resumo.split("|").map((x) => x.trim()).filter(Boolean);
+    const resumoTexto = abertura.join(" ");
     list.push({
-      file, titulo, id, slug, data, resumo,
+      file, titulo, id, slug, data, abertura,
+      resumo: resumoTexto,
+      descricao: plain(d.descricao || "") || truncate(resumoTexto, 300),
+      tituloLista: plain(d.titulo_lista || "") || "O que você encontra no estudo:",
       tituloSeo: plain(d.titulo_seo || "") || `${titulo} | Estudos de mercado | ${AUTHOR}`,
-      resumoCurto: plain(d.resumo_curto || "") || truncate(resumo, 140),
+      resumoCurto: plain(d.resumo_curto || "") || truncate(resumoTexto, 320),
       tipo: plain(d.tipo || "") || "Estudo de mercado",
       // Nome do material na mensagem de WhatsApp. Padrão: o título até os dois-pontos.
       material: plain(d.material || "") || titulo.split(":")[0].trim(),
@@ -499,7 +507,7 @@ function signature(waText) {
 }
 
 /* ---------------- estudos: blocos ---------------- */
-function requestButton(e, label = "Receber o estudo pelo WhatsApp") {
+function requestButton(e, label = "Receber pelo WhatsApp") {
   return `<a class="btn btn--primary estudos-solicitar" href="/mercado/estudos/${e.slug}.html#solicitar" data-estudo-id="${esc(e.id)}" data-estudo-titulo="${esc(e.titulo)}" data-estudo-material="${esc(e.material)}">${label}</a>`;
 }
 
@@ -525,19 +533,18 @@ function estudosModal() {
       <div class="estudos-modal__panel">
         <button class="estudos-modal__close" type="button" data-estudos-close aria-label="Fechar"><span aria-hidden="true">×</span></button>
         <p class="estudos-modal__estudo" data-estudos-titulo></p>
-        <h2 class="estudos-modal__title" id="estudos-modal-title">Como posso chamar você?</h2>
-        <p class="estudos-modal__intro">Informe o seu nome e eu envio o estudo pelo WhatsApp.</p>
+        <h2 class="estudos-modal__title" id="estudos-modal-title">Como posso te chamar?</h2>
         <form class="estudos-form" novalidate>
           <label class="estudos-field">
-            <span class="estudos-field__label">Nome</span>
-            <input class="estudos-field__input" type="text" name="nome" autocomplete="name" maxlength="120" required />
+            <span class="estudos-field__label">Seu nome</span>
+            <input class="estudos-field__input" type="text" name="nome" autocomplete="name" placeholder="Seu nome" maxlength="120" required />
           </label>
           <div class="estudos-form__hp" aria-hidden="true">
             <label>Empresa <input type="text" name="empresa" tabindex="-1" autocomplete="off" /></label>
           </div>
           <p class="estudos-form__error" role="alert" hidden></p>
-          <button class="btn btn--primary estudos-form__submit" type="submit">Solicitar pelo WhatsApp</button>
-          <p class="estudos-modal__note">Você será direcionado ao WhatsApp de Flávio.</p>
+          <button class="btn btn--primary estudos-form__submit" type="submit">Receber pelo WhatsApp</button>
+          <p class="estudos-modal__note">O estudo é enviado por mim, pessoalmente, na nossa conversa.</p>
         </form>
       </div>
     </dialog>`;
@@ -571,7 +578,7 @@ ${estudos.map((e) => estudoCard(e)).join("\n")}
         <div class="page-hero__inner reveal">
           <p class="eyebrow"><a class="mercado-post__crumb" href="/mercado/">Leitura de mercado</a> <span aria-hidden="true">·</span> Estudos</p>
           <h1>Estudos de mercado em Ribeirão Preto</h1>
-          <p class="lead">Análises dos lançamentos e das regiões que acompanho de perto. Material para quem quer decidir com dados, e não com impressão.</p>
+          <p class="lead">Análises dos lançamentos e das regiões que acompanho de perto. Peça o estudo e receba pelo WhatsApp.</p>
         </div>
 ${filters(cats, "estudos")}
       </div>
@@ -601,7 +608,7 @@ function estudoBody(e) {
           <div class="page-hero__inner reveal">
             <p class="eyebrow"><a class="mercado-post__crumb" href="/mercado/">Leitura de mercado</a> <span aria-hidden="true">·</span> <a class="mercado-post__crumb" href="/mercado/estudos/">Estudos</a></p>
             <h1>${esc(e.titulo)}</h1>
-            <p class="lead">${esc(e.resumo)}</p>
+${e.abertura.map((x) => `            <p class="lead">${esc(x)}</p>`).join("\n")}
             <p class="mercado-byline">${esc(e.tipo)} <span aria-hidden="true">·</span> Por <a class="mercado-byline__author" href="${AUTHOR_URL}">${AUTHOR}</a> <span aria-hidden="true">·</span> <time datetime="${e.data}">${esc(e.mes)}</time></p>
           </div>
         </div>
@@ -613,7 +620,7 @@ function estudoBody(e) {
             <div class="estudos-page__main">${e.imagem ? `
               <figure class="estudos-page__cover"><img src="${esc(localPath(e.imagem))}" alt="Capa do estudo ${esc(e.titulo)}" decoding="async" /></figure>` : ""}
               <section class="estudos-page__block" aria-labelledby="oqr">
-                <h2 id="oqr">O que o estudo responde</h2>
+                <h2 id="oqr">${esc(e.tituloLista)}</h2>
             ${oqr}
               </section>${e.html ? `
               <div class="mercado-prose estudos-page__prose">
@@ -626,8 +633,8 @@ ${e.html}
               <dl class="estudos-panel__facts">
 ${facts.map(([k, v]) => `                <div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("\n")}
               </dl>
-              ${requestButton(e)}
-              <p class="estudos-panel__note">Basta informar o seu nome. O estudo é enviado pelo WhatsApp.</p>
+              ${requestButton(e, "Receber o estudo pelo WhatsApp")}
+              <p class="estudos-panel__note">O estudo é enviado por mim, pessoalmente, na nossa conversa.</p>
             </aside>
           </div>
 ${signature(`Olá, Flávio. Vi o estudo "${e.titulo}" no seu site e gostaria de conversar.`)}
@@ -643,7 +650,7 @@ function estudoJsonLd(e) {
     "@type": "Report",
     headline: e.titulo,
     name: e.tituloSeo,
-    description: e.resumo,
+    description: e.descricao,
     datePublished: `${e.data}-01`,
     inLanguage: "pt-BR",
     author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${SIGNATURE.src}`, jobTitle: "Consultor imobiliário" },
@@ -767,17 +774,19 @@ writeFileSync(join(ESTUDOS_DIR, "index.html"), page({
   canonical: `${SITE}/mercado/estudos/`,
   robots: estudos.length ? "index,follow" : "noindex,follow",
   body: estudosIndexBody(estudos, activeCats),
+  nav: "/mercado/estudos/",
 }));
 for (const e of estudos) {
   writeFileSync(join(ESTUDOS_DIR, `${e.slug}.html`), page({
     title: e.tituloSeo,
-    description: truncate(e.resumo, 300),
+    description: e.descricao,
     canonical: e.url,
     robots: "index,follow",
     ogType: "article",
     image: e.imagem ? absUrl(e.imagem) : "",
     jsonld: estudoJsonLd(e),
     body: estudoBody(e),
+    nav: "/mercado/estudos/",
   }));
 }
 

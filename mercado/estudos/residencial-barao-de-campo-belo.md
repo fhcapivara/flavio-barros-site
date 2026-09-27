@@ -3,13 +3,17 @@ titulo: Residencial Barão de Campo Belo: estudo de lançamento
 titulo_seo: Residencial Barão de Campo Belo: estudo de lançamento em Ribeirão Preto
 slug: residencial-barao-de-campo-belo
 id: barao-campo-belo-2026-09
+material: Residencial Barão de Campo Belo
 tipo: Estudo de lançamento
 data: 2026-09
-resumo: Análise do lançamento da Pereira Martins no entorno médico e acadêmico de Ribeirão Preto. Contexto de juros, perfil da região, oferta no bairro e pontos para avaliar antes de decidir.
-resumo_curto: Lançamento da Pereira Martins no entorno médico e acadêmico de Ribeirão Preto.
-o_que_responde: O ciclo de juros previsto até 2030 e o que ele muda para quem compra na planta | O perfil econômico de Ribeirão Preto e o peso da saúde, da educação e dos serviços | O eixo da Avenida do Café: mobilidade, legislação urbana e novos estabelecimentos | A demanda por moradia ligada ao campus da USP e ao Hospital das Clínicas (HC-FMRP) | A oferta existente no entorno e a idade dos imóveis disponíveis | O projeto: torre, tipologias, vaga de garagem e áreas comuns | As condições de pagamento durante a obra e na entrega das chaves | Cenários de uso: moradia, locação de longa duração e locação por temporada
+resumo: Por que um lançamento no entorno médico e acadêmico de Ribeirão Preto está chamando a atenção de quem acompanha o mercado de perto? | Neste estudo, eu analiso o Residencial Barão de Campo Belo, da Pereira Martins, com os números e o contexto que não aparecem no material de divulgação.
+descricao: Estudo de 16 páginas sobre o Residencial Barão de Campo Belo, em Ribeirão Preto: juros, oferta na região e o que avaliar antes de decidir. Receba pelo WhatsApp.
+titulo_lista: O que você encontra no estudo:
+o_que_responde: O que o ciclo de juros até 2030 muda na decisão entre renda fixa e imóvel. | Por que a oferta nessa região se comporta de um jeito diferente do resto da cidade. | Quem mora, trabalha e procura imóvel no entorno, e o que isso significa para o uso e para a liquidez. | Os pontos que eu avaliaria antes de qualquer proposta.
 regiao: Eixo da Avenida do Café, no entorno do campus da USP e do Hospital das Clínicas
 lancamento: Residencial Barão de Campo Belo, da construtora Pereira Martins
 paginas: 16
 imagem: images/estudos/barao-de-campo-belo-capa-2026-09.webp
 ---
+
+São 16 páginas de análise feitas por mim. Peça o seu e eu envio pessoalmente pelo WhatsApp.

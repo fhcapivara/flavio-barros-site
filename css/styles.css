@@ -403,20 +403,26 @@ em {
   color: var(--off-white) !important;
 }
 
-@media (min-width: 900px) {
+/* Menu completo em uma linha a partir de 1280px; abaixo disso, menu recolhido. */
+@media (min-width: 1280px) {
+  .site-header > .container { max-width: var(--max-wide); padding-inline: var(--space-6); }
   .nav__toggle { display: none; }
   .nav__links {
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
+    white-space: nowrap;
     position: static;
     background: transparent;
     border: none;
     padding: 0;
-    gap: var(--space-6);
+    gap: 0.875rem;
     box-shadow: none;
     align-items: center;
   }
   .nav__links a {
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
     padding: 0;
     min-height: auto;
   }
@@ -2517,3 +2523,5 @@ em {
 .privacidade-prose h2 + p { margin-top: var(--space-3); }
 .privacidade-prose a { color: var(--green); text-decoration: underline; text-underline-offset: 3px; }
 .privacidade-prose .privacidade-updated { margin-top: var(--space-9); padding-top: var(--space-4); border-top: 1px solid var(--border); font-size: var(--text-sm); color: var(--stone); }
+
+.estudos-page .page-hero__inner .lead + .lead { margin-top: var(--space-3); }

@@ -85,7 +85,7 @@ Observação: o arquivo `_modelo.md` é apenas o modelo e nunca é publicado. Ar
 
 # Como publicar um estudo de mercado (enviado pelo WhatsApp)
 
-Os estudos aparecem em https://flaviodebarros.com.br/mercado/estudos/ e no fim da página de Leitura de mercado. Para pedir um estudo, o visitante clica em **Receber o estudo pelo WhatsApp** e informa apenas o nome. O site abre uma conversa no seu WhatsApp, (16) 99116-6681, com a mensagem pronta:
+Os estudos aparecem em https://flaviodebarros.com.br/mercado/estudos/ e no fim da página de Leitura de mercado. Para pedir um estudo, o visitante clica em **Receber pelo WhatsApp** e informa apenas o nome. O site abre uma conversa no seu WhatsApp, (16) 99116-6681, com a mensagem pronta:
 
 "Olá, Flávio, meu nome é Maria Silva e gostaria de receber o material Residencial Barão de Campo Belo."
 
@@ -108,9 +108,12 @@ Você responde e envia o material pela própria conversa. O nome serve apenas pa
 - **material**: opcional. Nome do estudo na mensagem de WhatsApp. Em branco, usa o título até os dois-pontos (por exemplo, "Residencial Barão de Campo Belo").
 - **tipo**: por exemplo `Estudo de lançamento` ou `Estudo de região`.
 - **data**: ano e mês, no formato `2026-10`. Aparece como "Outubro de 2026".
-- **resumo**: duas frases. Aparece no Google e no topo da página.
-- **resumo_curto**: opcional. Uma linha para os cartões.
-- **o_que_responde**: os temas do estudo, separados por ` | `. Viram uma lista.
+- **resumo**: abertura em dois parágrafos, separados por ` | `. O primeiro é uma pergunta; o segundo diz o que o estudo analisa e o que não aparece no material de divulgação. Aparece no topo da página e nos cartões.
+- **descricao**: texto para o Google e para o compartilhamento, com o número de páginas e "Receba pelo WhatsApp".
+- **resumo_curto**: opcional. Texto para os cartões. Em branco, usa o resumo.
+- **titulo_lista**: opcional. Título da lista. Em branco, usa "O que você encontra no estudo:".
+- **o_que_responde**: 4 temas do estudo, separados por ` | `, escritos sem as respostas. Viram uma lista.
+- **Texto abaixo do bloco de campos**: fechamento com o número de páginas e o convite, por exemplo "São 16 páginas de análise feitas por mim. Peça o seu e eu envio pessoalmente pelo WhatsApp."
 - **regiao**, **lancamento**, **paginas**: aparecem no quadro lateral do estudo.
 - **imagem**: opcional. Caminho da capa, por exemplo `images/estudos/residencial-exemplo-capa-2026-10.webp`.
 - **rascunho**: `true` deixa o estudo fora do site.

@@ -1,6 +1,14 @@
 ---
 # Arquivos que começam com "_" não são publicados. Copie este modelo para um arquivo novo,
 # por exemplo mercado/estudos/residencial-exemplo.md, e preencha os campos.
+#
+# Estrutura sugerida para a página:
+# 1. resumo: abertura em dois parágrafos. O primeiro é uma pergunta que desperta interesse.
+#    O segundo diz o que o estudo analisa, com "o que não aparece no material de divulgação".
+# 2. o_que_responde: 4 itens, escritos como perguntas ou temas, SEM dar as respostas.
+# 3. Texto abaixo do bloco (depois do segundo ---): fechamento com o número de páginas
+#    e o convite para pedir pelo WhatsApp.
+# Nunca cite preços, valores, retorno ou valorização. Os números ficam no material enviado.
 titulo: Nome do empreendimento ou da região: estudo de lançamento
 # titulo_seo é opcional: título que aparece no Google e na aba do navegador.
 titulo_seo:
@@ -14,11 +22,17 @@ material:
 tipo: Estudo de lançamento
 # data: ano e mês, no formato AAAA-MM.
 data: 2026-10
-resumo: Duas frases sobre o que o estudo analisa. Aparece no Google e no topo da página.
-# resumo_curto é opcional: uma linha para os cartões da lista.
+# resumo: parágrafos de abertura separados por " | ". Aparece no topo da página e nos cartões da lista.
+resumo: Por que este lançamento está chamando a atenção de quem acompanha o mercado de perto? | Neste estudo, eu analiso o Nome do empreendimento, da construtora Tal, com os números e o contexto que não aparecem no material de divulgação.
+# descricao: texto para o Google e para o compartilhamento (até 160 caracteres), por exemplo:
+# "Estudo de 12 páginas sobre o Nome do empreendimento, em Ribeirão Preto: ... Receba pelo WhatsApp."
+descricao:
+# resumo_curto é opcional: texto para os cartões da lista. Em branco, usa o resumo.
 resumo_curto:
-# o_que_responde: itens separados por " | " viram uma lista. Sem "|", vira um parágrafo.
-o_que_responde: Primeiro tema analisado | Segundo tema analisado | Terceiro tema analisado
+# titulo_lista é opcional. Em branco, usa "O que você encontra no estudo:".
+titulo_lista:
+# o_que_responde: 4 itens separados por " | " viram uma lista. Temas ou perguntas, sem as respostas.
+o_que_responde: O que o ciclo de juros muda na decisão. | Por que a oferta na região se comporta de um jeito próprio. | Quem mora, trabalha e procura imóvel no entorno. | Os pontos que eu avaliaria antes de qualquer proposta.
 regiao: Bairro ou eixo da cidade
 lancamento: Nome do empreendimento, da construtora Tal
 paginas: 12
@@ -28,4 +42,4 @@ imagem:
 rascunho: false
 ---
 
-Texto opcional. Se escrever algo aqui, aparece abaixo da lista "O que o estudo responde".
+São 12 páginas de análise feitas por mim. Peça o seu e eu envio pessoalmente pelo WhatsApp.
