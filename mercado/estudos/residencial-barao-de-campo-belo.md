@@ -6,6 +6,7 @@ id: barao-campo-belo-2026-09
 material: Residencial Barão de Campo Belo
 tipo: Estudo de lançamento
 data: 2026-09
+atualizado: 2026-09-26
 resumo: Por que um lançamento no entorno médico e acadêmico de Ribeirão Preto está chamando a atenção de quem acompanha o mercado de perto? | Neste estudo, eu analiso o Residencial Barão de Campo Belo, da Pereira Martins, com os números e o contexto que não aparecem no material de divulgação.
 descricao: Estudo de 16 páginas sobre o Residencial Barão de Campo Belo, em Ribeirão Preto: juros, oferta na região e o que avaliar antes de decidir. Receba pelo WhatsApp.
 titulo_lista: O que você encontra no estudo:

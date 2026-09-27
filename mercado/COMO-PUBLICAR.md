@@ -108,6 +108,7 @@ Você responde e envia o material pela própria conversa. O nome serve apenas pa
 - **material**: opcional. Nome do estudo na mensagem de WhatsApp. Em branco, usa o título até os dois-pontos (por exemplo, "Residencial Barão de Campo Belo").
 - **tipo**: por exemplo `Estudo de lançamento` ou `Estudo de região`.
 - **data**: ano e mês, no formato `2026-10`. Aparece como "Outubro de 2026".
+- **atualizado**: opcional. Data da última revisão da página, no formato `2026-10-15`. Informa o Google sobre a atualização.
 - **resumo**: abertura em dois parágrafos, separados por ` | `. O primeiro é uma pergunta; o segundo diz o que o estudo analisa e o que não aparece no material de divulgação. Aparece no topo da página e nos cartões.
 - **descricao**: texto para o Google e para o compartilhamento, com o número de páginas e "Receba pelo WhatsApp".
 - **resumo_curto**: opcional. Texto para os cartões. Em branco, usa o resumo.

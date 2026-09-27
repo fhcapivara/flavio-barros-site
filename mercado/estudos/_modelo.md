@@ -22,6 +22,8 @@ material:
 tipo: Estudo de lançamento
 # data: ano e mês, no formato AAAA-MM.
 data: 2026-10
+# atualizado é opcional: data da última revisão da página (AAAA-MM-DD). Vai para o sitemap.
+atualizado:
 # resumo: parágrafos de abertura separados por " | ". Aparece no topo da página e nos cartões da lista.
 resumo: Por que este lançamento está chamando a atenção de quem acompanha o mercado de perto? | Neste estudo, eu analiso o Nome do empreendimento, da construtora Tal, com os números e o contexto que não aparecem no material de divulgação.
 # descricao: texto para o Google e para o compartilhamento (até 160 caracteres), por exemplo:

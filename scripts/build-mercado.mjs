@@ -378,6 +378,8 @@ function readEstudos() {
       tituloSeo: plain(d.titulo_seo || "") || `${titulo} | Estudos de mercado | ${AUTHOR}`,
       resumoCurto: plain(d.resumo_curto || "") || truncate(resumoTexto, 320),
       tipo: plain(d.tipo || "") || "Estudo de mercado",
+      // atualizado (opcional, AAAA-MM-DD): data da última revisão da página. Vai para o sitemap.
+      atualizado: /^\d{4}-\d{2}-\d{2}$/.test((d.atualizado || "").trim()) ? d.atualizado.trim() : `${data}-01`,
       // Nome do material na mensagem de WhatsApp. Padrão: o título até os dois-pontos.
       material: plain(d.material || "") || titulo.split(":")[0].trim(),
       mes: formatMonth(data),
@@ -652,6 +654,7 @@ function estudoJsonLd(e) {
     name: e.tituloSeo,
     description: e.descricao,
     datePublished: `${e.data}-01`,
+    dateModified: e.atualizado,
     inLanguage: "pt-BR",
     author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${SIGNATURE.src}`, jobTitle: "Consultor imobiliário" },
     publisher: { "@type": "Person", name: AUTHOR, url: `${SITE}/` },
@@ -837,8 +840,8 @@ if (posts.length) {
   for (const p of posts) entries.push({ loc: p.url, lastmod: p.data, changefreq: "monthly", priority: "0.6" });
 }
 if (estudos.length) {
-  entries.push({ loc: `${SITE}/mercado/estudos/`, lastmod: `${estudos[0].data}-01`, changefreq: "monthly", priority: "0.6" });
-  for (const e of estudos) entries.push({ loc: e.url, lastmod: `${e.data}-01`, changefreq: "monthly", priority: "0.6" });
+  entries.push({ loc: `${SITE}/mercado/estudos/`, lastmod: estudos.map((e) => e.atualizado).sort().pop(), changefreq: "monthly", priority: "0.6" });
+  for (const e of estudos) entries.push({ loc: e.url, lastmod: e.atualizado, changefreq: "monthly", priority: "0.6" });
 }
 updateSitemap(entries);
 
