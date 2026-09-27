@@ -10,6 +10,7 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { buildAcervo } from "./build-acervo.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -118,6 +119,9 @@ async function main() {
   writeFileSync(OUT, JSON.stringify(payload, null, 2) + "\n", "utf8");
   console.log(`Wrote ${items.length} items → data/selecao.json`);
   console.log("byType:", byType);
+
+  // Atualiza o HTML pré-renderizado do Acervo (selecao.html) e as páginas de região.
+  buildAcervo();
 }
 
 main().catch((err) => {

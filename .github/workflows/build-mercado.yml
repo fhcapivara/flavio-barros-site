@@ -9,6 +9,13 @@ on:
       - "js/estudos.js"
       - "scripts/build-mercado.mjs"
       - "atuacao.html"
+      - "selecao.html"
+      - "data/selecao.json"
+      - "data/acervo-exclude.json"
+      - "data/regioes/**"
+      - "js/selecao.js"
+      - "scripts/build-acervo.mjs"
+      - "scripts/sync-lanportus.mjs"
   workflow_dispatch:
 
 permissions:
@@ -38,12 +45,15 @@ jobs:
         id: build
         run: node scripts/build-mercado.mjs
 
+      - name: Gerar Acervo (selecao.html e páginas de região)
+        run: node scripts/build-acervo.mjs
+
       - name: Publicar alterações
         id: publish
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A mercado sitemap.xml
+          git add -A mercado imoveis sitemap.xml selecao.html
           if git diff --cached --quiet; then
             echo "Nada mudou."
             exit 0
@@ -55,7 +65,8 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             node scripts/build-mercado.mjs
-            git add -A mercado sitemap.xml
+            node scripts/build-acervo.mjs
+            git add -A mercado imoveis sitemap.xml selecao.html
             git diff --cached --quiet && exit 0
             git commit -m "Atualiza Leitura de mercado"
           done

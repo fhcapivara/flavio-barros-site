@@ -2525,3 +2525,12 @@ em {
 .privacidade-prose .privacidade-updated { margin-top: var(--space-9); padding-top: var(--space-4); border-top: 1px solid var(--border); font-size: var(--text-sm); color: var(--stone); }
 
 .estudos-page .page-hero__inner .lead + .lead { margin-top: var(--space-3); }
+
+/* ----- Acervo: guia e regiões ----- */
+.acervo-guia__inner { max-width: 760px; }
+.acervo-guia__inner p { margin-top: var(--space-4); color: var(--stone-dark); line-height: 1.7; }
+.acervo-regioes:empty, .acervo-regioes:not(:has(li)) { display: none; }
+.acervo-regioes__label { margin-top: var(--space-6) !important; font-weight: 500; color: var(--black) !important; }
+.acervo-regioes__lista { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); margin-top: var(--space-3); padding: 0; list-style: none; }
+.acervo-regioes__lista a { color: var(--green); text-decoration: underline; text-underline-offset: 3px; }
+.acervo-regiao__vazio { color: var(--stone-dark); }

@@ -87,18 +87,6 @@
 
   if (!els.form || !els.grid) return;
 
-  function formatBRL(n) {
-    try {
-      return Number(n).toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-        maximumFractionDigits: 0,
-      });
-    } catch (e) {
-      return "R$ " + Math.round(Number(n) || 0);
-    }
-  }
-
   function escapeHtml(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;")
@@ -253,71 +241,53 @@
     return true;
   }
 
+  // ATENÇÃO: manter igual a cardHtml() em scripts/build-acervo.mjs (HTML pré-renderizado).
   function cardHtml(p) {
     var loc = [p.neighborhood, p.city].filter(Boolean).join(" · ");
     var meta = [];
     if (p.type !== "LAND" && !COMMERCIAL[p.type] && p.beds) meta.push(p.beds + " quartos");
     if (p.area) meta.push(Math.round(p.area) + " m²");
     if (p.garages) meta.push(p.garages + " vagas");
+    var url = detailUrl(p);
     var img = p.image
-      ? '<img src="' +
-        escapeHtml(p.image) +
-        '" alt="" loading="lazy" decoding="async" width="560" height="400" />'
+      ? '<img src="' + escapeHtml(p.image) + '" alt="' + escapeHtml(p.title) + '" loading="lazy" decoding="async" width="560" height="400" />'
       : '<div class="selecao-card__placeholder" aria-hidden="true"></div>';
-
     return (
       '<article class="selecao-card">' +
-      '<a class="selecao-card__media" href="' +
-      escapeHtml(detailUrl(p)) +
-      '">' +
-      img +
-      "</a>" +
+      '<a class="selecao-card__media" href="' + escapeHtml(url) + '" tabindex="-1" aria-hidden="true">' + img + "</a>" +
       '<div class="selecao-card__body">' +
-      '<span class="selecao-card__tag">' +
-      escapeHtml(typeLabel(p.type)) +
-      (loc ? " · " + escapeHtml(loc) : "") +
-      "</span>" +
-      '<h3 class="selecao-card__title">' +
-      '<a href="' +
-      escapeHtml(detailUrl(p)) +
-      '">' +
-      escapeHtml(p.title) +
-      "</a></h3>" +
-      '<p class="selecao-card__price">' +
-      escapeHtml(formatBRL(p.sale)) +
-      "</p>" +
+      '<span class="selecao-card__tag">' + escapeHtml(typeLabel(p.type)) + (loc ? " · " + escapeHtml(loc) : "") + "</span>" +
+      '<h3 class="selecao-card__title"><a href="' + escapeHtml(url) + '">' + escapeHtml(p.title) + "</a></h3>" +
       (meta.length
-        ? '<div class="selecao-card__meta">' +
-          meta
-            .map(function (m) {
-              return "<span>" + escapeHtml(m) + "</span>";
-            })
-            .join("") +
-          "</div>"
+        ? '<div class="selecao-card__meta">' + meta.map(function (m) { return "<span>" + escapeHtml(m) + "</span>"; }).join("") + "</div>"
         : "") +
       '<div class="selecao-card__actions">' +
-      '<a class="btn btn--ghost" href="' +
-      escapeHtml(detailUrl(p)) +
-      '">Ver detalhes</a>' +
-      '<a class="btn btn--primary" href="' +
-      escapeHtml(waUrl(p)) +
-      '" target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a>' +
+      '<a class="btn btn--ghost" href="' + escapeHtml(url) + '">Ver detalhes</a>' +
+      '<a class="btn btn--primary" href="' + escapeHtml(waUrl(p)) + '" target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a>' +
       "</div>" +
-      '<p class="selecao-card__ref">Ref. ' +
-      escapeHtml(p.ref) +
-      "</p>" +
+      '<p class="selecao-card__ref">Ref. ' + escapeHtml(p.ref) + "</p>" +
       "</div></article>"
     );
   }
 
+  function hasActiveFilter() {
+    return !!(state.q || state.tipo || state.regiao || state.quartos || state.chip);
+  }
+
   function render() {
     var filtered = state.items.filter(matches);
-    els.grid.innerHTML = filtered.map(cardHtml).join("");
+    // O grid padrão já vem pré-renderizado no HTML (scripts/build-acervo.mjs).
+    // Só troca o conteúdo se a lista mudou, para não piscar nem duplicar.
+    var refs = filtered.map(function (p) { return String(p.ref); }).join(",");
+    if (els.grid.getAttribute("data-refs") !== refs) {
+      els.grid.innerHTML = filtered.map(cardHtml).join("");
+      els.grid.setAttribute("data-refs", refs);
+    }
     var total = state.items.length;
     var n = filtered.length;
     if (els.count) {
       els.count.textContent =
-        n === total
+        !hasActiveFilter() || n === total
           ? n + (n === 1 ? " imóvel na seleção" : " imóveis na seleção")
           : n +
             " de " +
@@ -462,7 +432,10 @@
         return r.text();
       })
       .then(function (text) {
-        return clientFilter(parseCatalogText(text));
+        // Mesma ordem de data/selecao.json (scripts/sync-lanportus.mjs).
+        return clientFilter(parseCatalogText(text)).sort(function (a, b) {
+          return b.sale - a.sale || (a.ref < b.ref ? -1 : a.ref > b.ref ? 1 : 0);
+        });
       });
   }
 
