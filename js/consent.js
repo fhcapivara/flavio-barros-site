@@ -87,7 +87,7 @@
 
   function track(name, params) {
     if (readChoice() !== "granted" || !loaded) return;
-    var p = { event_page_path: location.pathname };
+    var p = { event_page_path: location.pathname, transport_type: "beacon" };
     if (params) for (var k in params) if (Object.prototype.hasOwnProperty.call(params, k)) p[k] = params[k];
     gtag("event", name, p);
   }
