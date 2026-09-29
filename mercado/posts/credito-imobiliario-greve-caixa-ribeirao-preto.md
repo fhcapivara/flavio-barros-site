@@ -3,8 +3,9 @@ titulo: Greve da Caixa: como proteger a compra do seu imóvel em Ribeirão Preto
 slug: credito-imobiliario-greve-caixa-ribeirao-preto
 categoria: Patrimônio, juros e tributos
 data: 2026-09-28
-resumo: O crédito imobiliário vive um ano de volumes recordes, mas a greve na Caixa e a saída de recursos da poupança mostram que o financiamento pode ser o ponto mais frágil de uma compra. Veja como organizar prazos e contratos para decidir com segurança.
-descricao: A greve da Caixa atrasa financiamentos e a poupança perde recursos. Veja como proteger prazos e contratos na compra de imóveis em Ribeirão Preto.
+atualizado: 2026-09-29
+resumo: O crédito imobiliário vive um ano de volumes recordes, mas a greve que parou a Caixa por três semanas e a saída de recursos da poupança mostram que o financiamento pode ser o ponto mais frágil de uma compra. Veja como organizar prazos e contratos para decidir com segurança.
+descricao: A greve da Caixa atrasou financiamentos e a poupança perde recursos. Veja como proteger prazos e contratos na compra de imóveis em Ribeirão Preto.
 imagem:
 fonte_nome: g1 Ribeirão Preto e Franca
 fonte_url: https://g1.globo.com/sp/ribeirao-preto-franca/noticia/2026/09/24/greve-da-caixa-chega-ao-15o-dia-com-mais-de-60-agencias-fechadas-na-regiao-de-ribeirao-preto-sp.ghtml
@@ -12,7 +13,7 @@ fonte_url: https://g1.globo.com/sp/ribeirao-preto-franca/noticia/2026/09/24/grev
 
 ## O que aconteceu
 
-Os funcionários da Caixa Econômica Federal estão em greve nacional desde 10 de setembro. Na região de Ribeirão Preto, a paralisação chegou ao 15º dia, em 24 de setembro, com mais de 60 agências fechadas, segundo o sindicato local ouvido pelo [g1](https://g1.globo.com/sp/ribeirao-preto-franca/noticia/2026/09/24/greve-da-caixa-chega-ao-15o-dia-com-mais-de-60-agencias-fechadas-na-regiao-de-ribeirao-preto-sp.ghtml). O Tribunal Superior do Trabalho determinou, em decisão liminar, que 60% dos funcionários sigam em atividade, e o julgamento do dissídio coletivo está marcado para esta terça-feira, 29 de setembro. Como explicou o g1, o julgamento, por si só, não encerra automaticamente a paralisação.
+Os funcionários da Caixa Econômica Federal estavam em greve nacional desde 10 de setembro. Na região de Ribeirão Preto, a paralisação chegou ao 15º dia, em 24 de setembro, com mais de 60 agências fechadas, segundo o sindicato local ouvido pelo [g1](https://g1.globo.com/sp/ribeirao-preto-franca/noticia/2026/09/24/greve-da-caixa-chega-ao-15o-dia-com-mais-de-60-agencias-fechadas-na-regiao-de-ribeirao-preto-sp.ghtml). Em 29 de setembro, o Tribunal Superior do Trabalho determinou, por unanimidade, o fim imediato da greve, com retorno ao trabalho no máximo até 30 de setembro. A Caixa afirmou que o atendimento presencial nas agências seria restabelecido a partir dessa data, conforme a [Folha de S.Paulo](https://www1.folha.uol.com.br/mercado/2026/09/ministro-vota-pelo-fim-da-greve-da-caixa-e-manda-descontar-dias-parados-em-julgamento-no-tst.shtml).
 
 O efeito sobre o mercado imobiliário é direto. Até julho, a Caixa respondeu por 44% das contratações de crédito imobiliário com recursos da poupança para compra de imóveis, de acordo com o [Valor Econômico](https://valor.globo.com/empresas/noticia/2026/09/24/greve-na-caixa-afeta-caixa-de-incorporadoras-e-j-preocupa-setor-imobilirio.ghtml). Incorporadoras relatam contratos parados na etapa final e atrasos nas medições de obra. O banco afirma que as contratações seguem disponíveis por canais digitais e correspondentes.
 
@@ -41,6 +42,7 @@ Nada disso é motivo para adiar uma decisão bem pensada. É um lembrete de que 
 
 - [g1 Ribeirão Preto e Franca: greve da Caixa chega ao 15º dia com mais de 60 agências fechadas na região](https://g1.globo.com/sp/ribeirao-preto-franca/noticia/2026/09/24/greve-da-caixa-chega-ao-15o-dia-com-mais-de-60-agencias-fechadas-na-regiao-de-ribeirao-preto-sp.ghtml)
 - [g1: TST marca julgamento do dissídio da Caixa para 29 de setembro](https://g1.globo.com/trabalho-e-carreira/noticia/2026/09/24/greve-caixa.ghtml)
+- [Folha de S.Paulo: TST determina fim da greve da Caixa e manda repor dias parados](https://www1.folha.uol.com.br/mercado/2026/09/ministro-vota-pelo-fim-da-greve-da-caixa-e-manda-descontar-dias-parados-em-julgamento-no-tst.shtml)
 - [Folha de S.Paulo: como fica o atendimento da Caixa após decisão do TST](https://www1.folha.uol.com.br/mercado/2026/09/entenda-como-fica-o-atendimento-da-caixa-apos-decisao-do-tst-sobre-a-greve.shtml)
 - [Valor Econômico: greve na Caixa afeta incorporadoras e preocupa setor imobiliário](https://valor.globo.com/empresas/noticia/2026/09/24/greve-na-caixa-afeta-caixa-de-incorporadoras-e-j-preocupa-setor-imobilirio.ghtml)
 - [Abecip: financiamento imobiliário pela poupança atinge recorde em julho](https://www.abecip.org.br/imprensa/noticias/financiamento-imobiliario-pela-poupanca-atinge-recorde-em-julho-aponta-abecip-valor-economico)
