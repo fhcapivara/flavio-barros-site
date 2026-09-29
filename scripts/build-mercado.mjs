@@ -262,6 +262,7 @@ function readPosts() {
     const resumo = plain(d.resumo || "") || truncate(firstParagraphText(body), 155);
     posts.push({
       file, titulo, slug, data, categoria, resumo,
+      descricao: plain(d.descricao || "") || truncate(resumo, 300),
       catSlug: slugify(categoria),
       imagem: d.imagem ? d.imagem.trim() : "",
       fonteNome: plain(d.fonte_nome || ""),
@@ -630,7 +631,7 @@ function postJsonLd(p) {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: p.titulo,
-    description: p.resumo,
+    description: p.descricao,
     datePublished: p.data,
     dateModified: p.data,
     inLanguage: "pt-BR",
@@ -747,7 +748,7 @@ for (const e of estudos) writeFileSync(join(OLD_ESTUDOS_DIR, `${e.slug}.html`), 
 for (const p of posts) {
   writeFileSync(join(MERCADO, `${p.slug}.html`), page({
     title: `${p.titulo} | Flávio Barros`,
-    description: truncate(p.resumo, 300),
+    description: p.descricao,
     canonical: p.url,
     robots: "index,follow",
     ogType: "article",
