@@ -263,6 +263,7 @@ function readPosts() {
     posts.push({
       file, titulo, slug, data, categoria, resumo,
       descricao: plain(d.descricao || "") || truncate(resumo, 300),
+      atualizado: /^\d{4}-\d{2}-\d{2}$/.test((d.atualizado || "").trim()) && d.atualizado.trim() > data ? d.atualizado.trim() : "",
       catSlug: slugify(categoria),
       imagem: d.imagem ? d.imagem.trim() : "",
       fonteNome: plain(d.fonte_nome || ""),
@@ -349,7 +350,7 @@ function waLink(text) {
 function card(p) {
   return `          <article class="mercado-card reveal">
             ${p.imagem ? `<a class="mercado-card__media" href="/mercado/${p.slug}.html" tabindex="-1" aria-hidden="true"><img src="${esc(localPath(p.imagem))}" alt="" loading="lazy" decoding="async" /></a>\n            ` : ""}<div class="mercado-card__body">
-              <p class="mercado-card__meta"><a href="/mercado/categoria/${p.catSlug}.html">${esc(p.categoria)}</a><span aria-hidden="true">·</span><time datetime="${p.data}">${formatDate(p.data)}</time></p>
+              <p class="mercado-card__meta"><a href="/mercado/categoria/${p.catSlug}.html">${esc(p.categoria)}</a><span aria-hidden="true">·</span><time datetime="${p.data}">${formatDate(p.data)}</time>${p.atualizado ? ` <span aria-hidden="true">·</span> Atualizado em <time datetime="${p.atualizado}">${formatDate(p.atualizado)}</time>` : ""}</p>
               <h2 class="mercado-card__title"><a href="/mercado/${p.slug}.html">${esc(p.titulo)}</a></h2>
               <p class="mercado-card__text">${esc(p.resumo)}</p>
               <a class="mercado-card__more" href="/mercado/${p.slug}.html" aria-label="Ler o texto: ${esc(p.titulo)}">Ler o texto</a>
@@ -606,7 +607,7 @@ function postBody(p) {
             <p class="eyebrow"><a class="mercado-post__crumb" href="/mercado/">Leitura de mercado</a> <span aria-hidden="true">·</span> <a class="mercado-post__crumb" href="/mercado/categoria/${p.catSlug}.html">${esc(p.categoria)}</a></p>
             <h1>${esc(p.titulo)}</h1>
             <p class="lead">${esc(p.resumo)}</p>
-            <p class="mercado-byline">Por <a class="mercado-byline__author" href="${AUTHOR_URL}">${AUTHOR}</a> <span aria-hidden="true">·</span> <time datetime="${p.data}">${formatDate(p.data)}</time></p>
+            <p class="mercado-byline">Por <a class="mercado-byline__author" href="${AUTHOR_URL}">${AUTHOR}</a> <span aria-hidden="true">·</span> <time datetime="${p.data}">${formatDate(p.data)}</time>${p.atualizado ? ` <span aria-hidden="true">·</span> Atualizado em <time datetime="${p.atualizado}">${formatDate(p.atualizado)}</time>` : ""}</p>
           </div>
         </div>
       </header>
@@ -633,7 +634,7 @@ function postJsonLd(p) {
     headline: p.titulo,
     description: p.descricao,
     datePublished: p.data,
-    dateModified: p.data,
+    dateModified: p.atualizado || p.data,
     inLanguage: "pt-BR",
     articleSection: p.categoria,
     author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${SIGNATURE.src}`, jobTitle: "Consultor imobiliário" },
@@ -789,7 +790,7 @@ if (posts.length) {
   for (const c of indexableCats) {
     entries.push({ loc: `${SITE}/mercado/categoria/${slugify(c)}.html`, lastmod: byCat.get(c)[0].data, changefreq: "weekly", priority: "0.5" });
   }
-  for (const p of posts) entries.push({ loc: p.url, lastmod: p.data, changefreq: "monthly", priority: "0.6" });
+  for (const p of posts) entries.push({ loc: p.url, lastmod: p.atualizado || p.data, changefreq: "monthly", priority: "0.6" });
 }
 if (estudos.length) {
   entries.push({ loc: `${SITE}/estudos/`, lastmod: estudos.map((e) => e.atualizado).sort().pop(), changefreq: "monthly", priority: "0.6" });
