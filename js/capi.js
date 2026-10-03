@@ -559,14 +559,39 @@
   startBtn.addEventListener("click", start);
   restartBtn.addEventListener("click", start);
 
+  // Títulos vêm do catálogo Lanportus e às vezes trazem o valor ("Venda R$5.790.000,00").
+  // Regra do site: nenhum preço aparece ao visitante, então o trecho sai antes de exibir.
+  // ATENÇÃO: manter igual em js/selecao.js, js/imovel.js, js/capi.js e scripts/build-acervo.mjs.
+  function cleanTitle(s) {
+    return String(s || "")
+      .replace(/\s*(?:\b(?:venda|valor|pre[cç]o|por|apenas)\s*:?\s*)?R\$\s*\d[\d.,]*(?:\s*(?:milh(?:[õo]es|[ãa]o)|mil|mi|mm|k)(?![a-zà-ú]))?/gi, " ")
+      .replace(/\s*\b\d+(?:[.,]\d+)?\s*milh(?:[õo]es|[ãa]o)(?!\s*de\s*m)(?![a-zà-ú])/gi, " ")
+      .replace(/\s{2,}/g, " ")
+      .replace(/^[\s\-\u2013|·,:/]+|[\s\-\u2013|·,:/]+$/g, "")
+      .trim();
+  }
+
   let inventoryReady = false;
-  fetch("data/selecao.json", { cache: "no-cache" })
-    .then((r) => {
+  // Mesma curadoria do Acervo: sem locação e sem capas reprovadas em data/acervo-exclude.json
+  // (essas só aparecem no Acervo quando o pedido é comercial, então aqui seguem só se forem comerciais).
+  const isCommercialListing = (p) =>
+    /^(ROOM|HALL|BUILDING|OUTHOUSE)$/.test(p.type) ||
+    (p.type === "LAND" && /comerci|industri|galp|barrac|lote comercial|terreno comercial/.test(((p.title || "") + " " + (p.neighborhood || "") + " " + (p.tags || []).join(" ")).toLowerCase()));
+  const isRental = (p) => /loca[cç][aã]o|aluguel/i.test((p.title || "") + " " + (p.description || "") + " " + (p.tags || []).join(" "));
+  Promise.all([
+    fetch("data/selecao.json", { cache: "no-cache" }).then((r) => {
       if (!r.ok) throw new Error("selecao " + r.status);
       return r.json();
-    })
-    .then((data) => {
-      inventory = data.items || data || [];
+    }),
+    fetch("data/acervo-exclude.json", { cache: "no-cache" })
+      .then((r) => (r.ok ? r.json() : null))
+      .catch(() => null),
+  ])
+    .then(([data, ex]) => {
+      const excluded = new Set(((ex && ex.refs) || []).map(String));
+      inventory = (data.items || data || [])
+        .filter((p) => !isRental(p) && (!excluded.has(String(p.ref)) || isCommercialListing(p)))
+        .map((p) => Object.assign({}, p, { title: cleanTitle(p.title) }));
       inventoryReady = true;
     })
     .catch(() => {

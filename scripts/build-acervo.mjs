@@ -5,7 +5,8 @@
  *
  * Fonte: data/selecao.json (scripts/sync-lanportus.mjs) e data/acervo-exclude.json.
  * O grid padrão segue as mesmas regras de js/selecao.js sem filtros: sem comerciais
- * e sem as referências de data/acervo-exclude.json. Nenhum valor (preço) é publicado.
+ * e sem as referências de data/acervo-exclude.json. Nenhum valor (preço) é publicado:
+ * cleanTitle() tira dos títulos do catálogo trechos como "Venda R$5.790.000,00".
  *
  * Regiões: publicado: sim + pelo menos 1 imóvel => página indexável e no sitemap.
  * Publicada com 0 imóveis => página continua no ar com noindex e sai do sitemap
@@ -46,10 +47,22 @@ const typeLabel = (t) => TYPE_LABEL[t] || t || "";
 export const isRental = (p) => /loca[cç][aã]o|aluguel/i.test((p.title || "") + " " + (p.description || "") + " " + (p.tags || []).join(" "));
 // Anúncios idênticos (mesmo título, tipo, área, quartos e bairro) aparecem uma vez só.
 const dupKey = (p) => [norm(p.title), p.type, Math.round(Number(p.area) || 0), Number(p.beds) || 0, norm(p.neighborhood)].join("|");
+// Títulos vêm do catálogo Lanportus e às vezes trazem o valor ("Venda R$5.790.000,00").
+// Regra do site: nenhum preço aparece ao visitante, então o trecho sai antes de exibir.
+// ATENÇÃO: manter igual em js/selecao.js, js/imovel.js, js/capi.js e scripts/build-acervo.mjs.
+export function cleanTitle(s) {
+  return String(s || "")
+    .replace(/\s*(?:\b(?:venda|valor|pre[cç]o|por|apenas)\s*:?\s*)?R\$\s*\d[\d.,]*(?:\s*(?:milh(?:[õo]es|[ãa]o)|mil|mi|mm|k)(?![a-zà-ú]))?/gi, " ")
+    .replace(/\s*\b\d+(?:[.,]\d+)?\s*milh(?:[õo]es|[ãa]o)(?!\s*de\s*m)(?![a-zà-ú])/gi, " ")
+    .replace(/\s{2,}/g, " ")
+    .replace(/^[\s\-\u2013|·,:/]+|[\s\-\u2013|·,:/]+$/g, "")
+    .trim();
+}
 export function cleanItems(items, log) {
   const seen = new Map();
   const out = [];
-  for (const p of items) {
+  for (const raw of items) {
+    const p = raw.title === cleanTitle(raw.title) ? raw : { ...raw, title: cleanTitle(raw.title) };
     if (isRental(p)) { if (log) log.rental.push(`${p.ref} (${p.title})`); continue; }
     const k = dupKey(p);
     if (seen.has(k)) { if (log) log.dup.push(`${p.ref} (igual a ${seen.get(k)}: ${p.title})`); continue; }

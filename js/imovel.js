@@ -3,6 +3,8 @@
 
   var WA = "5516991166681";
   var DATA_URL = "data/selecao.json";
+  var CATALOG_URL = "https://lanportus.com.br/catalog-data.js";
+  var RESIDENTIAL = { HOUSE: 1, APARTMENT: 1, TWO_STORY_HOUSE: 1 };
   var TYPE_LABEL = {
     HOUSE: "Casa",
     APARTMENT: "Apartamento",
@@ -34,16 +36,16 @@
       .replace(/"/g, "&quot;");
   }
 
-  function formatBRL(n) {
-    try {
-      return Number(n).toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-        maximumFractionDigits: 0,
-      });
-    } catch (e) {
-      return "R$ " + Math.round(Number(n) || 0);
-    }
+  // Títulos vêm do catálogo Lanportus e às vezes trazem o valor ("Venda R$5.790.000,00").
+  // Regra do site: nenhum preço aparece ao visitante, então o trecho sai antes de exibir.
+  // ATENÇÃO: manter igual em js/selecao.js, js/imovel.js, js/capi.js e scripts/build-acervo.mjs.
+  function cleanTitle(s) {
+    return String(s || "")
+      .replace(/\s*(?:\b(?:venda|valor|pre[cç]o|por|apenas)\s*:?\s*)?R\$\s*\d[\d.,]*(?:\s*(?:milh(?:[õo]es|[ãa]o)|mil|mi|mm|k)(?![a-zà-ú]))?/gi, " ")
+      .replace(/\s*\b\d+(?:[.,]\d+)?\s*milh(?:[õo]es|[ãa]o)(?!\s*de\s*m)(?![a-zà-ú])/gi, " ")
+      .replace(/\s{2,}/g, " ")
+      .replace(/^[\s\-\u2013|·,:/]+|[\s\-\u2013|·,:/]+$/g, "")
+      .trim();
   }
 
   function waUrl(p) {
@@ -62,6 +64,7 @@
   }
 
   function render(p) {
+    var nome = cleanTitle(p.title) || "Imóvel";
     var loc = [p.neighborhood, p.city].filter(Boolean).join(" · ");
     var tipo = TYPE_LABEL[p.type] || p.type || "Imóvel";
     var bits = [];
@@ -73,7 +76,7 @@
 
     var bairro = p.neighborhood || p.city || "Ribeirão Preto";
     var pageTitle =
-      (p.title || "Imóvel") +
+      nome +
       " | " +
       bairro +
       " · Acervo · Flávio Barros";
@@ -87,11 +90,15 @@
     var robots = document.getElementById("robots-meta");
     if (robots) robots.setAttribute("content", "noindex,follow");
 
+    // A capa do catálogo vem recortada para o card (w=560); no detalhe pede a versão maior.
+    var src = /cdn\.sanity\.io/.test(p.image || "")
+      ? p.image.replace(/([?&])w=\d+/, "$1w=1200").replace(/([?&])h=\d+/, "$1h=800")
+      : p.image;
     var img = p.image
       ? '<figure class="imovel-detail__media"><img src="' +
-        escapeHtml(p.image) +
+        escapeHtml(src) +
         '" alt="' +
-        escapeHtml(p.title || "") +
+        escapeHtml(nome) +
         '" width="1200" height="800" decoding="async" fetchpriority="high" /></figure>'
       : "";
 
@@ -103,11 +110,8 @@
       (loc ? " · " + escapeHtml(loc) : "") +
       "</p>" +
       "<h1>" +
-      escapeHtml(p.title || "Imóvel") +
+      escapeHtml(nome) +
       "</h1>" +
-      '<p class="imovel-detail__price">' +
-      escapeHtml(formatBRL(p.sale)) +
-      "</p>" +
       (bits.length
         ? '<ul class="imovel-detail__facts">' +
           bits
@@ -139,6 +143,78 @@
     els.card.hidden = false;
   }
 
+  function findRef(items) {
+    for (var i = 0; i < (items || []).length; i++) {
+      if (String(items[i].ref) === String(ref)) return items[i];
+    }
+    return null;
+  }
+
+  // Mesmo leitor de js/selecao.js (parseCatalogText) para window.LANPORTUS_CATALOG.
+  function parseCatalogText(text) {
+    var start = text.indexOf("window.LANPORTUS_CATALOG");
+    if (start < 0) throw new Error("catalog missing");
+    var i = text.indexOf("=", start) + 1;
+    while (/\s/.test(text[i])) i++;
+    if (text[i] !== "[") throw new Error("bad catalog");
+    var depth = 0, inStr = false, esc = false, quote = "";
+    for (var j = i; j < text.length; j++) {
+      var c = text[j];
+      if (inStr) {
+        if (esc) esc = false;
+        else if (c === "\\") esc = true;
+        else if (c === quote) inStr = false;
+        continue;
+      }
+      if (c === '"' || c === "'") { inStr = true; quote = c; continue; }
+      if (c === "[") depth++;
+      if (c === "]") {
+        depth--;
+        if (depth === 0) return JSON.parse(text.slice(i, j + 1));
+      }
+    }
+    throw new Error("unterminated");
+  }
+
+  // Mesmas regras de curadoria do Acervo (js/selecao.js clientFilter + cleanItems e
+  // scripts/sync-lanportus.mjs): só entra o que o Acervo também mostraria. Valores nunca aparecem.
+  function passesCuration(p) {
+    var sale = Number(p.sale) || 0;
+    var hay = (p.title || "") + " " + (p.description || "") + " " + (p.tags || []).join(" ");
+    if (/loca[cç][aã]o|aluguel/i.test(hay)) return false;
+    if (p.type === "LAND") return sale >= 600000;
+    if (RESIDENTIAL[p.type]) return sale >= 3000000;
+    if (COMMERCIAL[p.type]) return sale >= 300000;
+    return false;
+  }
+
+  // Anúncio novo no catálogo Lanportus que ainda não entrou no snapshot local.
+  function loadFromCatalog() {
+    return fetch(CATALOG_URL, { mode: "cors", cache: "no-cache" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("catalog " + r.status);
+        return r.text();
+      })
+      .then(function (text) {
+        var p = findRef(parseCatalogText(text));
+        if (!p || !passesCuration(p)) return null;
+        return {
+          ref: String(p.ref),
+          title: p.title || "",
+          type: p.type,
+          neighborhood: p.neighborhood || "",
+          condominio: p.condominio || null,
+          city: p.city || "",
+          area: Number(p.area) || 0,
+          beds: Number(p.beds) || 0,
+          baths: Number(p.baths) || 0,
+          garages: Number(p.garages) || 0,
+          suites: Number(p.suites) || 0,
+          image: p.image || "",
+        };
+      });
+  }
+
   if (!ref) {
     showMissing();
     return;
@@ -150,14 +226,15 @@
       return r.json();
     })
     .then(function (data) {
-      var items = Array.isArray(data) ? data : (data && data.items) || [];
-      var found = null;
-      for (var i = 0; i < items.length; i++) {
-        if (String(items[i].ref) === String(ref)) {
-          found = items[i];
-          break;
-        }
-      }
+      return findRef(Array.isArray(data) ? data : (data && data.items) || []);
+    })
+    .catch(function () {
+      return null;
+    })
+    .then(function (found) {
+      return found || loadFromCatalog();
+    })
+    .then(function (found) {
       if (!found) showMissing();
       else render(found);
     })

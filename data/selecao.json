@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-27T00:55:54.293Z",
+  "generatedAt": "2026-10-03T21:24:49.985Z",
   "source": "https://lanportus.com.br/catalog-data.js",
   "attribution": "Seleção Lanportus · curadoria Flávio Barros",
-  "count": 111,
+  "count": 117,
   "byType": {
-    "LAND": 54,
+    "LAND": 57,
     "HALL": 2,
-    "APARTMENT": 4,
-    "HOUSE": 41,
+    "APARTMENT": 5,
+    "HOUSE": 43,
     "OUTHOUSE": 3,
     "TWO_STORY_HOUSE": 5,
     "ROOM": 2
@@ -257,7 +257,7 @@
     },
     {
       "ref": "3865",
-      "title": "Condomínios Guaporé III -548 m² construídos Venda R$5.790.000,00 Bonfim Paulista - Ribeirão Preto/SP",
+      "title": "Condomínios Guaporé III -548 m² construídos Bonfim Paulista - Ribeirão Preto/SP",
       "type": "HOUSE",
       "neighborhood": "Condomínio Guaporé",
       "condominio": "Condominio Jardim Sul",
@@ -424,7 +424,7 @@
       "neighborhood": "Jardim Olhos DÁgua II",
       "condominio": "Condomínio Bela Vista",
       "city": "Ribeirão Preto",
-      "sale": 4900000,
+      "sale": 5000000,
       "area": 400,
       "beds": 5,
       "baths": 6,
@@ -460,6 +460,28 @@
       "slug": "casa-sobrado-com-4-quartos-sendo-4-suites-e-closet-a-venda-434m-alphaville-ribei-3876",
       "source": "lanportus",
       "detailUrl": "imovel.html?ref=3876"
+    },
+    {
+      "ref": "4262",
+      "title": "Casa em condomínio - 4 quartos - à venda, 450 m² - Jardim Olhos d’Água - Ribeirão Preto - SP",
+      "type": "HOUSE",
+      "neighborhood": "Jardim Olhos D´Água I",
+      "condominio": "Condominio Bela Vista",
+      "city": "Ribeirão Preto",
+      "sale": 4800000,
+      "area": 450,
+      "beds": 4,
+      "baths": 6,
+      "garages": 4,
+      "suites": 4,
+      "featured": false,
+      "tags": [
+        "alto padrão"
+      ],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/0a1babcb02e867c05b4c1d464b7215cd7feaa905-1280x960.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "casa-em-condominio-4-quartos-a-venda-450-m-jardim-olhos-d-agua-ribeirao-preto-sp-4262",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=4262"
     },
     {
       "ref": "2604",
@@ -563,7 +585,7 @@
     },
     {
       "ref": "3882",
-      "title": "Casa Alto Padrão no Alphaville com 406m² - 5 Quartos -  Automação - Piscina Aquecida - Energia Solar",
+      "title": "Casa Alto Padrão no Alphaville com 406m² - 5 Quartos - Automação - Piscina Aquecida - Energia Solar",
       "type": "HOUSE",
       "neighborhood": "Alphaville Iii",
       "condominio": "Alphaville I",
@@ -722,6 +744,29 @@
       "slug": "casa-em-condominio-com-5-quartos-a-venda-407m-alphaville-3-3853",
       "source": "lanportus",
       "detailUrl": "imovel.html?ref=3853"
+    },
+    {
+      "ref": "4248",
+      "title": "Birdie",
+      "type": "APARTMENT",
+      "neighborhood": "Vila do Golfe",
+      "condominio": "Birdie",
+      "city": "Ribeirão Preto",
+      "sale": 3724686.1,
+      "area": 0,
+      "beds": 0,
+      "baths": 0,
+      "garages": 0,
+      "suites": 0,
+      "featured": false,
+      "tags": [
+        "alto padrão",
+        "lançamento"
+      ],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/a96a413e400d9e0887b9bbfabd244ffe96236abb-1280x720.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "birdie-4248",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=4248"
     },
     {
       "ref": "3614",
@@ -945,7 +990,7 @@
     },
     {
       "ref": "1610",
-      "title": "Casa a venda com 5 quartos, 328m² - Alphaville  - Ribeirão Preto sp",
+      "title": "Casa a venda com 5 quartos, 328m² - Alphaville - Ribeirão Preto sp",
       "type": "HOUSE",
       "neighborhood": "Alphaville",
       "condominio": "Alphaville I",
@@ -1151,7 +1196,7 @@
     },
     {
       "ref": "3880",
-      "title": "Casa Alto Padrão no Alphaville - 3 Quartos -  Piscina Aquecida - Ofurô - Escritório Reversível",
+      "title": "Casa Alto Padrão no Alphaville - 3 Quartos - Piscina Aquecida - Ofurô - Escritório Reversível",
       "type": "TWO_STORY_HOUSE",
       "neighborhood": "Alphaville",
       "condominio": "Alphaville II",
@@ -1173,7 +1218,7 @@
     },
     {
       "ref": "3881",
-      "title": "Casa à Venda no Alphaville -  484m² de Terreno - 4 Quartos -  Alto Padrão",
+      "title": "Casa à Venda no Alphaville - 484m² de Terreno - 4 Quartos - Alto Padrão",
       "type": "HOUSE",
       "neighborhood": "Alphaville Iii",
       "condominio": "Alphaville I",
@@ -1254,6 +1299,34 @@
       "slug": "terreno-residencial-bordas-do-parque-1784",
       "source": "lanportus",
       "detailUrl": "imovel.html?ref=1784"
+    },
+    {
+      "ref": "4266",
+      "title": "Casa em condomínio - 4 quartos - à venda - Jardim Botânico - Ribeirão Preto - SP",
+      "type": "HOUSE",
+      "neighborhood": "Jardim São Luiz",
+      "condominio": "Residencial Torino",
+      "city": "Ribeirão Preto",
+      "sale": 3000000,
+      "area": 450,
+      "beds": 4,
+      "baths": 6,
+      "garages": 4,
+      "suites": 4,
+      "featured": false,
+      "tags": [
+        "alto padrão",
+        "ar-condicionado",
+        "armarios-planejados",
+        "escritorio",
+        "fechadura-eletronica",
+        "piscina-aquecida",
+        "varanda-gourmet"
+      ],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/84c13aef3000e80a42c035ab05c3c315d0dd0e03-960x1280.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "casa-em-condominio-4-quartos-a-venda-jardim-botanico-ribeirao-preto-sp-4266",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=4266"
     },
     {
       "ref": "2326",
@@ -1520,26 +1593,6 @@
       "detailUrl": "imovel.html?ref=3958"
     },
     {
-      "ref": "3937",
-      "title": "Terreno a venda 545 m² Condomínio Bela Vista – Jardim Olhos D'Água Ribeirão Preto - SP",
-      "type": "LAND",
-      "neighborhood": "Jardim Olhos DÁgua II",
-      "condominio": "Condomínio Bela Vista",
-      "city": "Ribeirão Preto",
-      "sale": 1294000,
-      "area": 545,
-      "beds": 0,
-      "baths": 0,
-      "garages": 0,
-      "suites": 0,
-      "featured": false,
-      "tags": [],
-      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/c65150fea6704bfce7df8c23f1e96dd169af7b94-1920x2560.jpg?w=560&h=400&fit=crop&auto=format",
-      "slug": "terreno-a-venda-545-m-condominio-bela-vista-jardim-olhos-d-agua-ribeirao-preto-s-3937",
-      "source": "lanportus",
-      "detailUrl": "imovel.html?ref=3937"
-    },
-    {
       "ref": "3100",
       "title": "Terreno residencial- Bela Vista",
       "type": "LAND",
@@ -1638,6 +1691,26 @@
       "slug": "terreno-a-venda-504m-jardim-olhos-d-agua-ribeirao-preto-sp-3654",
       "source": "lanportus",
       "detailUrl": "imovel.html?ref=3654"
+    },
+    {
+      "ref": "3937",
+      "title": "Terreno a venda 545 m² Condomínio Bela Vista – Jardim Olhos D'Água Ribeirão Preto - SP",
+      "type": "LAND",
+      "neighborhood": "Jardim Olhos DÁgua II",
+      "condominio": "Condomínio Bela Vista",
+      "city": "Ribeirão Preto",
+      "sale": 1190000,
+      "area": 545,
+      "beds": 0,
+      "baths": 0,
+      "garages": 0,
+      "suites": 0,
+      "featured": false,
+      "tags": [],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/c65150fea6704bfce7df8c23f1e96dd169af7b94-1920x2560.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "terreno-a-venda-545-m-condominio-bela-vista-jardim-olhos-d-agua-ribeirao-preto-s-3937",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=3937"
     },
     {
       "ref": "3461",
@@ -1780,6 +1853,28 @@
       "detailUrl": "imovel.html?ref=4221"
     },
     {
+      "ref": "4247",
+      "title": "Terreno a Venda, 840m² - Jardim Canada - Ribeirão Preto sp",
+      "type": "LAND",
+      "neighborhood": "Jardim Canadá",
+      "condominio": null,
+      "city": "Ribeirão Preto",
+      "sale": 1060000,
+      "area": 840,
+      "beds": 0,
+      "baths": 0,
+      "garages": 0,
+      "suites": 0,
+      "featured": false,
+      "tags": [
+        "alto padrão"
+      ],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/7e494ed279a54814fe85d13c9eb019fc08e03987-1600x1200.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "terreno-a-venda-840m-jardim-canada-ribeirao-preto-sp-4247",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=4247"
+    },
+    {
       "ref": "1935",
       "title": "Terreno Comercial a venda na região da Ribeirania, Ribeirão Preto",
       "type": "LAND",
@@ -1902,8 +1997,28 @@
       "detailUrl": "imovel.html?ref=4009"
     },
     {
+      "ref": "4239",
+      "title": "Terreno a venda, 305m² - Residencial Flórida - Ribeirão Preto",
+      "type": "LAND",
+      "neighborhood": "Jardim Califórnia",
+      "condominio": null,
+      "city": "Ribeirão Preto",
+      "sale": 800000,
+      "area": 305,
+      "beds": 0,
+      "baths": 0,
+      "garages": 0,
+      "suites": 0,
+      "featured": false,
+      "tags": [],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/db4ce5ed521feb90b99b11886536a9272597ecbd-1600x900.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "terreno-a-venda-305m-residencial-florida-ribeirao-preto-4239",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=4239"
+    },
+    {
       "ref": "3963",
-      "title": "Terreno a venda, 487.50 m² -  Alphaville - Ribeirão Preto sp",
+      "title": "Terreno a venda, 487.50 m² - Alphaville - Ribeirão Preto sp",
       "type": "LAND",
       "neighborhood": "Alphaville",
       "condominio": "Alphaville I",
@@ -2162,6 +2277,26 @@
       "slug": "terreno-589-67-m-rifaina-residencial-vila-bela-3336",
       "source": "lanportus",
       "detailUrl": "imovel.html?ref=3336"
+    },
+    {
+      "ref": "4252",
+      "title": "Terreno a Venda, 1065m² - Ribeirania - Ribeirão Preto sp",
+      "type": "LAND",
+      "neighborhood": "Ribeirânia",
+      "condominio": null,
+      "city": "Ribeirão Preto",
+      "sale": 650000,
+      "area": 1065,
+      "beds": 0,
+      "baths": 0,
+      "garages": 0,
+      "suites": 0,
+      "featured": false,
+      "tags": [],
+      "image": "https://cdn.sanity.io/images/l9z1zbwg/production/9cce3c940e0e6a1cb14a44e9a5b83cc97e959d61-1600x1200.jpg?w=560&h=400&fit=crop&auto=format",
+      "slug": "terreno-a-venda-1065m-ribeirania-ribeirao-preto-sp-4252",
+      "source": "lanportus",
+      "detailUrl": "imovel.html?ref=4252"
     },
     {
       "ref": "4033",

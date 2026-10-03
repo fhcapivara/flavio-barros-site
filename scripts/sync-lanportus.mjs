@@ -10,7 +10,7 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildAcervo, cleanItems } from "./build-acervo.mjs";
+import { buildAcervo, cleanItems, cleanTitle } from "./build-acervo.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -73,7 +73,7 @@ function passesInternalFilter(p) {
 function slim(p) {
   return {
     ref: String(p.ref),
-    title: p.title || "",
+    title: cleanTitle(p.title),
     type: p.type,
     neighborhood: p.neighborhood || "",
     condominio: p.condominio || null,

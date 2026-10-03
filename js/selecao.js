@@ -65,9 +65,28 @@
   function normKey(s) {
     return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/['´`’‘]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
   }
+  // Títulos vêm do catálogo Lanportus e às vezes trazem o valor ("Venda R$5.790.000,00").
+  // Regra do site: nenhum preço aparece ao visitante, então o trecho sai antes de exibir.
+  // ATENÇÃO: manter igual em js/selecao.js, js/imovel.js, js/capi.js e scripts/build-acervo.mjs.
+  function cleanTitle(s) {
+    return String(s || "")
+      .replace(/\s*(?:\b(?:venda|valor|pre[cç]o|por|apenas)\s*:?\s*)?R\$\s*\d[\d.,]*(?:\s*(?:milh(?:[õo]es|[ãa]o)|mil|mi|mm|k)(?![a-zà-ú]))?/gi, " ")
+      .replace(/\s*\b\d+(?:[.,]\d+)?\s*milh(?:[õo]es|[ãa]o)(?!\s*de\s*m)(?![a-zà-ú])/gi, " ")
+      .replace(/\s{2,}/g, " ")
+      .replace(/^[\s\-\u2013|·,:/]+|[\s\-\u2013|·,:/]+$/g, "")
+      .trim();
+  }
+  function withCleanTitle(p) {
+    var t = cleanTitle(p.title);
+    if (t === p.title) return p;
+    var c = {};
+    for (var k in p) if (Object.prototype.hasOwnProperty.call(p, k)) c[k] = p[k];
+    c.title = t;
+    return c;
+  }
   function cleanItems(items) {
     var seen = {};
-    return (items || []).filter(function (p) {
+    return (items || []).map(withCleanTitle).filter(function (p) {
       if (isRental(p)) return false;
       var k = [normKey(p.title), p.type, Math.round(Number(p.area) || 0), Number(p.beds) || 0, normKey(p.neighborhood)].join("|");
       if (seen[k]) return false;
@@ -76,8 +95,13 @@
     });
   }
 
+  // Refs do snapshot data/selecao.json já passaram pela curadoria (sync + revisão das capas
+  // em data/acervo-exclude.json). Um anúncio que só existe no catálogo ao vivo ainda não foi
+  // revisado: fica fora do grid padrão, com a mesma regra dos excluídos, até o próximo sync.
+  var LOCAL_REFS = null;
   function isPresentationOk(p) {
     if (EXCLUDE_REFS[String(p.ref)]) return false;
+    if (LOCAL_REFS && !LOCAL_REFS[String(p.ref)]) return false;
     return true;
   }
 
@@ -504,6 +528,10 @@
     .then(function (pair) {
       var data = pair[0];
       var items = data && data.items ? data.items : [];
+      LOCAL_REFS = {};
+      items.forEach(function (p) {
+        LOCAL_REFS[String(p.ref)] = 1;
+      });
       boot(items);
       tryCatalogRefresh()
         .then(function (fresh) {

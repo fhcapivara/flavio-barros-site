@@ -27,7 +27,10 @@
     "3937",
     "3952",
     "3958",
-    "3974"
+    "3974",
+    "4239",
+    "4247",
+    "4252"
   ],
   "notes": {
     "1843": "bare messy lot; dirt and dead weeds",
@@ -56,6 +59,9 @@
     "3937": "stained back wall plus dirt pile in foreground",
     "3952": "active construction; scaffolding, brick stacks, raw dirt",
     "3958": "perimeter wall with heavy water stains",
-    "3974": "stained concrete fence/retaining wall"
+    "3974": "stained concrete fence/retaining wall",
+    "4239": "bare lot with raw concrete-block wall and barbed wire",
+    "4247": "overgrown empty lot; graffiti on neighbor wall",
+    "4252": "bare dirt lot with debris, power lines, overcast"
   }
 }
