@@ -32,7 +32,7 @@ const REGIOES_DIR = join(ROOT, "data", "regioes");
 const OUT_DIR = join(ROOT, "imoveis");
 const SITEMAP = join(ROOT, "sitemap.xml");
 const TEMPLATE_PAGE = join(ROOT, "atuacao.html");
-const OG = { url: `${SITE}/images/og/flavio-barros-og-v2-1200x630.jpg`, alt: "Flávio Barros, consultor imobiliário em Ribeirão Preto" };
+const OG = { url: `${SITE}/images/og/flavio-barros-og-v2-1200x630.jpg`, alt: "Flávio Barros, corretor de imóveis em Ribeirão Preto" };
 
 /* ---- regras iguais às de js/selecao.js ---- */
 const TYPE_LABEL = { HOUSE: "Casa", APARTMENT: "Apartamento", TWO_STORY_HOUSE: "Sobrado", LAND: "Terreno", ROOM: "Sala", HALL: "Salão / ponto", BUILDING: "Prédio comercial", OUTHOUSE: "Galpão" };

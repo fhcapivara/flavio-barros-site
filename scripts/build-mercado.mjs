@@ -46,7 +46,7 @@ const TEMPLATE_PAGE = join(ROOT, "atuacao.html");
 const WHATSAPP = "5516991166681";
 const AUTHOR = "Flávio Barros";
 const INDEX_THRESHOLD = 5;
-const AUTHOR_ALT = "Flávio Barros, consultor imobiliário em Ribeirão Preto";
+const AUTHOR_ALT = "Flávio Barros, corretor de imóveis em Ribeirão Preto";
 const AUTHOR_URL = "/sobre.html";
 // Retrato do autor. Nomes novos a cada troca de foto (cache do navegador).
 const PORTRAIT = { src: "/images/mercado/flavio-leitura-2026.webp", width: 473, height: 800 };
@@ -93,7 +93,7 @@ function validDate(s) {
 const absUrl = (p) => (/^https?:\/\//i.test(p) ? p : SITE + localPath(p));
 
 // Imagem padrão de compartilhamento (Open Graph / Twitter).
-const OG_DEFAULT = { src: "/images/og/flavio-barros-og-v2-1200x630.jpg", width: 1200, height: 630, alt: "Flávio Barros, consultor imobiliário em Ribeirão Preto" };
+const OG_DEFAULT = { src: "/images/og/flavio-barros-og-v2-1200x630.jpg", width: 1200, height: 630, alt: "Flávio Barros, corretor de imóveis em Ribeirão Preto" };
 // Lê largura e altura de JPG, PNG ou WebP do próprio site (sem dependências).
 function imageSize(p) {
   try {
@@ -442,7 +442,7 @@ function signature(waText) {
             <img class="mercado-signature__photo" src="${SIGNATURE.src}" width="${SIGNATURE.width}" height="${SIGNATURE.height}" alt="${esc(AUTHOR_ALT)}" loading="lazy" decoding="async" />
             <div class="mercado-signature__body">
               <p class="mercado-signature__name">${AUTHOR}</p>
-              <p class="mercado-signature__role">Consultor imobiliário em Ribeirão Preto e região</p>
+              <p class="mercado-signature__role">Corretor de imóveis em Ribeirão Preto e região</p>
               <p class="mercado-signature__creci">CRECI 323468</p>
               <p class="mercado-signature__note">Acompanho quem decide sobre patrimônio, do diagnóstico ao próximo passo.</p>
               <p class="mercado-signature__actions">
@@ -582,7 +582,7 @@ function estudoJsonLd(e) {
     datePublished: `${e.data}-01`,
     dateModified: e.atualizado,
     inLanguage: "pt-BR",
-    author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${SIGNATURE.src}`, jobTitle: "Consultor imobiliário" },
+    author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${SIGNATURE.src}`, jobTitle: "Corretor de imóveis" },
     publisher: { "@type": "Person", name: AUTHOR, url: `${SITE}/` },
     mainEntityOfPage: { "@type": "WebPage", "@id": e.url },
     url: e.url,
@@ -637,7 +637,7 @@ function postJsonLd(p) {
     dateModified: p.atualizado || p.data,
     inLanguage: "pt-BR",
     articleSection: p.categoria,
-    author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${SIGNATURE.src}`, jobTitle: "Consultor imobiliário" },
+    author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${SIGNATURE.src}`, jobTitle: "Corretor de imóveis" },
     publisher: { "@type": "Person", name: AUTHOR, url: `${SITE}/` },
     mainEntityOfPage: { "@type": "WebPage", "@id": p.url },
     url: p.url,
