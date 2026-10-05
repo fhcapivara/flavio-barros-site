@@ -2084,6 +2084,97 @@ em {
 .mercado-prose code { font-size: 0.9em; background: var(--surface); padding: 0.1em 0.35em; border: 1px solid var(--border); }
 .mercado-prose pre { overflow-x: auto; background: var(--surface); padding: var(--space-4); border: 1px solid var(--border); font-size: var(--text-sm); }
 .mercado-prose pre code { border: 0; padding: 0; }
+
+/* Tabelas Markdown (GitHub-style) — rolam no mobile, sem estourar a página */
+.mercado-prose .post-table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-inline: 0;
+  max-width: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.mercado-prose .post-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+.mercado-prose .post-table th,
+.mercado-prose .post-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.mercado-prose .post-table th {
+  font-weight: 500;
+  color: var(--black);
+  background: var(--off-white);
+  border-bottom: 1px solid var(--border-strong);
+  letter-spacing: 0.01em;
+}
+.mercado-prose .post-table tbody tr:last-child td { border-bottom: 0; }
+.mercado-prose .post-table .post-table__num { text-align: right; }
+.mercado-prose .post-table .post-table__center { text-align: center; }
+.mercado-prose .post-table .post-table__left { text-align: left; }
+.mercado-prose .post-table td:first-child,
+.mercado-prose .post-table th:first-child {
+  white-space: normal;
+  min-width: 7rem;
+}
+
+/* Série mensal (campo serie no front-matter) */
+.mercado-serie {
+  max-width: var(--measure-narrow);
+  margin-top: var(--space-8);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border);
+}
+.mercado-serie__label {
+  margin: 0;
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+.mercado-serie__prev {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-sm);
+  color: var(--stone-dark);
+}
+.mercado-serie__prev a {
+  color: var(--green);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.mercado-serie__prev a:hover { color: var(--black); }
+.mercado-serie__list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-4) 0 0;
+}
+.mercado-serie__list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  align-items: baseline;
+  padding-block: 0.55rem;
+  border-top: 1px solid var(--border);
+  font-size: var(--text-sm);
+}
+.mercado-serie__list li:last-child { border-bottom: 1px solid var(--border); }
+.mercado-serie__list a {
+  color: var(--black);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.mercado-serie__list a:hover { border-color: var(--black); }
+.mercado-serie__list time { color: var(--stone); font-variant-numeric: tabular-nums; }
+.mercado-serie + .mercado-share { margin-top: var(--space-8); }
+
 .mercado-source {
   max-width: var(--measure-narrow);
   margin-top: var(--space-8);

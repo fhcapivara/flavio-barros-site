@@ -13,6 +13,17 @@
  *             "rascunho: true" são ignorados)
  *           sitemap.xml (apenas as entradas /mercado/ são substituídas)
  *
+ * Campos do front-matter dos posts (entre ---):
+ *   titulo, slug, categoria, data (AAAA-MM-DD), resumo, descricao,
+ *   imagem, fonte_nome, fonte_url, atualizado, rascunho,
+ *   serie (opcional) — nome da série mensal, ex.: "FipeZAP Ribeirão Preto".
+ *     Posts com o mesmo serie ganham, no fim do artigo, um bloco com os
+ *     demais textos da série (mais recente primeiro) e o link
+ *     "Edição anterior". Com um único post na série, o bloco não aparece.
+ *
+ * No corpo Markdown: tabelas estilo GitHub (ver scripts/lib/markdown.mjs),
+ * além de títulos, listas, negrito, links, citações e código.
+ *
  * Todos os arquivos .html em mercado/, mercado/categoria/, estudos/ e mercado/estudos/ (redirecionamentos) são GERADOS e
  * apagados a cada execução (limpeza de páginas antigas). Não edite à mão.
  *
@@ -268,6 +279,7 @@ function readPosts() {
       imagem: d.imagem ? d.imagem.trim() : "",
       fonteNome: plain(d.fonte_nome || ""),
       fonteUrl: (d.fonte_url || "").trim(),
+      serie: plain(d.serie || ""),
       html: markdown(body),
       url: `${SITE}/mercado/${slug}.html`,
     });
@@ -593,7 +605,28 @@ function estudoJsonLd(e) {
   return ld;
 }
 
-function postBody(p) {
+
+function seriesBlock(p, allPosts) {
+  if (!p.serie) return "";
+  const series = allPosts.filter((x) => x.serie === p.serie);
+  if (series.length < 2) return "";
+  const idx = series.findIndex((x) => x.slug === p.slug);
+  const prev = idx >= 0 && idx < series.length - 1 ? series[idx + 1] : null;
+  const others = series.filter((x) => x.slug !== p.slug);
+  const prevHtml = prev
+    ? `\n            <p class="mercado-serie__prev">Edição anterior: <a href="/mercado/${prev.slug}.html">${esc(prev.titulo)}</a></p>`
+    : "";
+  const list = others.map((x) => `              <li><a href="/mercado/${x.slug}.html">${esc(x.titulo)}</a> <time datetime="${x.data}">${formatDate(x.data)}</time></li>`).join("\n");
+  return `
+          <aside class="mercado-serie" aria-label="Série ${esc(p.serie)}">
+            <p class="mercado-serie__label">Série · ${esc(p.serie)}</p>${prevHtml}
+            <ul class="mercado-serie__list">
+${list}
+            </ul>
+          </aside>`;
+}
+
+function postBody(p, allPosts = []) {
   const waText = `Olá, Flávio. Li o artigo "${p.titulo}" no seu site e gostaria de conversar.`;
   let fonte = "";
   if (p.fonteNome || p.fonteUrl) {
@@ -620,7 +653,7 @@ ${p.imagem ? `
         <div class="container">
           <div class="mercado-prose">
 ${p.html}
-          </div>${fonte}${shareAndVote(p)}${signature(waText)}
+          </div>${fonte}${seriesBlock(p, allPosts)}${shareAndVote(p)}${signature(waText)}
           <p class="mercado-back"><a href="/mercado/">← Voltar para Leitura de mercado</a></p>
         </div>
       </div>
@@ -755,7 +788,7 @@ for (const p of posts) {
     ogType: "article",
     image: ogImage(p.imagem, p.titulo),
     jsonld: postJsonLd(p),
-    body: postBody(p),
+    body: postBody(p, posts),
   }));
 }
 

@@ -7,6 +7,7 @@ resumo: Uma ou duas frases que resumem o texto. Aparecem no Google e na lista de
 imagem:
 fonte_nome:
 fonte_url:
+serie:
 ---
 
 Escreva o primeiro parágrafo aqui.
@@ -19,6 +20,12 @@ Use **negrito** para destacar uma ideia e [um link](https://www.exemplo.com.br) 
 
 - Um item de lista
 - Outro item de lista
+
+Tabela (opcional), com alinhamento no separador (`---` esquerda, `---:` direita, `:---:` centro):
+
+| | Ribeirão Preto | Brasil |
+| --- | ---: | ---: |
+| 12 meses | **5,90%** | 5,51% |
 
 ## Minha leitura
 

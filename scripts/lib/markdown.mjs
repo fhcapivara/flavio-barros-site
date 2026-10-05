@@ -1,6 +1,14 @@
 /**
  * Utilidades compartilhadas pelos geradores do site (build-mercado.mjs, build-acervo.mjs):
  * slug, escape de HTML e um conversor de Markdown simples, sem dependências.
+ *
+ * Tabelas (estilo GitHub):
+ *   | Coluna | Outra |
+ *   | ------ | ----: |
+ *   | texto  | **42** |
+ * Separador com `:---` (esquerda), `:---:` (centro) ou `---:` (direita).
+ * Células aceitam negrito, itálico, links e código; o HTML sai escapado.
+ * A tabela é envolvida em <div class="post-table"> para rolar no mobile.
  */
 export const SITE = "https://flaviodebarros.com.br";
 
@@ -53,6 +61,71 @@ export function inline(text) {
   return s;
 }
 
+function splitTableRow(line) {
+  let t = String(line).trim();
+  if (t.startsWith("|")) t = t.slice(1);
+  if (t.endsWith("|")) t = t.slice(0, -1);
+  return t.split("|").map((c) => c.trim());
+}
+
+function isTableSepLine(line) {
+  if (!line || !String(line).includes("-")) return false;
+  const cells = splitTableRow(line);
+  return cells.length > 0 && cells.every((c) => /^:?-{3,}:?$/.test(c));
+}
+
+function alignFromSep(cell) {
+  const s = cell.trim();
+  const left = s.startsWith(":");
+  const right = s.endsWith(":");
+  if (left && right) return "center";
+  if (right) return "right";
+  if (left) return "left";
+  return "";
+}
+
+function alignClass(align) {
+  if (align === "right") return ' class="post-table__num"';
+  if (align === "center") return ' class="post-table__center"';
+  if (align === "left") return ' class="post-table__left"';
+  return "";
+}
+
+function looksLikeTableStart(lines, i) {
+  if (i + 1 >= lines.length) return false;
+  const header = lines[i];
+  if (!header || !header.includes("|")) return false;
+  if (/^ {0,3}(```|~~~)/.test(header)) return false;
+  if (/^ {0,3}#{1,6}(\s|$)/.test(header)) return false;
+  if (/^ {0,3}([-*_])( *\1){2,} *$/.test(header)) return false;
+  return isTableSepLine(lines[i + 1]);
+}
+
+function renderTable(lines, start) {
+  const headerCells = splitTableRow(lines[start]);
+  const sepCells = splitTableRow(lines[start + 1]);
+  const aligns = headerCells.map((_, idx) => alignFromSep(sepCells[idx] || ""));
+  let i = start + 2;
+  const body = [];
+  while (i < lines.length) {
+    const l = lines[i];
+    if (!l || !l.trim()) break;
+    if (!l.includes("|")) break;
+    if (/^ {0,3}(```|~~~)/.test(l) || /^ {0,3}#{1,6}(\s|$)/.test(l)) break;
+    if (/^ {0,3}([-*_])( *\1){2,} *$/.test(l)) break;
+    if (/^ {0,3}>/.test(l) || /^ {0,3}[-*+]\s+/.test(l) || /^ {0,3}\d{1,9}[.)]\s+/.test(l)) break;
+    body.push(splitTableRow(l));
+    i++;
+  }
+  const th = headerCells.map((c, idx) => `<th${alignClass(aligns[idx])}>${inline(c)}</th>`).join("");
+  const rows = body.map((cells) => {
+    const tds = headerCells.map((_, idx) => `<td${alignClass(aligns[idx])}>${inline(cells[idx] || "")}</td>`).join("");
+    return `<tr>${tds}</tr>`;
+  }).join("\n");
+  const html = `<div class="post-table">\n<table>\n<thead>\n<tr>${th}</tr>\n</thead>\n<tbody>\n${rows}\n</tbody>\n</table>\n</div>`;
+  return { html, next: i };
+}
+
 export function markdown(src) {
   const lines = src.replace(/\r\n?/g, "\n").replace(/\t/g, "    ").split("\n");
   const out = [];
@@ -85,6 +158,12 @@ export function markdown(src) {
       out.push(`<h${level}>${inline(m[2])}</h${level}>`);
       i++; continue;
     }
+    if (looksLikeTableStart(lines, i)) {
+      const { html, next } = renderTable(lines, i);
+      out.push(html);
+      i = next;
+      continue;
+    }
     if (isQuote(line)) {
       const buf = [];
       while (i < lines.length && !isBlank(lines[i]) && (isQuote(lines[i]) || !startsBlock(lines[i]))) {
@@ -114,7 +193,7 @@ export function markdown(src) {
       continue;
     }
     const buf = [];
-    while (i < lines.length && !isBlank(lines[i]) && !startsBlock(lines[i])) buf.push(lines[i++]);
+    while (i < lines.length && !isBlank(lines[i]) && !startsBlock(lines[i]) && !looksLikeTableStart(lines, i)) buf.push(lines[i++]);
     const para = buf.join("\n");
     const onlyImg = /^!\[[^\]]*\]\([^)]*\)$/.test(para.trim());
     out.push(onlyImg ? `<figure>${inline(para.trim())}</figure>` : `<p>${inline(para)}</p>`);

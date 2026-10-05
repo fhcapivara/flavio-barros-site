@@ -25,6 +25,7 @@ resumo: Uma ou duas frases que resumem o texto. Aparecem no Google e na lista de
 imagem:
 fonte_nome:
 fonte_url:
+serie:
 ---
 
 Escreva o primeiro parágrafo aqui.
@@ -57,8 +58,22 @@ Use **negrito** para destacar uma ideia e [um link](https://www.exemplo.com.br) 
 - **imagem**: opcional. Veja a seção abaixo. Se não usar, deixe em branco.
 - **fonte_nome** e **fonte_url**: opcionais. Nome e endereço da fonte de um dado citado. Exemplo: `fonte_nome: Banco Central` e `fonte_url: https://www.bcb.gov.br`.
 - **slug**: opcional. Se ficar em branco, o endereço da página é criado a partir do título. Só preencha se quiser um endereço diferente, por exemplo `slug: juros-e-alto-padrao` (letras minúsculas, sem acentos, com hífens).
+- **serie**: opcional. Nome de uma série mensal, por exemplo `serie: FipeZAP Ribeirão Preto`. Textos com o mesmo nome de série ganham, no fim do artigo, um bloco com os demais da série (mais recente primeiro) e o link "Edição anterior". Se só existir um texto na série, o bloco não aparece.
 
 Para guardar um texto sem publicar, acrescente a linha `rascunho: true` entre as linhas `---`. Para publicar, apague essa linha.
+
+### Tabelas no corpo do texto
+
+Use o formato de tabela do GitHub. A primeira linha é o cabeçalho; a segunda, o separador (com `---` ou alinhamento `:---` / `---:` / `:---:`); as seguintes são as linhas de dados. Dentro das células dá para usar **negrito** e [links](https://exemplo.com).
+
+```
+| | Ribeirão Preto | Brasil | IPCA |
+| --- | ---: | ---: | ---: |
+| Mês | **0,24%** | 0,58% | 0,70% |
+| 12 meses | 5,90% | 5,51% | 4,45% |
+```
+
+No celular a tabela rola na horizontal dentro do próprio bloco, sem esticar a página.
 
 ## Como colocar uma imagem
 
