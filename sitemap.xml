@@ -58,9 +58,15 @@
   </url>
   <url>
     <loc>https://flaviodebarros.com.br/mercado/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://flaviodebarros.com.br/mercado/aluguel-reforma-tributaria-ibs-cbs-2027.html</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://flaviodebarros.com.br/mercado/primeiro-turno-2026-juros-imoveis.html</loc>

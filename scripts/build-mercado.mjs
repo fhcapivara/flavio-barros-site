@@ -16,6 +16,7 @@
  * Campos do front-matter dos posts (entre ---):
  *   titulo, slug, categoria, data (AAAA-MM-DD), resumo, descricao,
  *   imagem, fonte_nome, fonte_url, atualizado, rascunho,
+ *   titulo_seo (opcional): título da aba e do Google; o titulo segue como H1.
  *   serie (opcional) — nome da série mensal, ex.: "FipeZAP Ribeirão Preto".
  *     Posts com o mesmo serie ganham, no fim do artigo, um bloco com os
  *     demais textos da série (mais recente primeiro) e o link
@@ -273,6 +274,7 @@ function readPosts() {
     const resumo = plain(d.resumo || "") || truncate(firstParagraphText(body), 155);
     posts.push({
       file, titulo, slug, data, categoria, resumo,
+      tituloSeo: plain(d.titulo_seo || ""),
       descricao: plain(d.descricao || "") || truncate(resumo, 300),
       atualizado: /^\d{4}-\d{2}-\d{2}$/.test((d.atualizado || "").trim()) && d.atualizado.trim() > data ? d.atualizado.trim() : "",
       catSlug: slugify(categoria),
@@ -781,7 +783,7 @@ for (const e of estudos) writeFileSync(join(OLD_ESTUDOS_DIR, `${e.slug}.html`), 
 
 for (const p of posts) {
   writeFileSync(join(MERCADO, `${p.slug}.html`), page({
-    title: `${p.titulo} | Flávio Barros`,
+    title: p.tituloSeo || `${p.titulo} | Flávio Barros`,
     description: p.descricao,
     canonical: p.url,
     robots: "index,follow",
