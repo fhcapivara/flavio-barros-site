@@ -58,7 +58,42 @@ export function cleanTitle(s) {
     .replace(/^[\s\-\u2013|·,:/]+|[\s\-\u2013|·,:/]+$/g, "")
     .trim();
 }
+// Títulos às vezes citam um bairro diferente do cadastrado (ex.: ref. 4266, bairro Jardim São Luiz,
+// título "... Jardim Botânico ..."). O bairro do cadastro manda: o nome errado é trocado por ele.
+// Bairros conhecidos = todos os bairros do catálogo + nomes das páginas de região.
+const charKey = (c) => c.normalize("NFD")[0].toLowerCase().replace(/['´`’‘]/, "'");
+const normKeep = (s) => Array.from(String(s || "")).map(charKey).join("");
+let KNOWN_BAIRROS = null;
+export function setKnownBairros(names) {
+  const set = new Map();
+  for (const n of names) {
+    const k = norm(n);
+    if (k.length < 6 || /^(condominio|residencial|loteamento|jardim|parque|vila)$/.test(k)) continue;
+    if (/[0-9()]|subsetor/.test(k)) continue;
+    if (/^(bonfim paulista|ribeirao preto)$/.test(k)) continue; // distritos/cidade abrangem vários bairros
+    set.set(k, n);
+  }
+  KNOWN_BAIRROS = [...set.keys()].sort((a, b) => b.length - a.length);
+}
+export function fixTitleBairro(p) {
+  const bairro = String(p.neighborhood || "").trim();
+  if (!bairro || !KNOWN_BAIRROS || !p.title) return p;
+  const nb = norm(bairro), nc = norm(p.condominio);
+  let title = String(p.title).normalize("NFC");
+  for (const k of KNOWN_BAIRROS) {
+    if (nb.includes(k) || k.includes(nb) || (nc && nc.includes(k))) continue;
+    const re = new RegExp(`(^|[^a-z0-9])${k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![a-z0-9])`);
+    const chars = Array.from(title);
+    const m = re.exec(chars.map(charKey).join(""));
+    if (!m || Array.from(normKeep(title)).length !== chars.length) continue;
+    const start = m.index + m[1].length;
+    title = chars.slice(0, start).join("") + bairro + chars.slice(start + k.length).join("");
+  }
+  return title === p.title ? p : { ...p, title, titleOriginal: p.titleOriginal || p.title };
+}
 export function cleanItems(items, log) {
+  if (!KNOWN_BAIRROS) setKnownBairros([...items.map((p) => p.neighborhood), ...readRegioes().map((r) => r.nome)]);
+  items = items.map(fixTitleBairro);
   const seen = new Map();
   const out = [];
   for (const raw of items) {
@@ -182,7 +217,8 @@ function readRegioes() {
 function regionMatches(r, p) {
   if (r.tipos.length && !r.tipos.includes(p.type)) return false;
   if (!r.comerciais && isCommercialListing(p)) return false;
-  const hay = norm([p.neighborhood, p.condominio, p.title].join(" "));
+  // Com bairro cadastrado, o título não decide a região (só bairro e condomínio).
+  const hay = norm([p.neighborhood, p.condominio, String(p.neighborhood || "").trim() ? "" : p.title].join(" "));
   const bairro = norm(p.neighborhood);
   return r.busca.some((t) => hay.includes(t)) || r.buscaBairro.some((t) => bairro.includes(t));
 }

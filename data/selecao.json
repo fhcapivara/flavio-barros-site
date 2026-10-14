@@ -1302,7 +1302,7 @@
     },
     {
       "ref": "4266",
-      "title": "Casa em condomínio - 4 quartos - à venda - Jardim Botânico - Ribeirão Preto - SP",
+      "title": "Casa em condomínio - 4 quartos - à venda - Jardim São Luiz - Ribeirão Preto - SP",
       "type": "HOUSE",
       "neighborhood": "Jardim São Luiz",
       "condominio": "Residencial Torino",
@@ -1326,7 +1326,8 @@
       "image": "https://cdn.sanity.io/images/l9z1zbwg/production/84c13aef3000e80a42c035ab05c3c315d0dd0e03-960x1280.jpg?w=560&h=400&fit=crop&auto=format",
       "slug": "casa-em-condominio-4-quartos-a-venda-jardim-botanico-ribeirao-preto-sp-4266",
       "source": "lanportus",
-      "detailUrl": "imovel.html?ref=4266"
+      "detailUrl": "imovel.html?ref=4266",
+      "titleOriginal": "Casa em condomínio - 4 quartos - à venda - Jardim Botânico - Ribeirão Preto - SP"
     },
     {
       "ref": "2326",
