@@ -126,18 +126,18 @@
         Object.keys(o).forEach((k) => { if (/price|preco|valor|description/i.test(k)) delete o[k]; });
         return o;
       });
-      sessionStorage.setItem(STORE_KEY, JSON.stringify({
+      localStorage.setItem(STORE_KEY, JSON.stringify({
         t: Date.now(), answers, step, phase, visitorName, visitSlot,
         picked: lite, thread: thread.innerHTML,
       }));
     } catch (e) { /* sem storage, segue normal */ }
   }
   function clearState() {
-    try { sessionStorage.removeItem(STORE_KEY); } catch (e) { /* ok */ }
+    try { localStorage.removeItem(STORE_KEY); } catch (e) { /* ok */ }
   }
   function loadState() {
     try {
-      const st = JSON.parse(sessionStorage.getItem(STORE_KEY) || "null");
+      const st = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
       if (!st || !st.t || Date.now() - st.t > STORE_TTL) { clearState(); return null; }
       return st;
     } catch (e) { return null; }
