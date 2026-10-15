@@ -490,6 +490,12 @@
   }
 
   function showResults(ok) {
+    renderResults(ok);
+    phase = "results";
+    saveState();
+  }
+
+  function renderResults(ok) {
     phase = "results";
     chat.hidden = true;
     results.hidden = false;
