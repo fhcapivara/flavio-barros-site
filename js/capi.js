@@ -98,7 +98,7 @@
     {
       id: "rotina",
       short: "Rotina",
-      text: "Há algo indispensável na rotina — espaço para trabalho, visitas, animais — que eu deva considerar?",
+      text: "Há algo indispensável na rotina (espaço para trabalho, visitas, animais) que eu deva considerar?",
       options: [
         { label: "Espaço para visitas", value: "visitas" },
         { label: "Espaço para trabalho", value: "office" },
@@ -114,6 +114,58 @@
     { label: "Noite", value: "noite" },
     { label: "Prefiro combinar pelo WhatsApp", value: "combinar" },
   ];
+
+  // Estado salvo na aba: ao voltar do WhatsApp a conversa não recomeça do zero.
+  const STORE_KEY = "capi_state_v1";
+  const STORE_TTL = 24 * 60 * 60 * 1000;
+  let restoring = false;
+  function saveState() {
+    try {
+      const lite = picked.map((p) => {
+        const o = Object.assign({}, p);
+        Object.keys(o).forEach((k) => { if (/price|preco|valor|description/i.test(k)) delete o[k]; });
+        return o;
+      });
+      sessionStorage.setItem(STORE_KEY, JSON.stringify({
+        t: Date.now(), answers, step, phase, visitorName, visitSlot,
+        picked: lite, thread: thread.innerHTML,
+      }));
+    } catch (e) { /* sem storage, segue normal */ }
+  }
+  function clearState() {
+    try { sessionStorage.removeItem(STORE_KEY); } catch (e) { /* ok */ }
+  }
+  function loadState() {
+    try {
+      const st = JSON.parse(sessionStorage.getItem(STORE_KEY) || "null");
+      if (!st || !st.t || Date.now() - st.t > STORE_TTL) { clearState(); return null; }
+      return st;
+    } catch (e) { return null; }
+  }
+  function restoreState() {
+    const st = loadState();
+    if (!st || st.phase === "name") return false;
+    Object.keys(answers).forEach((k) => delete answers[k]);
+    Object.assign(answers, st.answers || {});
+    step = st.step || 0;
+    visitorName = st.visitorName || "";
+    visitSlot = st.visitSlot || null;
+    picked = st.picked || [];
+    hub.hidden = true;
+    setSessionMode(true);
+    thread.innerHTML = st.thread || "";
+    if (st.phase === "results") {
+      restoring = true;
+      showResults(picked.length >= 3);
+      restoring = false;
+    } else {
+      chat.hidden = false;
+      results.hidden = true;
+      clearChoices();
+      ask();
+    }
+    return true;
+  }
 
   function setSessionMode(on) {
     if (robots) robots.content = on ? "noindex,follow" : "index,follow";
@@ -154,6 +206,7 @@
     clearChoices();
     phase = "questions";
     step = 0;
+    saveState();
     ask();
   }
 
@@ -197,6 +250,7 @@
     answers[id] = { value, label };
     bubble("user", label);
     step += 1;
+    saveState();
     ask();
   }
 
@@ -385,7 +439,7 @@
     return (
       "https://wa.me/" +
       WA +
-      "?utm_source=capi&text=" +
+      "?text=" +
       encodeURIComponent(text)
     );
   }
@@ -454,7 +508,7 @@
     }
 
     // Re-pick at paint time (inventory may have loaded mid-chat)
-    picked = selectThree();
+    if (!restoring) picked = selectThree();
     if (picked.length < 3) {
       resultsLead.textContent =
         "Não achei 3 encaixes honestos. Ajuste uma resposta ou fale comigo.";
@@ -509,6 +563,8 @@
     results.style.display = "";
     cards.style.opacity = "1";
     cards.style.visibility = "visible";
+    phase = "results";
+    saveState();
   }
 
   function escapeHtml(s) {
@@ -520,6 +576,7 @@
   }
 
   function start() {
+    clearState();
     hub.hidden = true;
     chat.hidden = false;
     results.hidden = true;
@@ -599,5 +656,12 @@
       inventoryReady = true;
     });
 
-  if (location.hash === "#conversa") start();
+  if (!restoreState() && location.hash === "#conversa") start();
+  // Voltando do WhatsApp com a página em cache (bfcache): garante os resultados na tela.
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted && phase !== "results") {
+      const st = loadState();
+      if (st && st.phase === "results") restoreState();
+    }
+  });
 })();

@@ -169,6 +169,21 @@
     return "conteudo";
   }
 
+  // Celular e navegadores internos (Instagram, Facebook, TikTok etc.): abrir o
+  // WhatsApp em nova aba costuma deixar tela branca ou ser bloqueado. Nesses
+  // casos o WhatsApp abre na mesma aba.
+  var UA = navigator.userAgent || "";
+  var SAME_TAB = /Instagram|FBAN|FBAV|FB_IAB|FBIOS|Line\/|TikTok|musical_ly|Snapchat|WhatsApp|; wv\)|Android|iPhone|iPad|iPod|Mobile/i.test(UA) ||
+    (navigator.maxTouchPoints > 1 && /Macintosh/.test(UA));
+  function openWa(url) {
+    if (!SAME_TAB) {
+      var w = null;
+      try { w = window.open(url, "_blank"); } catch (err) { w = null; }
+      if (w) { try { w.opener = null; } catch (err) { /* ok */ } return; }
+    }
+    window.location.href = url;
+  }
+
   document.addEventListener("click", function (e) {
     var openBtn = e.target.closest("[data-consent-open]");
     if (openBtn) {
@@ -188,10 +203,15 @@
     });
     // Curadoria Capi: o envio final é o clique no WhatsApp com o resultado.
     if (where === "capi") track("capi_submit", { capi_result: a.id === "capi-wa" ? "sem_opcoes" : "imovel" });
+    if (SAME_TAB && !e.defaultPrevented && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey) {
+      e.preventDefault();
+      window.location.href = a.href;
+    }
   }, true);
 
   window.fbConsent = {
     track: track,
+    openWa: openWa,
     open: function () { show(true); },
     choice: readChoice
   };

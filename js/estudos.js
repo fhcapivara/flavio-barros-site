@@ -101,16 +101,9 @@ var VOTOS_ENDPOINT = "";
       var url = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(text);
       // Medição (só com consentimento, via js/consent.js). O nome não é enviado.
       if (window.fbConsent) window.fbConsent.track("dossie_request", { material: current.material });
-      var win = null;
-      try { win = window.open(url, "_blank"); } catch (err) { win = null; }
-      if (win) {
-        try { win.opener = null; } catch (err) { /* sem acesso, tudo bem */ }
-      } else {
-        // Janela bloqueada (comum no Safari do iPhone): segue na mesma aba.
-        window.location.href = url;
-        return;
-      }
       close();
+      if (window.fbConsent && window.fbConsent.openWa) window.fbConsent.openWa(url);
+      else window.location.href = url;
     });
   }
 

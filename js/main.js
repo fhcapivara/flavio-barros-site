@@ -102,7 +102,8 @@
       var url =
         "https://wa.me/5516991166681?text=" +
         encodeURIComponent(parts.join("\n"));
-      window.open(url, "_blank", "noopener,noreferrer");
+      if (window.fbConsent && window.fbConsent.openWa) window.fbConsent.openWa(url);
+      else window.location.href = url;
     });
   }
 })();
