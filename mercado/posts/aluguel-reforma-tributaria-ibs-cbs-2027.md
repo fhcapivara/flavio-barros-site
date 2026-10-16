@@ -44,7 +44,7 @@ O calendário também ficou definido. Segundo a [Receita Federal](https://www.go
 
 **O imóvel de renda continua no jogo, com uma conta mais exigente.** O legislador reconheceu a natureza da locação ao reduzir as alíquotas em 70% e criar o redutor social para o aluguel residencial. O que muda é que a pergunta do investidor deixa de ser apenas quanto um imóvel rende. Passa a incluir quantos ativos compõem a carteira, como eles estão registrados e de que forma cada um se encaixa na estrutura da família. Em um cenário assim, poucos imóveis bem escolhidos, em boa localização e com demanda comprovada, tendem a ser mais simples de administrar do que muitos ativos dispersos.
 
-**E a demanda por aluguel na região segue presente.** Segundo pesquisa do CreciSP divulgada pela [Tribuna Ribeirão](https://www.tribunaribeirao.com.br/vendas-caem-e-alugueis-sobem-2/), as locações de imóveis residenciais usados em Ribeirão Preto e região avançaram 65,04% em agosto, depois de recuo de 23,11% em julho. Números mensais oscilam, mas mostram procura ativa por imóveis para morar de aluguel.
+**E a demanda por aluguel na região segue presente.** Segundo pesquisa do CreciSP divulgada pela Tribuna Ribeirão, as locações de imóveis residenciais usados em Ribeirão Preto e região avançaram 65,04% em agosto, depois de recuo de 23,11% em julho. Números mensais oscilam, mas mostram procura ativa por imóveis para morar de aluguel.
 
 Para ver como os preços se comportaram na cidade, confira a [leitura do FipeZAP Ribeirão Preto de setembro](/mercado/fipezap-ribeirao-preto-setembro-2026.html).
 
@@ -62,4 +62,4 @@ Se você tem imóveis de renda ou pensa em montar uma carteira em Ribeirão Pret
 - [Decreto nº 12.955, de 29 de abril de 2026, regulamento da CBS (Planalto), art. 382](https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/decreto/d12955.htm)
 - [Receita Federal: emissão do CNPJ e de documentos fiscais por pessoas físicas contribuintes da CBS começará em 1º de janeiro de 2027](https://www.gov.br/receitafederal/pt-br/assuntos/noticias/emissao-do-cnpj-e-de-documentos-fiscais-por-pessoas-fisicas-contribuintes-da-cbs-comecara-em-1o-de-janeiro-de-2027)
 - [InfoMoney: Nota fiscal de aluguel (NFS-e): o que muda com a Reforma Tributária? (8/10/2026)](https://www.infomoney.com.br/business/nota-fiscal-aluguel-imoveis/)
-- [Tribuna Ribeirão: Vendas caem e aluguéis sobem (6/10/2026), com dados do CreciSP](https://www.tribunaribeirao.com.br/vendas-caem-e-alugueis-sobem-2/)
+- Tribuna Ribeirão: Vendas caem e aluguéis sobem (6/10/2026), com dados do CreciSP
