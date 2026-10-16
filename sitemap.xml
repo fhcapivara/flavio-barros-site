@@ -57,10 +57,58 @@
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://flaviodebarros.com.br/mercado/</loc>
-    <lastmod>2026-10-14</lastmod>
+    <loc>https://flaviodebarros.com.br/imoveis/alphaville.html</loc>
+    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://flaviodebarros.com.br/imoveis/jardim-botanico.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://flaviodebarros.com.br/imoveis/jardim-canada.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://flaviodebarros.com.br/imoveis/olhos-dagua.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://flaviodebarros.com.br/imoveis/reserva-santa-luisa.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://flaviodebarros.com.br/imoveis/vila-do-golf.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://flaviodebarros.com.br/mercado/</loc>
+    <lastmod>2026-10-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://flaviodebarros.com.br/mercado/categoria/patrimonio-juros-e-tributos.html</loc>
+    <lastmod>2026-10-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://flaviodebarros.com.br/mercado/fim-da-escala-6x1-mercado-imobiliario.html</loc>
+    <lastmod>2026-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://flaviodebarros.com.br/mercado/aluguel-reforma-tributaria-ibs-cbs-2027.html</loc>
@@ -109,42 +157,6 @@
     <lastmod>2026-09-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://flaviodebarros.com.br/imoveis/alphaville.html</loc>
-    <lastmod>2026-10-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://flaviodebarros.com.br/imoveis/jardim-botanico.html</loc>
-    <lastmod>2026-10-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://flaviodebarros.com.br/imoveis/jardim-canada.html</loc>
-    <lastmod>2026-10-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://flaviodebarros.com.br/imoveis/olhos-dagua.html</loc>
-    <lastmod>2026-10-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://flaviodebarros.com.br/imoveis/reserva-santa-luisa.html</loc>
-    <lastmod>2026-10-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://flaviodebarros.com.br/imoveis/vila-do-golf.html</loc>
-    <lastmod>2026-10-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
 </urlset>
 
