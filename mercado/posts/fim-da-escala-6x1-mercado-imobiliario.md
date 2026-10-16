@@ -120,7 +120,7 @@ Lojas e serviços que funcionam todos os dias vão precisar reorganizar escalas 
 
 ## E em Ribeirão Preto?
 
-Ribeirão Preto e região vivem, em 2026, um mercado mais seletivo. As pesquisas mensais do CRECISP descrevem uma fase de acomodação depois do ciclo de alta, com compradores mais cautelosos e negociações mais criteriosas. A procura segue ativa: segundo pesquisa do CreciSP divulgada pela [Tribuna Ribeirão](https://www.tribunaribeirao.com.br/vendas-caem-e-alugueis-sobem-2/), o número de locações de residenciais usados subiu 65,04% em agosto.
+Ribeirão Preto e região vivem, em 2026, um mercado mais seletivo. As pesquisas mensais do CRECISP descrevem uma fase de acomodação depois do ciclo de alta, com compradores mais cautelosos e negociações mais criteriosas. A procura segue ativa: segundo pesquisa do CreciSP divulgada pela Tribuna Ribeirão, o número de locações de residenciais usados subiu 65,04% em agosto.
 
 Aqui, o tema pesa de forma especial nos condomínios. Em regiões como [Vila do Golf](/imoveis/vila-do-golf.html), [Alphaville](/imoveis/alphaville.html) e [Jardim Botânico](/imoveis/jardim-botanico.html), boa parte dos empreendimentos tem portaria 24 horas, segurança e áreas comuns amplas. São estruturas que dependem de equipes em escala, e é nelas que a taxa condominial pode sentir mais a nova jornada.
 
@@ -195,5 +195,5 @@ Fale comigo no WhatsApp: **(16) 99116-6681** · Instagram [@barros_flavio](https
 - [Movimento Econômico: Construção civil projeta alta de até 10% nos custos com redução de jornada](https://movimentoeconomico.com.br/mercado-imobiliario/2026/06/02/construcao-civil-projeta-alta-de-ate-10-nos-custos-com-reducao-de-jornada/)
 - [Atlas Público: Copom reduz Selic para 13,75% ao ano](https://atlaspublico.com.br/bcb/noticias/copom-reduz-selic-para-13-75pct-ao-ano-em-decisao-unanime-87748)
 - [O Hoje: Imóveis de lazer ganham espaço (indicadores CBIC)](https://ohoje.com/2026/08/18/imoveis-para-lazer-ganham-espaco-entre-brasileiros-que-buscam-segunda-moradia/)
-- [Tribuna Ribeirão: Vendas caem e aluguéis sobem (6/10/2026), com dados do CreciSP](https://www.tribunaribeirao.com.br/vendas-caem-e-alugueis-sobem-2/)
+- Tribuna Ribeirão: Vendas caem e aluguéis sobem (6/10/2026), com dados do CreciSP
 - [CRECISP: Pesquisa Ribeirão Preto e Região, março de 2026 (PDF)](https://www.crecisp.gov.br/Files/marketresearch/fb601e5f-804d-4cb9-b12d-8ef1c1bafbb9_pesquisa-marco26ribeirao-preto.pdf)
