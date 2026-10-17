@@ -132,18 +132,15 @@ Para quem compra ou investe na cidade, a leitura prática é:
 
 Para uma leitura mais aprofundada dos bairros e do mercado local, veja os [Estudos de mercado](/estudos/).
 
-## Checklist: como decidir com critério durante a transição
+## Checklist: três perguntas para começar
 
-1. Compare planta e pronto pelo custo total, incluindo prazo de entrega e correção pelo INCC.
-2. Pergunte sobre a equipe do condomínio: própria ou terceirizada, e se já existe plano para a nova jornada.
-3. Simule o financiamento com folga, considerando preço e parcela até 10% acima do previsto.
-4. Leia o contrato: índice de reajuste, prazo de tolerância e multa por atraso.
-5. Para investir, calcule o retorno líquido: aluguel menos condomínio, IPTU, manutenção e vacância.
-6. Não decida pela manchete. A transição leva 14 meses, e os efeitos chegam aos poucos.
+- **Vai comprar na planta:** há reajuste de tabela previsto, e até quando vale a condição atual?
+- **Imóvel pronto ou usado:** o preço por m² está competitivo diante dos lançamentos na mesma região?
+- **Condomínio:** quantos funcionários o prédio tem, e como funciona a escala da portaria?
 
-Receba este checklist no seu WhatsApp e use na sua próxima visita.
+Estas são algumas das perguntas. O checklist completo, com seis blocos para quem vai comprar na planta, já comprou, busca imóvel pronto, avalia o condomínio, vai financiar ou investe, você recebe pelo WhatsApp.
 
-[Solicite seu checklist](https://wa.me/5516991166681?text=Ol%C3%A1%2C%20Fl%C3%A1vio!%20Li%20a%20mat%C3%A9ria%20sobre%20o%20fim%20da%20escala%206x1%20no%20seu%20site%20e%20gostaria%20de%20receber%20o%20checklist.){.botao}
+[Solicite o checklist completo](https://wa.me/5516991166681?text=Ol%C3%A1%2C%20Fl%C3%A1vio!%20Li%20a%20mat%C3%A9ria%20sobre%20o%20fim%20da%20escala%206x1%20no%20seu%20site%20e%20gostaria%20de%20receber%20o%20checklist.){.botao}
 
 ## Perguntas frequentes sobre o fim da escala 6x1 e os imóveis
 
