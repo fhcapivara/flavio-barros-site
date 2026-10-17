@@ -195,6 +195,9 @@ export function markdown(src) {
     const buf = [];
     while (i < lines.length && !isBlank(lines[i]) && !startsBlock(lines[i]) && !looksLikeTableStart(lines, i)) buf.push(lines[i++]);
     const para = buf.join("\n");
+    // Botão: um parágrafo só com [texto](https://...){.botao} vira link no estilo .btn--primary.
+    const btn = para.trim().match(/^\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)\{\.botao\}$/);
+    if (btn) { out.push(`<p class="post-cta"><a class="btn btn--primary" href="${esc(unesc(btn[2]))}" target="_blank" rel="noopener">${inline(btn[1])}</a></p>`); continue; }
     const onlyImg = /^!\[[^\]]*\]\([^)]*\)$/.test(para.trim());
     out.push(onlyImg ? `<figure>${inline(para.trim())}</figure>` : `<p>${inline(para)}</p>`);
   }

@@ -2810,3 +2810,6 @@ em {
 .card__cta::after {
   content: " \2192";
 }
+
+/* Botão dentro do texto da Leitura de mercado */
+.post-cta { margin: 1.75rem 0 2.25rem; }

@@ -141,6 +141,10 @@ Para uma leitura mais aprofundada dos bairros e do mercado local, veja os [Estud
 5. Para investir, calcule o retorno líquido: aluguel menos condomínio, IPTU, manutenção e vacância.
 6. Não decida pela manchete. A transição leva 14 meses, e os efeitos chegam aos poucos.
 
+Receba este checklist no seu WhatsApp e use na sua próxima visita.
+
+[Solicite seu checklist](https://wa.me/5516991166681?text=Ol%C3%A1%2C%20Fl%C3%A1vio!%20Li%20a%20mat%C3%A9ria%20sobre%20o%20fim%20da%20escala%206x1%20no%20seu%20site%20e%20gostaria%20de%20receber%20o%20checklist.){.botao}
+
 ## Perguntas frequentes sobre o fim da escala 6x1 e os imóveis
 
 ### Quando começa a valer o fim da escala 6x1?
@@ -174,6 +178,10 @@ O fim da escala 6x1 muda a conta do mercado imobiliário, mas não muda o que fa
 Se você pensa em comprar para morar ou investir em Ribeirão Preto e região, eu organizo essa decisão com você, pela Imóveis com Propósito, metodologia criada por mim, do encontro presencial ao próximo passo claro. Sem pressa e sem volume de anúncio. Se preferir começar sozinho, faça a sua [curadoria na Capi](/capi.html).
 
 Fale comigo no WhatsApp: **(16) 99116-6681** · Instagram [@barros_flavio](https://www.instagram.com/barros_flavio/)
+
+Vai comprar ou investir nos próximos meses? Receba pelo WhatsApp o checklist com as perguntas certas para lançamento, imóvel pronto e condomínio.
+
+[Solicite seu checklist](https://wa.me/5516991166681?text=Ol%C3%A1%2C%20Fl%C3%A1vio!%20Li%20a%20mat%C3%A9ria%20sobre%20o%20fim%20da%20escala%206x1%20no%20seu%20site%20e%20gostaria%20de%20receber%20o%20checklist.){.botao}
 
 *Flávio Barros. Corretor de imóveis · CRECI 323468. Ribeirão Preto e região. Patrimônio com propósito.*
 
