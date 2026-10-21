@@ -3071,8 +3071,3 @@ h2 { line-height: 1.12; }
   .site-header > .container, .container.container--wide { padding-inline: 4rem; }
 }
 .section--selecao, .page-hero + .section--vip { padding-top: 3.5rem; }
-/* Contraste AA para textos pequenos em tom pedra */
-:root { --stone-text: #6B665D; }
-.eyebrow:not(.eyebrow--on-dark), .card__tag, .card__meta span, .selecao-card__tag, .selecao-card__meta span,
-.selecao-card__ref, .mercado-byline, .mercado-signature__body > .mercado-signature__creci, .pillar__num, .method__step::before { color: var(--stone-text); }
-.section--dark .eyebrow { color: var(--stone-light); }
