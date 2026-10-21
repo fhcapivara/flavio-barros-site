@@ -2842,3 +2842,10 @@ em {
   width: 100%;
   height: 100%;
 }
+
+/* Sobre: foto no topo */
+.sobre-hero { display: grid; gap: var(--space-7, 2.5rem); align-items: center; }
+.sobre-hero .page-hero__inner { max-width: none; }
+.sobre-hero__foto img { width: 100%; height: auto; max-height: 34rem; object-fit: cover; object-position: center top; border-radius: 2px; display: block; }
+@media (min-width: 900px) { .sobre-hero { grid-template-columns: 1.4fr 1fr; gap: var(--space-9, 4rem); } }
+@media (max-width: 899px) { .sobre-hero__foto img { max-height: 26rem; aspect-ratio: 4/5; } }
