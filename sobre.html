@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=20261005a" />
+  <link rel="stylesheet" href="css/styles.css?v=20261021a" />
   <link rel="canonical" href="https://flaviodebarros.com.br/sobre.html" />
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
@@ -75,7 +75,10 @@
       <div class="container">
         <div class="about-grid">
           <figure class="about-grid__visual portrait portrait--about reveal">
-            <img src="images/flavio-sobre.jpg" width="800" height="1000" alt="Flávio Barros" decoding="async" loading="lazy" />
+            <picture>
+              <source srcset="images/flavio-sobre.webp?v=ensaio2026" type="image/webp" />
+              <img src="images/flavio-sobre.jpg?v=ensaio2026" width="1000" height="1250" alt="Flávio Barros sentado em poltrona, em retrato de estúdio" decoding="async" loading="lazy" />
+            </picture>
           </figure>
           <div class="reveal">
             <p class="eyebrow">Trajetória</p>
@@ -97,6 +100,31 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section couple">
+      <div class="container">
+        <div class="couple__intro reveal">
+          <p class="eyebrow">Ao meu lado</p>
+          <h2>Flávio e Ana</h2>
+          <p>Ana é minha esposa e arquiteta do escritório Ramal. Quando a decisão envolve obra, reforma ou interiores, trabalhamos juntos: eu cuido do lugar e da construção, ela cuida do projeto.</p>
+          <p>A família está no centro do que fazemos. É com esse mesmo cuidado que acompanhamos cada cliente.</p>
+        </div>
+        <div class="couple__grid">
+          <figure class="portrait portrait--couple reveal">
+            <picture>
+              <source srcset="images/flavio-ana-06.webp" type="image/webp" />
+              <img src="images/flavio-ana-06.jpg" width="900" height="1125" alt="Flávio Barros e a esposa, a arquiteta Ana, em retrato de estúdio" decoding="async" loading="lazy" />
+            </picture>
+          </figure>
+          <figure class="portrait portrait--couple reveal">
+            <picture>
+              <source srcset="images/flavio-ana-09.webp" type="image/webp" />
+              <img src="images/flavio-ana-09.jpg" width="900" height="1125" alt="Flávio e Ana caminhando de mãos dadas em estúdio" decoding="async" loading="lazy" />
+            </picture>
+          </figure>
         </div>
       </div>
     </section>

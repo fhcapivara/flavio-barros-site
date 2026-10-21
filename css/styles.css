@@ -2813,3 +2813,27 @@ em {
 
 /* Botão dentro do texto da Leitura de mercado */
 .post-cta { margin: 1.75rem 0 2.25rem; }
+
+/* ----- Flávio e Ana (sobre) ----- */
+.couple__intro {
+  max-width: 640px;
+  margin-bottom: var(--space-8);
+}
+.couple__intro p {
+  color: var(--stone-dark);
+}
+.couple__grid {
+  display: grid;
+  gap: var(--space-6);
+}
+@media (min-width: 700px) {
+  .couple__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.portrait--couple {
+  aspect-ratio: 4 / 5;
+}
+.portrait--couple img {
+  object-position: center 20%;
+}
