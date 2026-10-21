@@ -40,6 +40,7 @@ import { dirname, join } from "node:path";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { slugify, esc, localPath, unesc, markdown } from "./lib/markdown.mjs";
+import { flavioSignature, consultantSection, photoUrl } from "./lib/flavio-card.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -62,7 +63,8 @@ const AUTHOR_ALT = "Flávio Barros, corretor de imóveis em Ribeirão Preto";
 const AUTHOR_URL = "/sobre.html";
 // Retrato do autor. Nomes novos a cada troca de foto (cache do navegador).
 const PORTRAIT = { src: "/images/mercado/flavio-leitura-2026.webp", width: 473, height: 800 };
-const SIGNATURE = { src: "/images/mercado/flavio-assinatura-2026.webp", width: 440, height: 550 };
+const SIGNATURE = { src: photoUrl("autor-artigos"), width: 720, height: 900 };
+const SIGNATURE_ESTUDOS = photoUrl("estudos");
 // Enquanto o corpo contiver este marcador, o texto é tratado como rascunho.
 const PLACEHOLDER = "[LEITURA DO FLÁVIO]";
 
@@ -417,7 +419,7 @@ ${filters(cats, active)}
 ${list}${back ? `
         <p class="mercado-back"><a href="/mercado/">← Todos os textos de Leitura de mercado</a></p>` : ""}
       </div>
-    </section>`;
+    </section>${portrait ? "" : consultantSection({ slug: "leitura-mercado-temas", altSuffix: "sentado em retrato de estúdio", note: "Leituras de mercado escritas por mim para quem decide sobre patrimônio.", waHref: `https://wa.me/${WHATSAPP}` })}`;
 }
 
 const ICONS = {
@@ -450,21 +452,13 @@ function shareAndVote(p) {
           </div>`;
 }
 
-function signature(waText) {
-  return `
-          <aside class="mercado-signature" aria-label="Sobre o autor">
-            <img class="mercado-signature__photo" src="${SIGNATURE.src}" width="${SIGNATURE.width}" height="${SIGNATURE.height}" alt="${esc(AUTHOR_ALT)}" loading="lazy" decoding="async" />
-            <div class="mercado-signature__body">
-              <p class="mercado-signature__name">${AUTHOR}</p>
-              <p class="mercado-signature__role">Corretor de imóveis em Ribeirão Preto e região</p>
-              <p class="mercado-signature__creci">CRECI 323468</p>
-              <p class="mercado-signature__note">Acompanho quem decide sobre patrimônio, do diagnóstico ao próximo passo.</p>
-              <p class="mercado-signature__actions">
-                <a class="btn btn--primary" href="${esc(waLink(waText))}" target="_blank" rel="noopener">Conversar no WhatsApp</a>
-                <a class="mercado-signature__link" href="${AUTHOR_URL}">Conheça minha trajetória</a>
-              </p>
-            </div>
-          </aside>`;
+function signature(waText, slug = "autor-artigos") {
+  return flavioSignature({
+    slug,
+    altSuffix: slug === "estudos" ? "sentado de terno escuro em retrato de estúdio, autor do estudo" : "com tablet em retrato de estúdio, autor da leitura de mercado",
+    note: "Acompanho quem decide sobre patrimônio, do diagnóstico ao próximo passo.",
+    waHref: waLink(waText),
+  });
 }
 
 /* ---------------- estudos: blocos ---------------- */
@@ -531,7 +525,7 @@ ${estudos.map((e) => estudoCard(e)).join("\n")}
       <div class="container">
 ${list}
       </div>
-    </section>${estudos.length ? estudosModal() : ""}`;
+    </section>${consultantSection({ slug: "estudos", altSuffix: "sentado de terno escuro em retrato de estúdio", note: "Cada estudo nasce de dados públicos e da minha leitura de campo em Ribeirão Preto.", waHref: `https://wa.me/${WHATSAPP}` })}${estudos.length ? estudosModal() : ""}`;
 }
 
 function estudoBody(e) {
@@ -579,7 +573,7 @@ ${facts.map(([k, v]) => `                <div><dt>${k}</dt><dd>${esc(v)}</dd></d
               <p class="estudos-panel__note">O estudo é enviado por mim, pessoalmente, na nossa conversa.</p>
             </aside>
           </div>
-${signature(`Olá, Flávio. Vi o estudo "${e.titulo}" no seu site e gostaria de conversar.`)}
+${signature(`Olá, Flávio. Vi o estudo "${e.titulo}" no seu site e gostaria de conversar.`, "estudos")}
           <p class="mercado-back"><a href="/estudos/">← Todos os dossiês</a></p>
         </div>
       </div>
@@ -596,7 +590,7 @@ function estudoJsonLd(e) {
     datePublished: `${e.data}-01`,
     dateModified: e.atualizado,
     inLanguage: "pt-BR",
-    author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${SIGNATURE.src}`, jobTitle: "Corretor de imóveis" },
+    author: { "@type": "Person", name: AUTHOR, url: `${SITE}${AUTHOR_URL}`, image: `${SITE}${SIGNATURE_ESTUDOS}`, jobTitle: "Corretor de imóveis" },
     publisher: { "@type": "Person", name: AUTHOR, url: `${SITE}/` },
     mainEntityOfPage: { "@type": "WebPage", "@id": e.url },
     url: e.url,

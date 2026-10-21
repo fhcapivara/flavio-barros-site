@@ -9,6 +9,7 @@ on:
       - "estudos/**"
       - "js/estudos.js"
       - "scripts/build-mercado.mjs"
+      - "scripts/lib/**"
       - "atuacao.html"
       - "selecao.html"
       - "data/selecao.json"

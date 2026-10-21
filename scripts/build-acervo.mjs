@@ -21,6 +21,7 @@ const writeFileSync = (file, data, ...rest) => fsWriteFileSync(file, typeof data
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { markdown } from "./lib/markdown.mjs";
+import { consultantSection } from "./lib/flavio-card.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -324,7 +325,7 @@ ${prose(before)}
         <p class="mercado-back"><a href="/selecao.html">← Ver todo o acervo</a></p>
       </div>
     </section>
-${prose(after)}
+${prose(after)}${consultantSection({ slug: "consultor-imoveis", altSuffix: "sentado de blazer escuro em retrato de estúdio", note: "Acompanho este condomínio de perto. Agendo a visita e mostro cada imóvel pessoalmente.", waHref: wa })}
     <section class="section section--dark cta-band">
       <div class="container">
         <div class="cta-band__inner reveal">
