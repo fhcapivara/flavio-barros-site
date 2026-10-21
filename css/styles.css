@@ -2837,3 +2837,8 @@ em {
 .portrait--couple img {
   object-position: center 20%;
 }
+.portrait picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
