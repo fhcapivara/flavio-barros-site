@@ -3102,3 +3102,7 @@ h3 { font-size: clamp(1.35rem, 1.2rem + 0.5vw, 1.625rem); line-height: 1.2; }
 @media (min-width: 900px) { .portrait--hero img { aspect-ratio: auto; } }
 /* Quebra do título da home em em, não em ch: o ch muda com a fonte de reserva e fazia a página pular */
 .hero__title { max-width: 6.5em; }
+
+/* Atuação: fotos 4:5 com mesmo enquadramento */
+.track__visual { aspect-ratio: 4 / 5; max-width: 30rem; width: 100%; justify-self: center; }
+.track__visual img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
