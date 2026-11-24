@@ -50,6 +50,8 @@ Para ver como os preços se comportaram na cidade, confira a [leitura do FipeZAP
 
 É aqui que a curadoria faz diferença. Escolher um imóvel de renda hoje é olhar localização, perfil do inquilino, liquidez na revenda e o lugar que esse ativo ocupa no patrimônio da família, e não só o valor do aluguel no primeiro contrato.
 
+Se o seu planejamento inclui deixar imóveis para a família, veja a leitura [ITCMD progressivo: o que muda na sucessão de imóveis em Ribeirão Preto](/mercado/itcmd-progressivo-sucessao-imoveis-ribeirao-preto.html).
+
 Se você tem imóveis de renda ou pensa em montar uma carteira em Ribeirão Preto e região, posso ajudar a avaliar cada ativo com esse critério, em sintonia com a orientação do seu contador. Me chame no WhatsApp **(16) 99116-6681**.
 
 *Flávio Barros. Corretor de imóveis · CRECI 323468. Ribeirão Preto e região. Patrimônio com propósito.*

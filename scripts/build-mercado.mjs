@@ -382,7 +382,7 @@ function filters(cats, active) {
           </nav>`;
 }
 
-function listingBody({ eyebrow, h1, lead, cats, active, posts, back, portrait }) {
+function listingBody({ eyebrow, h1, lead, cats, active, posts, back, portrait, introNote }) {
   const list = posts.length
     ? `        <div class="mercado-list">
 ${posts.map(card).join("\n")}
@@ -396,7 +396,8 @@ ${posts.map(card).join("\n")}
   const intro = `<div class="page-hero__inner reveal">
           <p class="eyebrow">${eyebrow}</p>
           <h1>${h1}</h1>
-          <p class="lead">${lead}</p>
+          <p class="lead">${lead}</p>${introNote ? `
+          <p>${introNote}</p>` : ""}
         </div>`;
   const heroTop = portrait
     ? `        <div class="mercado-hero__grid">
@@ -724,6 +725,7 @@ writeFileSync(join(MERCADO, "index.html"), page({
     eyebrow: "Leitura de mercado",
     h1: esc(LIST_TITLE),
     lead: "Uma leitura clara do que acontece no mercado imobiliário de Ribeirão Preto e região: juros, tributos, bairros, terrenos e projetos, explicados para quem decide com calma.",
+    introNote: 'Estas leituras são escritas por mim, corretor em Ribeirão Preto. Saiba mais em <a href="/sobre.html" style="color:var(--green);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px">Quem organiza a sua decisão</a>.',
     cats: activeCats,
     active: null,
     posts,

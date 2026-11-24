@@ -172,6 +172,8 @@ Pode fazer, desde que com critério. Construção mais cara tende a sustentar o 
 
 O fim da escala 6x1 muda a conta do mercado imobiliário, mas não muda o que faz uma boa compra: localização, liquidez, custo de manutenção e um plano que caiba na sua vida. A diferença é que, agora, cada um desses pontos merece uma segunda olhada.
 
+Se o seu planejamento inclui deixar imóveis para a família, veja a leitura [ITCMD progressivo: o que muda na sucessão de imóveis em Ribeirão Preto](/mercado/itcmd-progressivo-sucessao-imoveis-ribeirao-preto.html).
+
 Se você pensa em comprar para morar ou investir em Ribeirão Preto e região, eu organizo essa decisão com você, pela Imóveis com Propósito, metodologia criada por mim, do encontro presencial ao próximo passo claro. Sem pressa e sem volume de anúncio. Se preferir começar sozinho, faça a sua [curadoria na Capi](/capi.html).
 
 Fale comigo no WhatsApp: **(16) 99116-6681** · Instagram [@barros_flavio](https://www.instagram.com/barros_flavio/)

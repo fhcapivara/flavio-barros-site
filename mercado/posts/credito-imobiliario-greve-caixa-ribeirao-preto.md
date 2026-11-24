@@ -38,6 +38,8 @@ Quem compra com recursos próprios depende menos desse calendário, mas não fic
 
 Nada disso é motivo para adiar uma decisão bem pensada. É um lembrete de que a segurança de uma compra está tanto na escolha do imóvel quanto na forma como o contrato e os prazos são construídos. Se você tem uma negociação em andamento ou pretende começar uma, podemos conversar pelo WhatsApp sobre como organizar cada etapa com calma.
 
+Se o seu planejamento inclui deixar imóveis para a família, veja a leitura [ITCMD progressivo: o que muda na sucessão de imóveis em Ribeirão Preto](/mercado/itcmd-progressivo-sucessao-imoveis-ribeirao-preto.html).
+
 ## Fontes
 
 - [g1 Ribeirão Preto e Franca: greve da Caixa chega ao 15º dia com mais de 60 agências fechadas na região](https://g1.globo.com/sp/ribeirao-preto-franca/noticia/2026/09/24/greve-da-caixa-chega-ao-15o-dia-com-mais-de-60-agencias-fechadas-na-regiao-de-ribeirao-preto-sp.ghtml)

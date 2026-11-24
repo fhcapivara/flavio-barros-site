@@ -60,6 +60,8 @@ Ribeirão Preto tem economia muito ligada ao agronegócio, que sente de perto o 
 
 Ciclos eleitorais geram ruído no curto prazo. Os bons negócios no imobiliário costumam ser estruturados antes da virada óbvia das taxas, por quem entende a direção e se prepara com critério.
 
+Se o seu planejamento inclui deixar imóveis para a família, veja a leitura [ITCMD progressivo: o que muda na sucessão de imóveis em Ribeirão Preto](/mercado/itcmd-progressivo-sucessao-imoveis-ribeirao-preto.html).
+
 Se você quer entender como posicionar seu patrimônio em imóveis neste cenário, me chame no WhatsApp **(16) 99116-6681**.
 
 *Flávio Barros. Corretor de imóveis · CRECI 323468. Ribeirão Preto e região. Patrimônio com propósito.*
