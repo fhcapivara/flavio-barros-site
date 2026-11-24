@@ -36,9 +36,13 @@ export function unesc(s) {
   return s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
 }
 
+const WA_RE = /^(https?:)?\/\/(wa\.me|api\.whatsapp\.com)(\/|$)/i;
+
 export function link(href, text) {
   if (/^\s*javascript:/i.test(href)) return text;
-  const external = /^https?:\/\//i.test(href) && !href.startsWith(SITE);
+  // wa.me abre na mesma aba: em anúncios e navegadores internos, target=_blank
+  // costuma falhar. O js/consent.js registra o clique no GA4.
+  const external = /^https?:\/\//i.test(href) && !href.startsWith(SITE) && !WA_RE.test(href);
   return `<a href="${esc(localPath(href))}"${external ? ' target="_blank" rel="noopener noreferrer"' : ""}>${text}</a>`;
 }
 
@@ -197,7 +201,12 @@ export function markdown(src) {
     const para = buf.join("\n");
     // Botão: um parágrafo só com [texto](https://...){.botao} vira link no estilo .btn--primary.
     const btn = para.trim().match(/^\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)\{\.botao\}$/);
-    if (btn) { out.push(`<p class="post-cta"><a class="btn btn--primary" href="${esc(unesc(btn[2]))}" target="_blank" rel="noopener">${inline(btn[1])}</a></p>`); continue; }
+    if (btn) {
+      const href = unesc(btn[2]);
+      const blank = WA_RE.test(href) ? "" : ' target="_blank" rel="noopener"';
+      out.push(`<p class="post-cta"><a class="btn btn--primary" href="${esc(href)}"${blank}>${inline(btn[1])}</a></p>`);
+      continue;
+    }
     const onlyImg = /^!\[[^\]]*\]\([^)]*\)$/.test(para.trim());
     out.push(onlyImg ? `<figure>${inline(para.trim())}</figure>` : `<p>${inline(para)}</p>`);
   }
