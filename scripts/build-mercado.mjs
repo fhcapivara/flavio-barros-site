@@ -185,7 +185,7 @@ function loadChrome() {
   const afterFooter = html.slice(html.indexOf("</footer>"));
   const scripts = (afterFooter.match(/<script\b[^>]*src="[^"]*"[^>]*><\/script>/g) || []).map(absolutize).join("\n  ");
   const headLinks = (html.match(/<link rel="preload" href="\/fonts\/[^>]*>/g) || []).join("\n  ");
-  const cssHref = "/" + ((html.match(/href="\/?(css\/(?:styles|v3)\.css[^"]*)"/) || [])[1] || "css/v3.css");
+  const cssHref = "/" + ((html.match(/href="\/?(css\/(?:styles|v3)(?:\.min)?\.css[^"]*)"/) || [])[1] || "css/v3.min.css?v=css11245592cc1f");
   return { header, footer, sticky, scripts, headLinks, cssHref };
 }
 
