@@ -35,7 +35,9 @@
  */
 import { readFileSync, writeFileSync as fsWriteFileSync, readdirSync, mkdirSync, rmSync, existsSync, appendFileSync } from "node:fs";
 // Todo texto gravado sai normalizado em NFC (acentos pré-compostos, nunca "e" + acento combinante).
-const writeFileSync = (file, data, ...rest) => fsWriteFileSync(file, typeof data === "string" ? data.normalize("NFC") : data, ...rest);
+// Links de WhatsApp do Flávio abrem na mesma aba (navegador do Instagram perde a página com _blank).
+const sameTabWa = (html) => html.replace(/<a\b[^>]*href="https:\/\/wa\.me\/\d[^"]*"[^>]*>/g, (tag) => tag.replace(/\s+target="_blank"/, ""));
+const writeFileSync = (file, data, ...rest) => fsWriteFileSync(file, typeof data === "string" ? (String(file).endsWith(".html") ? sameTabWa(data) : data).normalize("NFC") : data, ...rest);
 import { dirname, join } from "node:path";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";

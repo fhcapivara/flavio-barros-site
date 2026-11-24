@@ -92,7 +92,7 @@ Fale comigo no WhatsApp: [(16) 99116-6681](https://wa.me/5516991166681) · Insta
 
 Vai comprar ou investir nos próximos meses? Receba pelo WhatsApp o checklist com as perguntas certas para lançamento, imóvel pronto e condomínio.
 
-[Solicite seu checklist](https://wa.me/5516991166681?text=Ol%C3%A1%2C%20Fl%C3%A1vio!%20Li%20a%20leitura%20de%20mercado%20de%20novembro%20no%20seu%20site%20e%20gostaria%20de%20receber%20o%20checklist.){.botao}
+[Solicite seu checklist](https://wa.me/5516991166681?text=Ol%C3%A1%2C%20Fl%C3%A1vio!%20Li%20a%20leitura%20de%20mercado%20de%20outubro%20no%20seu%20site%20e%20gostaria%20de%20receber%20o%20checklist.){.botao}
 
 *Flávio Barros. Corretor de imóveis · CRECI 323468. Ribeirão Preto e região. Patrimônio com propósito.*
 
