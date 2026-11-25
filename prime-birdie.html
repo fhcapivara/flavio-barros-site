@@ -9,6 +9,28 @@
   <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/cormorant-garamond-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="css/v3.min.css?v=css11245592cc1f" />
+  <style>
+    .prime-story__maquete-wrap { max-width: 64rem; }
+    .prime-story__maquete {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      background: #f2eee8;
+      overflow: hidden;
+      border-radius: 0.25rem;
+    }
+    .prime-story__maquete iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .prime-story__maquete-wrap .text-link { margin-top: 1.25rem; }
+    @media (min-width: 700px) {
+      .prime-story__maquete { aspect-ratio: 16 / 10; }
+    }
+  </style>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -128,6 +150,28 @@
             </div>
           </div>
 </div>
+        </div>
+      </section>
+
+
+      <section class="section section--alt" id="maquete">
+        <div class="container">
+          <div class="section__header reveal">
+            <p class="eyebrow">Maquete 3D</p>
+            <h2>Conheça o projeto em 3D</h2>
+            <p class="lead">Gire a planta Final 01, veja de cima ou caminhe pelos ambientes.</p>
+          </div>
+          <div class="prime-story__maquete-wrap reveal">
+            <div class="prime-story__maquete">
+              <iframe
+                src="/maquete/birdie/"
+                title="Maquete 3D interativa da planta Final 01 do Birdie"
+                loading="lazy"
+                allow="fullscreen"
+                allowfullscreen></iframe>
+            </div>
+            <a class="text-link" href="/maquete/birdie/">Abrir em tela cheia</a>
+          </div>
         </div>
       </section>
 
